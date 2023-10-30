@@ -17,7 +17,7 @@ public class Main {
             System.out.println("UDP Server is running on port " + port);
 
             while (true) {
-            	//teste
+            	//teste 123
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
                 byte[] receiveData = new byte[1024];
