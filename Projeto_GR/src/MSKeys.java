@@ -171,7 +171,7 @@ public class MSKeys {
 
 public static void main(String[] args) {
 	
-	byte[] chave = {'A', 2, '+', 4, 5,6,7,'v',9,10,11,12};
+	byte[] chave = {'A', 2, 'P', 4, 5,6,7,'v',9,10,11,12};
 	MSKeys keys = new MSKeys();
 	keys.update(chave);
 }
