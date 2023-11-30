@@ -39,7 +39,7 @@ public class DataSnmpKeysMib {
 		this.keyVisibility = keyVisibility;
 	}
 	
-	public KeysSnmpKeysMib() {
+	public void KeysSnmpKeysMib() {
 		this.keyId = 0; 
 		this.keyValue = "DefaultKeyValue"; 
 		this.keyRequester = "DefaultRequester"; 
@@ -49,7 +49,7 @@ public class DataSnmpKeysMib {
 	}
 	
 	
-	public KeysSnmpKeysMib(int keyId, String keyValue, String keyRequester, int keyExpirationDate, int keyExpirationTime, int keyVisibility) {
+	public void KeysSnmpKeysMib(int keyId, String keyValue, String keyRequester, int keyExpirationDate, int keyExpirationTime, int keyVisibility) {
 	    this.keyId = keyId;
 	    this.keyValue = keyValue;
 	    this.keyRequester = keyRequester;
@@ -59,7 +59,7 @@ public class DataSnmpKeysMib {
 	}
 
 	
-	public KeysSnmpKeysMib(KeysSnmpKeysMib other) {
+	public void KeysSnmpKeysMib(KeysSnmpKeysMib other) {
 	    this.keyId = other.keyId;
 	    this.keyValue = other.keyValue;
 	    this.keyRequester = other.keyRequester;
