@@ -7,6 +7,33 @@ public class SystemSnmpKeysMib {
 	private int systemIntervalUpdate;
 	private int systemMaxNumberOfKey;
 	private int systemKeysTimeToLive;
+		
+	public SystemSnmpKeysMib() {
+		this.systemRestartDate = 0;
+		this.systemRestartTime = 0; 
+		this.systemKeySize = 0; 
+		this.systemIntervalUpdate = 0; 
+		this.systemMaxNumberOfKey = 0; 
+		this.systemKeysTimeToLive = 0; 
+	}
+	
+	public SystemSnmpKeysMib(int systemRestartDate, int systemRestartTime, int systemKeySize, int systemIntervalUpdate, int systemMaxNumberOfKey, int systemKeysTimeToLive) {
+	    this.systemRestartDate = systemRestartDate;
+	    this.systemRestartTime = systemRestartTime;
+	    this.systemKeySize = systemKeySize;
+	    this.systemIntervalUpdate = systemIntervalUpdate;
+	    this.systemMaxNumberOfKey = systemMaxNumberOfKey;
+	    this.systemKeysTimeToLive = systemKeysTimeToLive;
+	}
+	
+	public SystemSnmpKeysMib(SystemSnmpKeysMib other) {
+	    this.systemRestartDate = other.systemRestartDate;
+	    this.systemRestartTime = other.systemRestartTime;
+	    this.systemKeySize = other.systemKeySize;
+	    this.systemIntervalUpdate = other.systemIntervalUpdate;
+	    this.systemMaxNumberOfKey = other.systemMaxNumberOfKey;
+	    this.systemKeysTimeToLive = other.systemKeysTimeToLive;
+	}
 	
 	public int getSystemRestartDate() {
 		return systemRestartDate;
@@ -55,34 +82,4 @@ public class SystemSnmpKeysMib {
 	public void setSystemKeysTimeToLive(int systemKeysTimeToLive) {
 		this.systemKeysTimeToLive = systemKeysTimeToLive;
 	}
-	
-	public SystemSnmpKeysMib() {
-		this.systemRestartDate = 0;
-		this.systemRestartTime = 0; 
-		this.systemKeySize = 0; 
-		this.systemIntervalUpdate = 0; 
-		this.systemMaxNumberOfKey = 0; 
-		this.systemKeysTimeToLive = 0; 
-	}
-	
-	public SystemSnmpKeysMib(int systemRestartDate, int systemRestartTime, int systemKeySize, int systemIntervalUpdate, int systemMaxNumberOfKey, int systemKeysTimeToLive) {
-	    this.systemRestartDate = systemRestartDate;
-	    this.systemRestartTime = systemRestartTime;
-	    this.systemKeySize = systemKeySize;
-	    this.systemIntervalUpdate = systemIntervalUpdate;
-	    this.systemMaxNumberOfKey = systemMaxNumberOfKey;
-	    this.systemKeysTimeToLive = systemKeysTimeToLive;
-	}
-	
-	public SystemSnmpKeysMib(SystemSnmpKeysMib other) {
-	    this.systemRestartDate = other.systemRestartDate;
-	    this.systemRestartTime = other.systemRestartTime;
-	    this.systemKeySize = other.systemKeySize;
-	    this.systemIntervalUpdate = other.systemIntervalUpdate;
-	    this.systemMaxNumberOfKey = other.systemMaxNumberOfKey;
-	    this.systemKeysTimeToLive = other.systemKeysTimeToLive;
-	}
-
-
-	
 }

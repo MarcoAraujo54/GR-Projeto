@@ -9,8 +9,8 @@ public class Main {
 
         // Start the server
         runServer(serverPort);
-
     }
+
     private static void runServer(int port) {
 
         try (DatagramSocket socket = new DatagramSocket(port)) {
