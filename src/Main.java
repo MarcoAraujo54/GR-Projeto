@@ -19,7 +19,7 @@ public class Main {
             while (true) {
             	
                 // Creats the thread for a new message received
-              //  Thread ComunicationThread = new Thread();
+                // Thread ComunicationThread = new Thread();
                 byte[] receiveData = new byte[1024];
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 socket.receive(receivePacket);

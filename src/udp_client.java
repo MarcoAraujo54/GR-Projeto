@@ -4,11 +4,13 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 public class udp_client {
+
     public void runClient(String serverAddress, int serverPort) {
 
         try (DatagramSocket socket = new DatagramSocket()) {
             InetAddress serverInetAddress = InetAddress.getByName(serverAddress);
             String message = "Hello, UDP Server!";
+            
             byte[] sendData = message.getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 
