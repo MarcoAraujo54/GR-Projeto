@@ -1,4 +1,3 @@
-
 public class KeysSnmpKeysMib {
 	
 	private int keyId;
