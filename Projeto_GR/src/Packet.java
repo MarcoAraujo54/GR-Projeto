@@ -21,7 +21,7 @@ public class Packet{
 
         System.arraycopy(this.header, 0, packet, 0, this.header.length);
         System.arraycopy(this.payload, 0, packet, this.header.length, this.payload.length);
-        System.arraycopy(this.trailer, 0, packet, this.header.length + this.payload.length, this.trailer.lenght);
+        System.arraycopy(this.trailer, 0, packet, this.header.length + this.payload.length, this.trailer.length);
 
         return packet;
     }

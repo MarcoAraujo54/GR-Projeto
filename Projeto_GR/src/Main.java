@@ -5,7 +5,7 @@ import java.net.DatagramSocket;
 public class Main {
     public static void main(String[] args) {
         int serverPort = 12345;
-        udp_server server = new udp_server();
+      //  udp_server server = new udp_server();
 
         // Start the server
         runServer(serverPort);
