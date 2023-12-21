@@ -3,6 +3,15 @@ public class Packet{
     private byte payload[];
     private byte trailer[];
 
+    public byte[] getHeader() {
+        return header;
+    }
+    public byte[] getPayload() {
+        return payload;
+    }
+    public byte[] getTrailer() {
+        return trailer;
+    }
     public void setHeader(byte[] header){
         this.header = header;
     }
