@@ -3,6 +3,23 @@ public class Packet{
     private byte payload[];
     private byte trailer[];
 
+    public Packet(byte[] header, byte[] payload, byte[] trailer) {
+        this.header = header;
+        this.payload = payload;
+        this.trailer = trailer;
+    }
+    public Packet(Packet p) {
+        this.header = p.header;
+        this.payload = p.payload;
+        this.trailer = p.trailer;
+    }
+    public Packet() {
+        this.header= new byte[100];
+        this.payload= new byte[100];
+        this.trailer= new byte[100];
+    }
+
+
     public byte[] getHeader() {
         return header;
     }

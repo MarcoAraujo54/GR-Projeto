@@ -3,6 +3,26 @@ public class SnmpKeysMib {
 	private SystemSnmpKeysMib systemSnmpKeysMib;
 	private ConfigSnmpKeysMib configSnmpKeysMib;
 	private DataSnmpKeysMib dataSnmpKeysMib;
+
+	
+	public SnmpKeysMib(SystemSnmpKeysMib systemSnmpKeysMib, ConfigSnmpKeysMib configSnmpKeysMib,
+			DataSnmpKeysMib dataSnmpKeysMib) {
+		this.systemSnmpKeysMib = systemSnmpKeysMib;
+		this.configSnmpKeysMib = configSnmpKeysMib;
+		this.dataSnmpKeysMib = dataSnmpKeysMib;
+	}
+	public SnmpKeysMib(SnmpKeysMib s) {
+		this.systemSnmpKeysMib = s.systemSnmpKeysMib;
+		this.configSnmpKeysMib = s.configSnmpKeysMib;
+		this.dataSnmpKeysMib = s.dataSnmpKeysMib;
+	}
+	
+	public SnmpKeysMib() {
+		this.systemSnmpKeysMib = new SystemSnmpKeysMib();
+		this.configSnmpKeysMib = new ConfigSnmpKeysMib();
+		this.dataSnmpKeysMib = new DataSnmpKeysMib();
+	}
+
 	public SystemSnmpKeysMib getSystemSnmpKeysMib() {
 		return systemSnmpKeysMib;
 	}
