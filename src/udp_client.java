@@ -23,12 +23,10 @@ public class udp_client {
                 System.out.println("+-----------------------------+");
                 System.out.println("|            MENU             |");
                 System.out.println("+-----------------------------+");
-                System.out.println(
-                    "| 1 -         Get             |\n" +
-                    "| 2 -         Set             |\n" +
-                    "| 3 -         Sair            |\n" +
-                    "|      Escolha a opçao :      |" 
-                );
+                System.out.println( "| 1 -         Get             |\n" +
+                                    "| 2 -         Set             |\n" +
+                                    "| 3 -         Sair            |\n" +
+                                    "|      Escolha a opçao :      |" );
                 System.out.println("+-----------------------------+\n\n");
                 option = scanner.nextShort();
 
@@ -46,6 +44,7 @@ public class udp_client {
                         break;
                 }
             }
+            scanner.close();
             String message = "Hello, UDP Server!";
             
             byte[] sendData = message.getBytes();
