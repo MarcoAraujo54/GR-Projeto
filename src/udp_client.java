@@ -104,4 +104,8 @@ public class udp_client {
         }
         return aux;
     }
-}
+
+    public List<KeysSnmpKeysMib> snmp_set(int p, KeysSnmpKeysMib NW, List<KeysSnmpKeysMib>  W){
+        W.add(NW.getKeyId(), NW);
+        return W;
+    }

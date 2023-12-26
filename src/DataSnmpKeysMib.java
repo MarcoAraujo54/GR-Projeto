@@ -7,9 +7,6 @@ public class DataSnmpKeysMib {
 	private int dataNumberOfValidKeys;
 	private List<KeysSnmpKeysMib> dataTableGeneratedKeysEntryType;
 	private KeysSnmpKeysMib dataTableGeneratedKeysEntry;
-
-
-	
 	private Map<Integer, KeysSnmpKeysMib> dataTableGeneratedKeys;
 	
 	
