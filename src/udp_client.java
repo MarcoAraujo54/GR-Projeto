@@ -3,43 +3,45 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
 
 public class udp_client {
-    private DatagramSocket socket;
-    private InetAddress address;
-    private int port;
 
-    public udp_client(String ipAddress, int port) throws Exception {
-        socket = new DatagramSocket();
-        address = InetAddress.getByName(ipAddress);
-        this.port = port;
-    }
+    public void runClient(String serverAddress, int serverPort) {
 
-    public void sendPacket(Packet packet) throws Exception {
-        byte[] data = packet.getPacket();
-        DatagramPacket datagramPacket = new DatagramPacket(data, data.length, address, port);
-        socket.send(datagramPacket);
-    }
-
-    public static void main(String[] args) {
-        try {
-            udp_client client = new udp_client("localhost", 9876);
-
+        try (DatagramSocket socket = new DatagramSocket()) {
+            InetAddress serverInetAddress = InetAddress.getByName(serverAddress);
             Packet packet = new Packet();
             packet.setHeader("Header Data".getBytes());
-            packet.setPayload(0, 0, "", updateFile(), 1, 2, "Instance1,Value1;Instance2,Value2", 0, "");
+            packet.setPayload(0, 0, "", updateFile(), 1, 2, "Instance1,Value1", 0, "");
             packet.setTrailer("Trailer Data".getBytes());
 
-            client.sendPacket(packet);
-        } catch (Exception e) {
+            byte[] sendData = packet.getPayload().toString().getBytes();
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
+
+            socket.send(sendPacket);
+
+            byte[] receiveData = new byte[1024];
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            socket.receive(receivePacket);
+
+            String responseMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
+            System.out.println("Server response: " + responseMessage);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public static int updateFile() {
-        String filePath = "src/Pid.txt";
+        String filePath = "Pid.txt";
         int newValue=0;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             // Read the integer from the file
@@ -56,5 +58,4 @@ public class udp_client {
         }
         return newValue;
     }
-
 }
