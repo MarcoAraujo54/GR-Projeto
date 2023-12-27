@@ -20,9 +20,9 @@ public class udp_client {
 
         try (DatagramSocket socket = new DatagramSocket()) {
             InetAddress serverInetAddress = InetAddress.getByName(serverAddress);
-            short option = 0;
+            short Y = 0;
             Scanner scanner = new Scanner(System.in);
-            while (option == 0) {
+            while (Y == 0) {
 
                 System.out.println("\n");
                 System.out.println("+-----------------------------+");
@@ -33,7 +33,7 @@ public class udp_client {
                                     "| 3 -         Sair            |\n" +
                                     "|      Escolha a opçao :      |" );
                 System.out.println("+-----------------------------+\n\n");
-                option = scanner.nextShort();
+                Y = scanner.nextShort();
                 
                 //testes
 
@@ -42,13 +42,16 @@ public class udp_client {
                 //int NL []= new int[2];
                 int[] NL={0,0};
                 int N= NL[1];
-                
+                int S =0;
+                int NS=0;
+                int P = updateFile();
+                List<Integer> Q = new ArrayList<>();
             
                 
-                switch(option){
+                switch(Y){
                     case 1:
-                        int p = updateFile();
-                        snmp_get(p,NL,L);
+                       
+                        snmp_get(P,NL,L);
 
                         break;
                     case 2:
@@ -57,7 +60,7 @@ public class udp_client {
                     case 3:
                         break;
                     default:
-                        option=0;
+                        Y=0;
                         break;
                 }
             }
@@ -80,7 +83,7 @@ public class udp_client {
         }
     }
     public static int updateFile() {
-        String filePath = "Pid.txt";
+        String filePath = "src/Pid.txt";
         int newValue=0;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             // Read the integer from the file
@@ -109,3 +112,4 @@ public class udp_client {
         W.add(NW.getKeyId(), NW);
         return W;
     }
+}
