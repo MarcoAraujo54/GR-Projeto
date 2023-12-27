@@ -33,8 +33,10 @@ public class Packet{
         this.header = header;
     }
 
-    public void setPayload(byte[] payload){
-        this.payload = payload;
+    public void setPayload(int S, int NS, String Q, int P, int Y, int NL, String L, int NR, String R) {
+        // Construct the payload from the provided fields
+        String payloadStr = S + "\0" + NS + "\0" + Q + "\0" + P + "\0" + Y + "\0" + NL + "\0" + L + "\0" + NR + "\0" + R + "\0";
+        this.payload = payloadStr.getBytes();
     }
 
     public void setTrailer(byte[] trailer){
