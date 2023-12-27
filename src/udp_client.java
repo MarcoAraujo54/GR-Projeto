@@ -42,9 +42,7 @@ public class udp_client {
                 //int NL []= new int[2];
                 int[] NL={0,0};
                 int N= NL[1];
-                
-            
-                
+
                 switch(option){
                     case 1:
                         int p = updateFile();
@@ -109,3 +107,4 @@ public class udp_client {
         W.add(NW.getKeyId(), NW);
         return W;
     }
+}
