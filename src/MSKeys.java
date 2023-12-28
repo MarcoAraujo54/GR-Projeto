@@ -84,7 +84,7 @@ public class MSKeys {
 				for(int j=0; j< this.K; j++) {
 					this.Za[i][j]=temp[j];
 				}
-				 printArray(this.Za[i],this.K);
+				// printArray(this.Za[i],this.K);
 			}
 		}
 
@@ -104,7 +104,7 @@ public class MSKeys {
 		}
 		this.Zb = transpose(Zb);
 		for(int i=0; i < this.K; i++) {
-		printArray(this.Zb[i],this.K);
+		//printArray(this.Zb[i],this.K);
 		}
 	}
 	private void updateZc() {
@@ -115,9 +115,9 @@ public class MSKeys {
 				this.Zc[i][j]= this.Random();
 			}
 		}
-		for(int i=0; i < this.K; i++) {
+		/*for(int i=0; i < this.K; i++) {
 			printArray(this.Zc[i],this.K);
-			}
+			}*/
 	}
 	
 	private void updateZd() {
@@ -129,7 +129,7 @@ public class MSKeys {
 			}
 		}
 		for(int i=0; i < this.K; i++) {
-			printArray(this.Zd[i],this.K);
+			//printArray(this.Zd[i],this.K);
 			}
 	}
 
@@ -146,34 +146,33 @@ public class MSKeys {
 	            }
 	        }
 		 
-		   for (int i = 0; i < K; i++) {
-	           
-	            	printArray(this.Z[i],this.K);
-	          
+		   for (int i = 0; i < K; i++) {      
+	            //	printArray(this.Z[i],this.K);     
 	        }
 		 
 	 }
 
-	public void update(byte key[]){
+	public void update(byte key[]) throws InterruptedException{
+		while (true) {
 		this.updateMValues(key);
-		 System.out.println("\n ZAZAZAZAZAZAZAZA");
+		 //System.out.println("\n ZAZAZAZAZAZAZAZA");
 		this.updateZa();
-		  System.out.println("\n ZBZBZBZBZBZBZB");
+		 // System.out.println("\n ZBZBZBZBZBZBZB");
 		this.updateZb();
-		 System.out.println("\n ZCZCZCZCZCZCZCZC");
+		// System.out.println("\n ZCZCZCZCZCZCZCZC");
 		this.updateZc();
-		 System.out.println("\n ZDZDZDZDZDZDZDZD");
+		// System.out.println("\n ZDZDZDZDZDZDZDZD");
 		this.updateZd();
-		 System.out.println("\n ZZZZZZZZZZZZZZZZ");
+		//System.out.println("\n ZZZZZZZZZZZZZZZZ");
 		this.updateZ();
-		
+		System.out.println("matrizes atualizadas");
+		Thread.sleep(60000);
+		}
 	}
 
-public static void main(String[] args) {
-	
-	byte[] chave = {'A', 2, 'P', 4, 'x',6,7,'v',9,10,11,12};
+public static void main(byte[] args) throws InterruptedException {
 	MSKeys keys = new MSKeys();
-	keys.update(chave);
+	keys.update(args);
 }
 }
 
