@@ -1,9 +1,9 @@
 public class Packet{
     private byte header[];
-    private String payload;
+    private byte payload[];
     private byte trailer[];
 
-    public Packet(byte[] header, String payload, byte[] trailer) {
+    public Packet(byte[] header, byte payload[], byte[] trailer) {
         this.header = header;
         this.payload = payload;
         this.trailer = trailer;
@@ -15,7 +15,7 @@ public class Packet{
     }
     public Packet() {
         this.header= new byte[100];
-        this.payload= new String();
+        this.payload= new byte[100];
         this.trailer= new byte[100];
     }
 
@@ -23,7 +23,7 @@ public class Packet{
     public byte[] getHeader() {
         return header;
     }
-    public String getPayload() {
+    public byte[] getPayload() {
         return payload;
     }
     public byte[] getTrailer() {
@@ -33,10 +33,8 @@ public class Packet{
         this.header = header;
     }
 
-    public void setPayload(int S, int NS, String Q, int P, int Y, int NL, String L, int NR, String R) {
-        // Construct the payload from the provided fields
-        String payloadStr = S + "\0" + NS + "\0" + Q + "\0" + P + "\0" + Y + "\0" + NL + "\0" + L + "\0" + NR + "\0" + R + "\0";
-        this.payload = payloadStr;
+    public void setPayload(Pdu p) {
+        this.payload = p.toMyString().getBytes();
     }
 
     public void setTrailer(byte[] trailer){
@@ -44,12 +42,12 @@ public class Packet{
     }
 
     public String getPacket(){
-        int size = this.header.length + this.payload.length() + this.trailer.length;
+        int size = this.header.length + this.payload.length + this.trailer.length;
         byte[] packet = new byte[size];
 
         System.arraycopy(this.header, 0, packet, 0, this.header.length);
-        System.arraycopy(this.payload, 0, packet, this.header.length, this.payload.length());
-        System.arraycopy(this.trailer, 0, packet, this.header.length + this.payload.length(), this.trailer.length);
+        System.arraycopy(this.payload, 0, packet, this.header.length, this.payload.length);
+        System.arraycopy(this.trailer, 0, packet, this.header.length + this.payload.length, this.trailer.length);
 
         return packet.toString();
     }

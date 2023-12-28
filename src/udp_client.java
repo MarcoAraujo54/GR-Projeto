@@ -21,11 +21,12 @@ public class udp_client {
         try (DatagramSocket socket = new DatagramSocket()) {
             InetAddress serverInetAddress = InetAddress.getByName(serverAddress);
             Packet packet = new Packet();
+            Pdu pdu = new Pdu(0,0,updateFile(),1);
             packet.setHeader("Header Data".getBytes());
-            packet.setPayload(0, 0, "", updateFile(), 1, 2, "Instance1,Value1", 0, "");
+            packet.setPayload(pdu);
             packet.setTrailer("Trailer Data".getBytes());
 
-            byte[] sendData = packet.getPayload().toString().getBytes();
+            byte[] sendData = packet.getPayload();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 
             socket.send(sendPacket);

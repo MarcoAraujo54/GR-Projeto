@@ -23,8 +23,23 @@ public class Main {
                 byte[] receiveData = new byte[1024];
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 socket.receive(receivePacket);
-
                 String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
+                String[] pduParts = receivedMessage.split("\0");
+                if (pduParts.length >= 4) { // Check if there are at least 4 parts
+                    try {
+                        int securityModel = Integer.parseInt(pduParts[0]);
+                        int numSecurityParams = Integer.parseInt(pduParts[1]);
+                        int requestId = Integer.parseInt(pduParts[2]);
+                        int primitiveType = Integer.parseInt(pduParts[3]);
+                        System.out.println(requestId);
+                        System.out.println(primitiveType);  
+
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error parsing PDU fields: " + e.getMessage());
+                    }
+                } else {
+                    System.out.println("Incomplete PDU received.");
+                }
                 System.out.println("Received from client: " + receivedMessage);
                 String responseMessage = "Server received: " + receivedMessage;
                 byte[] sendData = responseMessage.getBytes();
