@@ -1,6 +1,4 @@
-import java.io.Serializable;
-
-public class Pdu implements Serializable {
+public class Pdu {
     private int securityModel; // S
     private int numSecurityParams; // NS
     private int requestId; // P
@@ -12,15 +10,12 @@ public class Pdu implements Serializable {
         this.requestId = requestId;
         this.primitiveType = primitiveType;
     }
-
     public String toMyString() {
-        return securityModel + "\0" + numSecurityParams + "\0" + requestId + "\0" + primitiveType + "\0";
+        return securityModel + "-" + numSecurityParams + "-" + requestId + "-" + primitiveType + "-";//mudar o \0
     }
-
     public int getSecurityModel() {
         return securityModel;
     }
-
     public int getNumSecurityParams() {
         return numSecurityParams;
     }

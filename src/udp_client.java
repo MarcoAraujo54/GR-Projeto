@@ -20,13 +20,9 @@ public class udp_client {
 
         try (DatagramSocket socket = new DatagramSocket()) {
             InetAddress serverInetAddress = InetAddress.getByName(serverAddress);
-            Packet packet = new Packet();
             Pdu pdu = new Pdu(0,0,updateFile(),1);
-            packet.setHeader("Header Data".getBytes());
-            packet.setPayload(pdu);
-            packet.setTrailer("Trailer Data".getBytes());
 
-            byte[] sendData = packet.getPayload();
+            byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 
             socket.send(sendPacket);
