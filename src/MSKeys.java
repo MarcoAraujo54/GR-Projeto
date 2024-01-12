@@ -1,5 +1,4 @@
 import java.util.Random;
-
 public class MSKeys {
 
 	//private byte M[];
@@ -11,6 +10,7 @@ public class MSKeys {
 	private byte Zb[][];
 	private byte Zc[][];
 	private byte Zd[][];
+	private static MSKeys single_instance;
 	
 	private static byte[][] transpose(byte[][] matrix) {
 		int numRows = matrix.length;
@@ -152,8 +152,8 @@ public class MSKeys {
 		 
 	 }
 
-	public void update(byte key[]) throws InterruptedException{
-		while (true) {
+	public void update(byte key[]){
+		
 		this.updateMValues(key);
 		 //System.out.println("\n ZAZAZAZAZAZAZAZA");
 		this.updateZa();
@@ -166,13 +166,17 @@ public class MSKeys {
 		//System.out.println("\n ZZZZZZZZZZZZZZZZ");
 		this.updateZ();
 		System.out.println("matrizes atualizadas");
-		Thread.sleep(60000);
-		}
+	
 	}
-
-public static void main(byte[] args) throws InterruptedException {
-	MSKeys keys = new MSKeys();
-	keys.update(args);
-}
+	private MSKeys(byte arr[]){
+		update(arr);
+	}
+	public static synchronized MSKeys getInstance(byte arr[]){
+		if (single_instance == null){
+			single_instance = new MSKeys(arr);
+			System.out.println("primeiro");
+		}
+		return single_instance;
+	}
 }
 
