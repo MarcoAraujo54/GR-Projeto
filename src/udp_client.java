@@ -16,12 +16,25 @@ import java.util.Scanner;
 
 public class udp_client {
 
-    public void runClient(String serverAddress, int serverPort) {
-
+    public void runClient(String serverAddress, int serverPort,String args[]) {
+        int prim = 0;
         try (DatagramSocket socket = new DatagramSocket()) {
-            InetAddress serverInetAddress = InetAddress.getByName(serverAddress);
-            Pdu pdu = new Pdu(0,0,updateFile(),1);
-
+            InetAddress serverInetAddress = InetAddress.getByName(serverAddress);         
+            if (args.length > 0) {
+                String param = args[0];
+                if (param.equals("response")) {
+                    prim = 0;
+                }else if (param.equals("get")) {
+                    prim = 1;
+                } else if (param.equals("set")) {
+                    prim = 2;
+                } else {
+                    System.out.println("Unrecognized parameter");
+                }
+            } else {
+                System.out.println("No parameter provided");
+            } 
+            Pdu pdu = new Pdu(0,0,updateFile(),prim);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 
@@ -41,11 +54,9 @@ public class udp_client {
         String filePath = "Pid.txt";
         int newValue=0;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            // Read the integer from the file
             String line = reader.readLine();
             int originalValue = Integer.parseInt(line);
             newValue = originalValue + 1;
-            // Write the updated value back to the file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write(Integer.toString(newValue));
             }

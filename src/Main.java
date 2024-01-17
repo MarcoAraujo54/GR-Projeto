@@ -26,10 +26,12 @@ public class Main {
                 try {
                     int securityModel = Integer.parseInt(pduParts[0]);
                     int numSecurityParams = Integer.parseInt(pduParts[1]);
-                    int requestId = Integer.parseInt(pduParts[2]);
-                    int primitiveType = Integer.parseInt(pduParts[3]);
+                    String listSecurity = pduParts[2];
+                    int requestId = Integer.parseInt(pduParts[3]);
+                    int primitiveType = Integer.parseInt(pduParts[4]);
                     System.out.println(securityModel);
                     System.out.println(requestId);
+                    System.out.println(listSecurity);
                     System.out.println(primitiveType);            
                 } catch (NumberFormatException e) {
                     System.out.println("Error parsing PDU fields: " + e.getMessage());
