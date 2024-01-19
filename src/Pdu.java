@@ -8,20 +8,24 @@ public class Pdu {
     private int requestId; // P
     private int primitiveType; // Y
     private int numberPairs; //NL ou NW
-    private List<String> par; //L ou W
+    private List<String> pair; //L ou W
+    private int numberErrors; // NR
+    private List<String> errors; //R
 
-    public Pdu(int securityModel, int numSecurityParams , int requestId, int primitiveType, int numberPairs, List<String> par ) {
+    public Pdu(int securityModel, int numSecurityParams , int requestId, int primitiveType, int numberPairs, List<String> pair , int numberErrors, List<String> errors) {
         this.securityModel = securityModel;
         this.numSecurityParams = numSecurityParams;
         this.securityMecs = new ArrayList<>();
         this.requestId = requestId;
         this.primitiveType = primitiveType;
         this.numberPairs = numberPairs;
-        this.par = par;
+        this.pair = pair;
+        this.numberErrors = numberErrors;
+        this.errors = errors;
     }
 
     public String toMyString() {
-        return securityModel + "-" + numSecurityParams + "-" + securityMecs + "-" + requestId + "-" + primitiveType + "-" + numberPairs + "-" + par;
+        return securityModel + "-" + numSecurityParams + "-" + securityMecs + "-" + requestId + "-" + primitiveType + "-" + numberPairs + "-" + pair + "-" + numberErrors + "-" + errors;
     }
     
     public int getSecurityModel() {
@@ -60,12 +64,12 @@ public class Pdu {
         this.primitiveType = primitiveType;
     }
 
-    public List<String> getPar() {
-        return par;
+    public List<String> getPair() {
+        return pair;
     }
 
-    public void setPar(List<String> par) {
-        this.par = par;
+    public void setPair(List<String> par) {
+        this.pair = par;
     }
 
     public int getNumberPairs() {
@@ -74,6 +78,22 @@ public class Pdu {
 
     public void setNumberPairs(int numberPairs) {
         this.numberPairs = numberPairs;
+    }
+
+    public int getNumberErrors() {
+        return numberErrors;
+    }
+
+    public List<String> getErrors() {
+        return errors;
+    }
+
+    public void setNumberErrors(int numberErrors) {
+        this.numberErrors = numberErrors;
+    }
+
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
     
 }

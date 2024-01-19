@@ -37,8 +37,9 @@ public class udp_client {
                 }
             }
             int numPairs = (args.length - 1) / 2;
+            List<String> Error = new ArrayList<>();
             System.out.println(numPairs);
-            Pdu pdu = new Pdu(0,0,updateFile(),prim, numPairs ,Par);
+            Pdu pdu = new Pdu(0,0,updateFile(),prim, numPairs ,Par , 0,Error);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 
