@@ -37,10 +37,6 @@ public class Main {
                     System.out.println("Error parsing PDU fields: " + e.getMessage());
                 }
                 System.out.println("Received from client: " + receivedMessage);
-                String responseMessage = "Server received: " + receivedMessage;
-                byte[] sendData = responseMessage.getBytes();
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
-                socket.send(sendPacket);
             }
         } catch (IOException e) {
             e.printStackTrace();

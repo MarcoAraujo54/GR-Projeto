@@ -3,16 +3,11 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-
 
 public class udp_client {
 
@@ -33,19 +28,22 @@ public class udp_client {
                 }
             } else {
                 System.out.println("No parameter provided");
-            } 
-            Pdu pdu = new Pdu(0,0,updateFile(),prim);
+            }
+            List<String> Par = new ArrayList<>();
+            for (int i = 1; i < args.length; i += 2) {
+                if (i + 1 < args.length) {
+                    String pair = args[i] + "||" + args[i + 1];
+                    Par.add(pair);
+                }
+            }
+            int numPairs = (args.length - 1) / 2;
+            System.out.println(numPairs);
+            Pdu pdu = new Pdu(0,0,updateFile(),prim, numPairs ,Par);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 
             socket.send(sendPacket);
 
-            byte[] receiveData = new byte[1024];
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            socket.receive(receivePacket);
-
-            String responseMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
-            System.out.println("Server response: " + responseMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }
