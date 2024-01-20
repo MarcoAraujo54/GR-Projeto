@@ -1,25 +1,32 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int serverPort = 12345;
-
-        // Start the server
-        runServer(serverPort);
+        File file = new File("config.txt");
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+            if (scanner.hasNextLine()) {
+                int serverPort = Integer.parseInt(scanner.nextLine());
+                // Start the server
+                runServer(serverPort);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        scanner.close();          
     }
 
     private static void runServer(int port) {
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
-
             while (true) {
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
@@ -29,7 +36,6 @@ public class Main {
                 socket.receive(receivePacket);
                 String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 String[] pduParts = receivedMessage.split("-");
-
                 int securityModel = Integer.parseInt(pduParts[0]);
                 int numSecurityParams = Integer.parseInt(pduParts[1]);
                 String listSecurity = pduParts[2];
