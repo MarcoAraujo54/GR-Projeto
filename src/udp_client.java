@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class udp_client {
-
     public void runClient(String serverAddress, int serverPort,String args[]) {
         int prim = 0;
         try (DatagramSocket socket = new DatagramSocket()) {
@@ -32,19 +31,22 @@ public class udp_client {
             List<String> Par = new ArrayList<>();
             for (int i = 1; i < args.length; i += 2) {
                 if (i + 1 < args.length) {
-                    String pair = args[i] + "||" + args[i + 1];
+                    String pair = args[i] + "//" + args[i + 1];
                     Par.add(pair);
                 }
             }
-            int numPairs = (args.length - 1) / 2;
+            int numPairs = Par.size();
             List<String> Error = new ArrayList<>();
-            System.out.println(numPairs);
             Pdu pdu = new Pdu(0,0,updateFile(),prim, numPairs ,Par , 0,Error);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 
             socket.send(sendPacket);
-
+            byte[] receiveData = new byte[1024];
+            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            socket.receive(receivePacket);
+            String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
+            System.out.println("Received from server: " + receivedMessage);
         } catch (IOException e) {
             e.printStackTrace();
         }

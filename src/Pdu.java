@@ -4,7 +4,7 @@ import java.util.List;
 public class Pdu {
     private int securityModel; // S
     private int numSecurityParams; // NS
-    private ArrayList<String> securityMecs; // Q
+    private List<String> securityMecs; // Q
     private int requestId; // P
     private int primitiveType; // Y
     private int numberPairs; //NL ou NW
@@ -36,7 +36,7 @@ public class Pdu {
         return numSecurityParams;
     }
 
-    public ArrayList<String> getSecurityMecs() {
+    public List<String> getSecurityMecs() {
         return securityMecs;
     }
 
