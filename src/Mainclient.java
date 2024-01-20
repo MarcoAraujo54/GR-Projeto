@@ -7,7 +7,7 @@ public class Mainclient {
         File file = new File("config.txt");
         Scanner scanner = null;
         try {
-            scanner = new Scanner(file);
+            scanner = new Scanner(file);    
             if (scanner.hasNextLine()) {
                 int serverPort = Integer.parseInt(scanner.nextLine());
                 if (scanner.hasNextLine()) {
