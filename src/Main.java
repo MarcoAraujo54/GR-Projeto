@@ -23,7 +23,6 @@ public class Main {
         }
         scanner.close();          
     }
-
     private static void runServer(int port) {
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
