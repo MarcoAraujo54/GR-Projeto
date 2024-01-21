@@ -1,5 +1,4 @@
 import java.util.Random;
-
 public class MSKeys {
 
 	//private byte M[];
@@ -11,6 +10,7 @@ public class MSKeys {
 	private byte Zb[][];
 	private byte Zc[][];
 	private byte Zd[][];
+	private static MSKeys single_instance;
 	
 	private static byte[][] transpose(byte[][] matrix) {
 		int numRows = matrix.length;
@@ -84,7 +84,7 @@ public class MSKeys {
 				for(int j=0; j< this.K; j++) {
 					this.Za[i][j]=temp[j];
 				}
-				 printArray(this.Za[i],this.K);
+				// printArray(this.Za[i],this.K);
 			}
 		}
 
@@ -104,7 +104,7 @@ public class MSKeys {
 		}
 		this.Zb = transpose(Zb);
 		for(int i=0; i < this.K; i++) {
-		printArray(this.Zb[i],this.K);
+		//printArray(this.Zb[i],this.K);
 		}
 	}
 	private void updateZc() {
@@ -115,9 +115,9 @@ public class MSKeys {
 				this.Zc[i][j]= this.Random();
 			}
 		}
-		for(int i=0; i < this.K; i++) {
+		/*for(int i=0; i < this.K; i++) {
 			printArray(this.Zc[i],this.K);
-			}
+			}*/
 	}
 	
 	private void updateZd() {
@@ -129,7 +129,7 @@ public class MSKeys {
 			}
 		}
 		for(int i=0; i < this.K; i++) {
-			printArray(this.Zd[i],this.K);
+			//printArray(this.Zd[i],this.K);
 			}
 	}
 
@@ -146,34 +146,37 @@ public class MSKeys {
 	            }
 	        }
 		 
-		   for (int i = 0; i < K; i++) {
-	           
-	            	printArray(this.Z[i],this.K);
-	          
+		   for (int i = 0; i < K; i++) {      
+	            //	printArray(this.Z[i],this.K);     
 	        }
 		 
 	 }
 
 	public void update(byte key[]){
-		this.updateMValues(key);
-		 System.out.println("\n ZAZAZAZAZAZAZAZA");
-		this.updateZa();
-		  System.out.println("\n ZBZBZBZBZBZBZB");
-		this.updateZb();
-		 System.out.println("\n ZCZCZCZCZCZCZCZC");
-		this.updateZc();
-		 System.out.println("\n ZDZDZDZDZDZDZDZD");
-		this.updateZd();
-		 System.out.println("\n ZZZZZZZZZZZZZZZZ");
-		this.updateZ();
 		
-	}
-
-public static void main(String[] args) {
+		this.updateMValues(key);
+		 //System.out.println("\n ZAZAZAZAZAZAZAZA");
+		this.updateZa();
+		 // System.out.println("\n ZBZBZBZBZBZBZB");
+		this.updateZb();
+		// System.out.println("\n ZCZCZCZCZCZCZCZC");
+		this.updateZc();
+		// System.out.println("\n ZDZDZDZDZDZDZDZD");
+		this.updateZd();
+		//System.out.println("\n ZZZZZZZZZZZZZZZZ");
+		this.updateZ();
+		System.out.println("matrizes atualizadas");
 	
-	byte[] chave = {'A', 2, 'P', 4, 'x',6,7,'v',9,10,11,12};
-	MSKeys keys = new MSKeys();
-	keys.update(chave);
-}
+	}
+	private MSKeys(byte arr[]){
+		update(arr);
+	}
+	public static synchronized MSKeys getInstance(byte arr[]){
+		if (single_instance == null){
+			single_instance = new MSKeys(arr);
+			System.out.println("primeiro");
+		}
+		return single_instance;
+	}
 }
 
