@@ -1,13 +1,13 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class udp_client {
     public void runClient(String serverAddress, int serverPort,String args[]) {
@@ -53,16 +53,21 @@ public class udp_client {
     }
     public static int updateFile() {
         String filePath = "Pid.txt";
-        int newValue=0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line = reader.readLine();
-            int originalValue = Integer.parseInt(line);
-            newValue = originalValue + 1;
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write(Integer.toString(newValue));
+        int newValue = 0;
+        File file = new File(filePath);
+        try (Scanner scanner = new Scanner(file)) {
+            if (scanner.hasNextInt()) {
+                int originalValue = scanner.nextInt();
+                newValue = originalValue + 1;
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return newValue; // Retorna o valor padrão se ocorrer um erro
+        }
+        try (PrintWriter writer = new PrintWriter(file)) {
+            writer.println(newValue);
             System.out.println("Updated value successfully written to the file.");
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return newValue;
