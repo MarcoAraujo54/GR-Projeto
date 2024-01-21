@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        File file = new File("src/config.txt");
+        File file = new File("config.txt");
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
@@ -29,7 +29,7 @@ public class Main {
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
             try {
-                File file = new File("src/config.txt");
+                File file = new File("config.txt");
                 Scanner scanner = new Scanner(file);
                 byte[] arr = new byte[0];
                 String[] config = new String[3];
@@ -49,19 +49,13 @@ public class Main {
                     }
 
                 }
-
+                final int finalT = T;
+                final byte[] finalArr = arr;
                 scanner.close();
-                    MSKeys m1 = MSKeys.getInstance(arr);
-                    System.out.println("Tarefa executada.");
-                    try {
-                        updateMatrix(T,arr);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-
-                
-                
+                //MSKeys m1 = MSKeys.getInstance(arr);
+                //updateMatrix(T,arr);
+                new Thread(() -> updateMatrix(finalT,finalArr)).start();
+ 
             } catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
@@ -129,13 +123,15 @@ public class Main {
             e.printStackTrace();
         }
     }
-    private static void updateMatrix(int T, byte[] arr) throws InterruptedException{
-        Thread matrix = new Thread();
-        matrix.start();
-        while(true){
-            MSKeys.getInstance(arr);
-            Thread.sleep(T);
-
-        }   
+    private static void updateMatrix(int T, byte[] arr) {
+            while (true) {
+                MSKeys.getInstance(arr);
+                try {
+                    Thread.sleep(T);
+                    System.out.println("tou?");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
     }
 }
