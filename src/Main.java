@@ -8,9 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Main {
     public static void main(String[] args) {
-        File file = new File("config.txt");
+        File file = new File("src/config.txt");
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
@@ -28,10 +29,11 @@ public class Main {
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
             try {
-                File file = new File("config.txt");
+                File file = new File("src/config.txt");
                 Scanner scanner = new Scanner(file);
                 byte[] arr = new byte[0];
-                int T ;
+                String[] config = new String[3];
+                int T=0 ;
                 for (int i = 0; i < 4 && scanner.hasNextLine(); i++) {
                     String line = scanner.nextLine();
                     if (i == 2) {
@@ -40,21 +42,36 @@ public class Main {
                             arr[j] = (byte) (line.charAt(j) - '0');
                         }
                         System.out.println(Arrays.toString(arr));
-                    }else if(i == 3){
+                    }
+                    else if(i == 3){
                         T = Integer.parseInt(line.trim());
                         System.out.println(T);
                     }
+
                 }
+
                 scanner.close();
-                while (true) {
                     MSKeys m1 = MSKeys.getInstance(arr);
                     System.out.println("Tarefa executada.");
-                    Thread.sleep(T);
-                }
+                    try {
+                        updateMatrix(T,arr);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                
                 
             } catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
+            //ToDo -> verificar file da mib
+            //criar a MIB
+            ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
+            SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
+            DataSnmpKeysMib data = new DataSnmpKeysMib();
+            SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
+
             while (true) {
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
@@ -111,5 +128,14 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private static void updateMatrix(int T, byte[] arr) throws InterruptedException{
+        Thread matrix = new Thread();
+        matrix.start();
+        while(true){
+            MSKeys.getInstance(arr);
+            Thread.sleep(T);
+
+        }   
     }
 }

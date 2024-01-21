@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DataSnmpKeysMib {
+
 	private int dataNumberOfValidKeys;
 	private List<KeysSnmpKeysMib> dataTableGeneratedKeysEntryType;
 	private KeysSnmpKeysMib dataTableGeneratedKeysEntry;
@@ -34,7 +35,6 @@ public class DataSnmpKeysMib {
 	public int getDataNumberOfValidKeys() {
 		return dataNumberOfValidKeys;
 	}
-	
 
 	
 }

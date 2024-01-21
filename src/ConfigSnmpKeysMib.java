@@ -7,8 +7,8 @@ public class ConfigSnmpKeysMib {
 		
 	public ConfigSnmpKeysMib() {
 	    this.configMasterKey = "DefaultMasterKey";
-	    this.configFirstCharOfKeysAlphabet = 0;
-	    this.configCardinalityOfKeysAlphabet = 0; 
+	    this.configFirstCharOfKeysAlphabet = 33;
+	    this.configCardinalityOfKeysAlphabet = 94; 
 	}
 
 
