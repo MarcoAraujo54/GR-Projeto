@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -26,6 +27,34 @@ public class Main {
     private static void runServer(int port) {
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
+            try {
+                File file = new File("config.txt");
+                Scanner scanner = new Scanner(file);
+                byte[] arr = new byte[0];
+                int T ;
+                for (int i = 0; i < 4 && scanner.hasNextLine(); i++) {
+                    String line = scanner.nextLine();
+                    if (i == 2) {
+                        arr = new byte[line.length()];
+                        for (int j = 0; j < line.length(); j++) {
+                            arr[j] = (byte) (line.charAt(j) - '0');
+                        }
+                        System.out.println(Arrays.toString(arr));
+                    }else if(i == 3){
+                        T = Integer.parseInt(line.trim());
+                        System.out.println(T);
+                    }
+                }
+                scanner.close();
+                while (true) {
+                    MSKeys m1 = MSKeys.getInstance(arr);
+                    System.out.println("Tarefa executada.");
+                    Thread.sleep(T);
+                }
+                
+            } catch (FileNotFoundException e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
             while (true) {
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
