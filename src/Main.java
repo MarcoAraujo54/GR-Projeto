@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        File file = new File("config.txt");
+        File file = new File("src/config.txt");
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
@@ -26,14 +26,14 @@ public class Main {
         scanner.close();          
     }
     private static void runServer(int port) {
+        byte[] arr = new byte[0];
+        int T=0 ;
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
             try {
-                File file = new File("config.txt");
+                File file = new File("src/config.txt");
                 Scanner scanner = new Scanner(file);
-                byte[] arr = new byte[0];
-                String[] config = new String[3];
-                int T=0 ;
+               
                 for (int i = 0; i < 4 && scanner.hasNextLine(); i++) {
                     String line = scanner.nextLine();
                     if (i == 2) {
@@ -49,23 +49,31 @@ public class Main {
                     }
 
                 }
-                final int finalT = T;
-                final byte[] finalArr = arr;
+               
                 scanner.close();
-                //MSKeys m1 = MSKeys.getInstance(arr);
                 //updateMatrix(T,arr);
-                new Thread(() -> updateMatrix(finalT,finalArr)).start();
+              
  
             } catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
+            final int finalT = T;
+            final byte[] finalArr = arr;
             //ToDo -> verificar file da mib
             //criar a MIB
             ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
             SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
             DataSnmpKeysMib data = new DataSnmpKeysMib();
             SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
-
+            //testes
+            for(int i=1;i<7;i++){
+                System.out.println( mib.getOidsPosition("1."+i));
+            }
+            mib.getOids().put( "1.4",finalT);
+            System.out.println(mib.getOidsPosition("1.4"));
+            //fim de testes
+            
+            new Thread(() -> updateMatrix(finalT,finalArr)).start();
             while (true) {
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
@@ -124,11 +132,11 @@ public class Main {
         }
     }
     private static void updateMatrix(int T, byte[] arr) {
+        MSKeys m1 = MSKeys.getInstance(arr);
             while (true) {
-                MSKeys.getInstance(arr);
+                m1.update(arr);
                 try {
                     Thread.sleep(T);
-                    System.out.println("tou?");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

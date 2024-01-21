@@ -71,5 +71,12 @@ public class SnmpKeysMib {
 	public void setDataSnmpKeysMib(DataSnmpKeysMib dataSnmpKeysMib) {
 		this.dataSnmpKeysMib = dataSnmpKeysMib;
 	}
+	public Object getOidsPosition(String oid){
+		return oids.get(oid);
+	}
+	public HashMap<String,Object> getOids(){
+		return oids;
+	}
+	
 	
 }

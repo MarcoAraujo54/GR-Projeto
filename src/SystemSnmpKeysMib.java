@@ -12,7 +12,7 @@ public class SystemSnmpKeysMib {
 		this.systemRestartDate = 0;
 		this.systemRestartTime = 0; 
 		this.systemKeySize = 0; 
-		this.systemIntervalUpdate = 0; 
+		this.systemIntervalUpdate = 6000; 
 		this.systemMaxNumberOfKey = 0; 
 		this.systemKeysTimeToLive = 0; 
 	}
