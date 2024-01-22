@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        File file = new File("src/config.txt");
+        File file = new File("config.txt");
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
@@ -31,7 +31,7 @@ public class Main {
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
             try {
-                File file = new File("src/config.txt");
+                File file = new File("config.txt");
                 Scanner scanner = new Scanner(file);
                
                 for (int i = 0; i < 4 && scanner.hasNextLine(); i++) {
@@ -114,6 +114,8 @@ public class Main {
                         String Value = aux[1].replace("]", "");
                         System.out.println(Iid);
                         System.out.println(Value);
+                        mib.getOids().put( Iid,Value);
+                        System.out.println(mib.getOidsPosition(Iid));
                         //processar o set
                     }
                 }                  
