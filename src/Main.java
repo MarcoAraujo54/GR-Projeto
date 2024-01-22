@@ -57,8 +57,7 @@ public class Main {
             } catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
-            final int finalT = T;
-            final byte[] finalArr = arr;
+            
             //ToDo -> verificar file da mib
             //criar a MIB
             ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
@@ -66,11 +65,13 @@ public class Main {
             DataSnmpKeysMib data = new DataSnmpKeysMib();
             SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
             //testes
+            final int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
+            final byte[] finalArr = arr;
             for(int i=1;i<7;i++){
                 System.out.println( mib.getOidsPosition("1."+i));
             }
             mib.getOids().put( "1.4",finalT);
-            System.out.println(mib.getOidsPosition("1.4"));
+            System.out.println( mib.getOidsPosition("1.4"));
             //fim de testes
             
             new Thread(() -> updateMatrix(finalT,finalArr)).start();
@@ -114,7 +115,7 @@ public class Main {
                         String Value = aux[1].replace("]", "");
                         System.out.println(Iid);
                         System.out.println(Value);
-                        mib.getOids().put( Iid,Value);
+                        mib.getOids().put(Iid,Value);
                         System.out.println(mib.getOidsPosition(Iid));
                         //processar o set
                     }
@@ -135,13 +136,13 @@ public class Main {
     }
     private static void updateMatrix(int T, byte[] arr) {
         MSKeys m1 = MSKeys.getInstance(arr);
-            while (true) {
-                m1.update(arr);
-                try {
-                    Thread.sleep(T);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (true) {
+            m1.update(arr);
+            try {
+                Thread.sleep(T);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+        }
     }
 }
