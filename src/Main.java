@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Scanner;
 
 
+
 public class Main {
+    static SnmpKeysMib mib;
     public static void main(String[] args) {
         File file = new File("config.txt");
         Scanner scanner = null;
@@ -63,14 +65,15 @@ public class Main {
             ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
             SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
             DataSnmpKeysMib data = new DataSnmpKeysMib();
-            SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
+            mib = new SnmpKeysMib(sys, config, data);
             //testes
+            mib.getOids().put( "1.4",T);
             final int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
             final byte[] finalArr = arr;
             for(int i=1;i<7;i++){
                 System.out.println( mib.getOidsPosition("1."+i));
             }
-            mib.getOids().put( "1.4",finalT);
+            
             System.out.println( mib.getOidsPosition("1.4"));
             //fim de testes
             
@@ -136,10 +139,11 @@ public class Main {
     }
     private static void updateMatrix(int T, byte[] arr) {
         MSKeys m1 = MSKeys.getInstance(arr);
+        int x = ((Integer) mib.getOidsPosition("1.4")).intValue();
         while (true) {
             m1.update(arr);
             try {
-                Thread.sleep(T);
+                Thread.sleep(x);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
