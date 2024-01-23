@@ -6,7 +6,7 @@ public class ConfigSnmpKeysMib {
 	private int configCardinalityOfKeysAlphabet;
 		
 	public ConfigSnmpKeysMib() {
-	    this.configMasterKey = "DefaultMasterKey";
+	    this.configMasterKey = "13457";
 	    this.configFirstCharOfKeysAlphabet = 33;
 	    this.configCardinalityOfKeysAlphabet = 94; 
 	}

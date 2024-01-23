@@ -8,10 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-
-
 public class Main {
-    static SnmpKeysMib mib;
     public static void main(String[] args) {
         File file = new File("config.txt");
         Scanner scanner = null;
@@ -28,7 +25,7 @@ public class Main {
         scanner.close();          
     }
     private static void runServer(int port) {
-        byte[] arr = new byte[0];
+        String arr = "";
         int T=0 ;
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
@@ -39,17 +36,15 @@ public class Main {
                 for (int i = 0; i < 4 && scanner.hasNextLine(); i++) {
                     String line = scanner.nextLine();
                     if (i == 2) {
-                        arr = new byte[line.length()];
-                        for (int j = 0; j < line.length(); j++) {
-                            arr[j] = (byte) (line.charAt(j) - '0');
-                        }
-                        System.out.println(Arrays.toString(arr));
+                        arr = line;
                     }
                     else if(i == 3){
                         T = Integer.parseInt(line.trim());
                         System.out.println(T);
                     }
+                    else if(i == 4){
 
+                    }
                 }
                
                 scanner.close();
@@ -65,20 +60,21 @@ public class Main {
             ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
             SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
             DataSnmpKeysMib data = new DataSnmpKeysMib();
-            mib = new SnmpKeysMib(sys, config, data);
+            SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
             //testes
             mib.getOids().put( "1.4",T);
-            final int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
-            final byte[] finalArr = arr;
-            for(int i=1;i<7;i++){
-                System.out.println( mib.getOidsPosition("1."+i));
-            }
+            mib.getOids().put( "2.1",arr);
+            int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
+            String arrString = (mib.getOidsPosition("2.1")).toString();
+            System.out.println(arrString);
+            byte[] Array = arrString.getBytes("UTF-8");
+            System.out.println(Array);
+            //fim de testes 
+            new Thread(() -> updateMatrix(finalT,Array)).start();
+
             
-            System.out.println( mib.getOidsPosition("1.4"));
-            //fim de testes
-            
-            new Thread(() -> updateMatrix(finalT,finalArr)).start();
-            while (true) {
+            while (true) { 
+                
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
                 ComunicationThread.start();
@@ -103,9 +99,8 @@ public class Main {
                         String Iid = aux[0].replace("[", "");
                         Iid = Iid.replace(" ","");
                         String auxValue = aux[1].replace("]", "");
-                        int Value = Integer.parseInt(auxValue);
-                        System.out.println(Iid);
-                        System.out.println(Value);
+                        auxValue = auxValue.replace(" ","");
+                        int Value = Integer.parseInt(auxValue); 
                         //processar o get
                     }
                 }
@@ -116,10 +111,13 @@ public class Main {
                         String Iid = aux[0].replace("[", "");
                         Iid = Iid.replace(" ","");
                         String Value = aux[1].replace("]", "");
-                        System.out.println(Iid);
-                        System.out.println(Value);
+                        Value = Value.replace(" ","");
                         mib.getOids().put(Iid,Value);
                         System.out.println(mib.getOidsPosition(Iid));
+                        String anormal = mib.getOidsPosition("2.1").toString();
+                        System.out.println("what"+anormal);
+                        byte[] Arr = anormal.getBytes("UTF-8");
+                        System.out.println("whatdafuck"+Arr);
                         //processar o set
                     }
                 }                  
@@ -131,19 +129,20 @@ public class Main {
                 Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors,Error);
                 byte[] sendData = pdu.toMyString().getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
-                socket.send(sendPacket);
+                socket.send(sendPacket); 
             }
+           
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
     private static void updateMatrix(int T, byte[] arr) {
         MSKeys m1 = MSKeys.getInstance(arr);
-        int x = ((Integer) mib.getOidsPosition("1.4")).intValue();
         while (true) {
             m1.update(arr);
             try {
-                Thread.sleep(x);
+                Thread.sleep(T);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
