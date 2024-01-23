@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    static long startTimeStamp = System.currentTimeMillis();
     public static void main(String[] args) {
         File file = new File("config.txt");
         Scanner scanner = null;
@@ -26,32 +28,38 @@ public class Main {
         scanner.close();          
     }
     private static void runServer(int port) {
-        String arr = "";
-        int T=0 ;
+    
+        String M = "";
+        int T = 0;
+        int V = 0;
+        int X = 0;
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
             try {
                 File file = new File("config.txt");
                 Scanner scanner = new Scanner(file);
                
-                for (int i = 0; i < 4 && scanner.hasNextLine(); i++) {
+                for (int i = 0; i < 6 && scanner.hasNextLine(); i++) {
                     String line = scanner.nextLine();
                     if (i == 2) {
-                        arr = line;
+                        M = line;
+                        System.out.println(M);
                     }
                     else if(i == 3){
                         T = Integer.parseInt(line.trim());
                         System.out.println(T);
                     }
                     else if(i == 4){
-
+                        V = Integer.parseInt(line.trim());
+                        System.out.println(V);
+                    }
+                    else if(i == 5){
+                        X = Integer.parseInt(line.trim());
+                        System.out.println(X);
                     }
                 }
-               
                 scanner.close();
-                //updateMatrix(T,arr);
-              
- 
+
             } catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
@@ -64,21 +72,19 @@ public class Main {
             SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
             //testes
             mib.getOids().put( "1.4",T);
-            mib.getOids().put( "2.1",arr);
-            int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
-            String arrString = (mib.getOidsPosition("2.1")).toString();
-            System.out.println(arrString);
-            byte[] Array = arrString.getBytes("UTF-8");
-            System.out.println(Array);
-            //fim de testes 
+            mib.getOids().put( "2.1",M);
+
             new Thread(() -> updateMatrix(mib)).start();
 
-            
-            while (true) { 
-                
+            while (true) {                 
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
                 ComunicationThread.start();
+
+                long elapsedTime = executionTime();
+                long S = elapsedTime;
+                System.out.println("Passaram:"+S);
+
                 byte[] receiveData = new byte[1024];
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 socket.receive(receivePacket);
@@ -115,10 +121,7 @@ public class Main {
                         Value = Value.replace(" ","");
                         mib.getOids().put(Iid,Value);
                         System.out.println(mib.getOidsPosition(Iid));
-                        String anormal = mib.getOidsPosition("2.1").toString();
-                        System.out.println("what"+anormal);
-                        byte[] Arr = anormal.getBytes("UTF-8");
-                        System.out.println("whatdafuck"+Arr);
+                        System.out.println("Passaram:"+S);
                         //processar o set
                     }
                 }                  
@@ -127,7 +130,7 @@ public class Main {
                 int numPairs = responsePair.size();
                 List<String> Error = new ArrayList<>();
                 int responseErrors = Error.size();
-                Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors,Error);
+                Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
                 byte[] sendData = pdu.toMyString().getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
                 socket.send(sendPacket); 
@@ -139,12 +142,11 @@ public class Main {
 
     }
     private static void updateMatrix(SnmpKeysMib mib) {
-        try {
         while (true) {
             String stringValue = mib.getOidsPosition("1.4").toString();
             int finalT = Integer.parseInt(stringValue);
             String arr = (mib.getOidsPosition("2.1")).toString();
-            byte[] Array = arr.getBytes("UTF-8");
+            byte[] Array = arr.getBytes();
             MSKeys m1 = MSKeys.getInstance(Array);
             m1.update(Array);
             try {
@@ -153,9 +155,10 @@ public class Main {
                 e.printStackTrace();
             }
         }
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    }
+    private static long executionTime() {
+        long currentTimeMillis = System.currentTimeMillis();
+        long elapsedMillis = currentTimeMillis - startTimeStamp;
+        return elapsedMillis;
     }
 }
