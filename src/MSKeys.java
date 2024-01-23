@@ -1,7 +1,7 @@
 import java.util.Random;
 public class MSKeys {
 
-	//private byte M[];
+
 	private int K;
 	private byte Z[][];
 	private byte M1[];

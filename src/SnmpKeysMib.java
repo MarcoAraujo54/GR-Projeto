@@ -77,6 +77,11 @@ public class SnmpKeysMib {
 	public HashMap<String,Object> getOids(){
 		return oids;
 	}
-	
+	public boolean contains(String key){
+		if(oids.containsKey(key)){
+			return true;
+		}
+		return false;
+	}
 	
 }

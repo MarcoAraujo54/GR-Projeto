@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 public class Main {
-    static SnmpKeysMib mib;
+ 
     public static void main(String[] args) {
         File file = new File("config.txt");
         Scanner scanner = null;
@@ -65,13 +65,47 @@ public class Main {
             ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
             SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
             DataSnmpKeysMib data = new DataSnmpKeysMib();
-            mib = new SnmpKeysMib(sys, config, data);
+            SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
             //testes
             mib.getOids().put( "1.4",T);
             final int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
             final byte[] finalArr = arr;
-            for(int i=1;i<7;i++){
-                System.out.println( mib.getOidsPosition("1."+i));
+            String caminho = "1.2";
+            
+            boolean condition=true;
+            int x=0;
+            int k=1;
+            String firstlevel;
+            for(int i=1;i<=3;i++){
+                condition=true;
+                firstlevel=String.valueOf(i);
+               
+                while (condition) {
+                    x++;
+                  
+                    String secondlevel= firstlevel + "." + String.valueOf(x);
+                    System.out.println(secondlevel);
+                    //arrayIntParaString(path); 
+    
+                    if(mib.contains(secondlevel)){
+                        if(mib.contains(secondlevel+"."+String.valueOf(k))){ 
+                            String thirdlevel=secondlevel+"."+String.valueOf(k);
+                            System.out.println("novopath: "+thirdlevel);
+                            System.out.println("mib: " +mib.getOidsPosition(thirdlevel));
+                            k++;       
+                        }
+                        else{
+                            k=1;
+                        } 
+                            System.out.println("novopath: "+secondlevel);
+                            System.out.println("mib: " +mib.getOidsPosition(secondlevel));
+                    }
+                    else{
+                        x=0;
+                        condition=false;
+                    }
+                  
+                }
             }
             
             System.out.println( mib.getOidsPosition("1.4"));
@@ -138,15 +172,29 @@ public class Main {
         }
     }
     private static void updateMatrix(int T, byte[] arr) {
-        MSKeys m1 = MSKeys.getInstance(arr);
-        int x = ((Integer) mib.getOidsPosition("1.4")).intValue();
+       /*  MSKeys m1 = MSKeys.getInstance(arr);
+      //  int x = ((Integer) mib.getOidsPosition("1.4")).intValue();
         while (true) {
             m1.update(arr);
             try {
-                Thread.sleep(x);
+               // Thread.sleep(x);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }*/
+    }
+    private static String arrayIntParaString(int[] array) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < array.length; i++) {
+            // Adicionando o valor atual ao StringBuilder
+            stringBuilder.append(array[i]);
+
+            // Adicionando um ponto, exceto para o último elemento
+            if (i < array.length - 1) {
+                stringBuilder.append(".");
+            }
         }
+        return stringBuilder.toString();
     }
 }
