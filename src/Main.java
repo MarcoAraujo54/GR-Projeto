@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class Main {
             byte[] Array = arrString.getBytes("UTF-8");
             System.out.println(Array);
             //fim de testes 
-            new Thread(() -> updateMatrix(finalT,Array)).start();
+            new Thread(() -> updateMatrix(mib)).start();
 
             
             while (true) { 
@@ -137,15 +138,24 @@ public class Main {
         }
 
     }
-    private static void updateMatrix(int T, byte[] arr) {
-        MSKeys m1 = MSKeys.getInstance(arr);
+    private static void updateMatrix(SnmpKeysMib mib) {
+        try {
         while (true) {
-            m1.update(arr);
+            String stringValue = mib.getOidsPosition("1.4").toString();
+            int finalT = Integer.parseInt(stringValue);
+            String arr = (mib.getOidsPosition("2.1")).toString();
+            byte[] Array = arr.getBytes("UTF-8");
+            MSKeys m1 = MSKeys.getInstance(Array);
+            m1.update(Array);
             try {
-                Thread.sleep(T);
+                Thread.sleep(finalT);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
