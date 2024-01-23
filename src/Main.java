@@ -11,11 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-<<<<<<< HEAD
- 
-=======
     static long startTimeStamp = System.currentTimeMillis();
->>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
     public static void main(String[] args) {
         File file = new File("config.txt");
         Scanner scanner = null;
@@ -76,59 +72,11 @@ public class Main {
             SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
             //testes
             mib.getOids().put( "1.4",T);
-<<<<<<< HEAD
-            final int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
-            final byte[] finalArr = arr;
-            String caminho = "1.2";
-            
-            boolean condition=true;
-            int x=0;
-            int k=1;
-            String firstlevel;
-            for(int i=1;i<=3;i++){
-                condition=true;
-                firstlevel=String.valueOf(i);
-               
-                while (condition) {
-                    x++;
-                  
-                    String secondlevel= firstlevel + "." + String.valueOf(x);
-                    System.out.println(secondlevel);
-                    //arrayIntParaString(path); 
-    
-                    if(mib.contains(secondlevel)){
-                        if(mib.contains(secondlevel+"."+String.valueOf(k))){ 
-                            String thirdlevel=secondlevel+"."+String.valueOf(k);
-                            System.out.println("novopath: "+thirdlevel);
-                            System.out.println("mib: " +mib.getOidsPosition(thirdlevel));
-                            k++;       
-                        }
-                        else{
-                            k=1;
-                        } 
-                            System.out.println("novopath: "+secondlevel);
-                            System.out.println("mib: " +mib.getOidsPosition(secondlevel));
-                    }
-                    else{
-                        x=0;
-                        condition=false;
-                    }
-                  
-                }
-            }
-            
-            System.out.println( mib.getOidsPosition("1.4"));
-            //fim de testes
-            
-            new Thread(() -> updateMatrix(finalT,finalArr)).start();
-            while (true) {
-=======
             mib.getOids().put( "2.1",M);
 
             new Thread(() -> updateMatrix(mib)).start();
 
             while (true) {                 
->>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
                 ComunicationThread.start();
@@ -193,13 +141,7 @@ public class Main {
         }
 
     }
-<<<<<<< HEAD
-    private static void updateMatrix(int T, byte[] arr) {
-       /*  MSKeys m1 = MSKeys.getInstance(arr);
-      //  int x = ((Integer) mib.getOidsPosition("1.4")).intValue();
-=======
     private static void updateMatrix(SnmpKeysMib mib) {
->>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
         while (true) {
             String stringValue = mib.getOidsPosition("1.4").toString();
             int finalT = Integer.parseInt(stringValue);
@@ -208,15 +150,11 @@ public class Main {
             MSKeys m1 = MSKeys.getInstance(Array);
             m1.update(Array);
             try {
-<<<<<<< HEAD
-               // Thread.sleep(x);
-=======
                 Thread.sleep(finalT);
->>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
     }
     private static String arrayIntParaString(int[] array) {
         StringBuilder stringBuilder = new StringBuilder();
