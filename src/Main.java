@@ -1,17 +1,21 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-
-
 public class Main {
+<<<<<<< HEAD
  
+=======
+    static long startTimeStamp = System.currentTimeMillis();
+>>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
     public static void main(String[] args) {
         File file = new File("config.txt");
         Scanner scanner = null;
@@ -28,34 +32,38 @@ public class Main {
         scanner.close();          
     }
     private static void runServer(int port) {
-        byte[] arr = new byte[0];
-        int T=0 ;
+    
+        String M = "";
+        int T = 0;
+        int V = 0;
+        int X = 0;
         try (DatagramSocket socket = new DatagramSocket(port)) {
             System.out.println("UDP Server is running on port " + port);
             try {
                 File file = new File("config.txt");
                 Scanner scanner = new Scanner(file);
                
-                for (int i = 0; i < 4 && scanner.hasNextLine(); i++) {
+                for (int i = 0; i < 6 && scanner.hasNextLine(); i++) {
                     String line = scanner.nextLine();
                     if (i == 2) {
-                        arr = new byte[line.length()];
-                        for (int j = 0; j < line.length(); j++) {
-                            arr[j] = (byte) (line.charAt(j) - '0');
-                        }
-                        System.out.println(Arrays.toString(arr));
+                        M = line;
+                        System.out.println(M);
                     }
                     else if(i == 3){
                         T = Integer.parseInt(line.trim());
                         System.out.println(T);
                     }
-
+                    else if(i == 4){
+                        V = Integer.parseInt(line.trim());
+                        System.out.println(V);
+                    }
+                    else if(i == 5){
+                        X = Integer.parseInt(line.trim());
+                        System.out.println(X);
+                    }
                 }
-               
                 scanner.close();
-                //updateMatrix(T,arr);
-              
- 
+
             } catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
@@ -68,6 +76,7 @@ public class Main {
             SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
             //testes
             mib.getOids().put( "1.4",T);
+<<<<<<< HEAD
             final int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
             final byte[] finalArr = arr;
             String caminho = "1.2";
@@ -113,9 +122,21 @@ public class Main {
             
             new Thread(() -> updateMatrix(finalT,finalArr)).start();
             while (true) {
+=======
+            mib.getOids().put( "2.1",M);
+
+            new Thread(() -> updateMatrix(mib)).start();
+
+            while (true) {                 
+>>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
                 ComunicationThread.start();
+
+                long elapsedTime = executionTime();
+                long S = elapsedTime;
+                System.out.println("Passaram:"+S);
+
                 byte[] receiveData = new byte[1024];
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 socket.receive(receivePacket);
@@ -137,9 +158,8 @@ public class Main {
                         String Iid = aux[0].replace("[", "");
                         Iid = Iid.replace(" ","");
                         String auxValue = aux[1].replace("]", "");
-                        int Value = Integer.parseInt(auxValue);
-                        System.out.println(Iid);
-                        System.out.println(Value);
+                        auxValue = auxValue.replace(" ","");
+                        int Value = Integer.parseInt(auxValue); 
                         //processar o get
                     }
                 }
@@ -150,10 +170,10 @@ public class Main {
                         String Iid = aux[0].replace("[", "");
                         Iid = Iid.replace(" ","");
                         String Value = aux[1].replace("]", "");
-                        System.out.println(Iid);
-                        System.out.println(Value);
+                        Value = Value.replace(" ","");
                         mib.getOids().put(Iid,Value);
                         System.out.println(mib.getOidsPosition(Iid));
+                        System.out.println("Passaram:"+S);
                         //processar o set
                     }
                 }                  
@@ -162,22 +182,37 @@ public class Main {
                 int numPairs = responsePair.size();
                 List<String> Error = new ArrayList<>();
                 int responseErrors = Error.size();
-                Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors,Error);
+                Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
                 byte[] sendData = pdu.toMyString().getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
-                socket.send(sendPacket);
+                socket.send(sendPacket); 
             }
+           
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+<<<<<<< HEAD
     private static void updateMatrix(int T, byte[] arr) {
        /*  MSKeys m1 = MSKeys.getInstance(arr);
       //  int x = ((Integer) mib.getOidsPosition("1.4")).intValue();
+=======
+    private static void updateMatrix(SnmpKeysMib mib) {
+>>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
         while (true) {
-            m1.update(arr);
+            String stringValue = mib.getOidsPosition("1.4").toString();
+            int finalT = Integer.parseInt(stringValue);
+            String arr = (mib.getOidsPosition("2.1")).toString();
+            byte[] Array = arr.getBytes();
+            MSKeys m1 = MSKeys.getInstance(Array);
+            m1.update(Array);
             try {
+<<<<<<< HEAD
                // Thread.sleep(x);
+=======
+                Thread.sleep(finalT);
+>>>>>>> 92aa64a1ed747be2f92357bda00d15c83760c716
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -196,5 +231,10 @@ public class Main {
             }
         }
         return stringBuilder.toString();
+    }
+    private static long executionTime() {
+        long currentTimeMillis = System.currentTimeMillis();
+        long elapsedMillis = currentTimeMillis - startTimeStamp;
+        return elapsedMillis;
     }
 }

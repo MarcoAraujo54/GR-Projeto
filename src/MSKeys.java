@@ -56,7 +56,7 @@ public class MSKeys {
         for (int i = 0; i < n; i++) {
         	int v = arr[i]& 0xFF;
         	System.out.print(v + " ");
-        	}
+        }
       
         System.out.print("|| \n");
     }
