@@ -1,12 +1,9 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,7 +25,6 @@ public class Main {
         scanner.close();          
     }
     private static void runServer(int port) {
-    
         String M = "";
         int T = 0;
         int V = 0;
@@ -60,7 +56,8 @@ public class Main {
                 }
                 scanner.close();
 
-            } catch (FileNotFoundException e) {
+            } 
+            catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
             }
             
@@ -102,8 +99,7 @@ public class Main {
                     else{
                         x=0;
                         condition=false;
-                    }
-                  
+                    }                 
                 }
             }
             //testes
@@ -126,23 +122,21 @@ public class Main {
                 socket.receive(receivePacket);
                 String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
                 String[] pduParts = receivedMessage.split("-");
-                int securityModel = Integer.parseInt(pduParts[0]);
-                int numSecurityParams = Integer.parseInt(pduParts[1]);
-                String listSecurity = pduParts[2];
+                //int securityModel = Integer.parseInt(pduParts[0]);
+                //int numSecurityParams = Integer.parseInt(pduParts[1]);
+                //String listSecurity = pduParts[2];
                 int requestId = Integer.parseInt(pduParts[3]);
                 int primitiveType = Integer.parseInt(pduParts[4]);
-                int numberPairs =  Integer.parseInt(pduParts[5]);
+                //int numberPairs =  Integer.parseInt(pduParts[5]);
                 String Pairs = pduParts[6];
-                int numberErrors = Integer.parseInt(pduParts[7]);
-                String errors = pduParts[8];
+                //int numberErrors = Integer.parseInt(pduParts[7]);
+                //String errors = pduParts[8];
                 if(primitiveType == 1){
                     String[] listPairs = Pairs.split(",");
                     for(int i =0; i<listPairs.length;i++){
                         String[] aux = listPairs[i].split("//");
-                        String Iid = aux[0].replace("[", "");
-                        Iid = Iid.replace(" ","");
-                        String auxValue = aux[1].replace("]", "");
-                        auxValue = auxValue.replace(" ","");
+                        String Iid = aux[0].replace("[", "").trim();
+                        String auxValue = aux[1].replace("]", "").trim();
                         int Value = Integer.parseInt(auxValue); 
                         //processar o get
                     }
@@ -151,13 +145,9 @@ public class Main {
                     String[] listPairs = Pairs.split(",");
                     for(int i =0; i<listPairs.length;i++){
                         String[] aux = listPairs[i].split("//");
-                        String Iid = aux[0].replace("[", "");
-                        Iid = Iid.replace(" ","");
-                        String Value = aux[1].replace("]", "");
-                        Value = Value.replace(" ","");
+                        String Iid = aux[0].replace("[", "").trim();
+                        String Value = aux[1].replace("]", "").trim();
                         mib.getOids().put(Iid,Value);
-                        System.out.println(mib.getOidsPosition(Iid));
-                        System.out.println("Passaram:"+S);
                         //processar o set
                     }
                 }                  
@@ -172,10 +162,10 @@ public class Main {
                 socket.send(sendPacket); 
             }
            
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             e.printStackTrace();
         }
-
     }
     private static void updateMatrix(SnmpKeysMib mib) {
         while (true) {
@@ -187,7 +177,8 @@ public class Main {
             m1.update(Array);
             try {
                 Thread.sleep(finalT);
-            } catch (InterruptedException e) {
+            } 
+            catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
