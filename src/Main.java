@@ -70,10 +70,6 @@ public class Main {
             SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
             DataSnmpKeysMib data = new DataSnmpKeysMib();
             SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
-
-            final int finalT = ((Integer) mib.getOidsPosition("1.4")).intValue();
-            
-            String caminho = "1.2";
             
             boolean condition=true;
             int x=0;
