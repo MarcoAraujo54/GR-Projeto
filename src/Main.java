@@ -196,20 +196,6 @@ public class Main {
             }
         }
     }
-    private static String arrayIntParaString(int[] array) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (int i = 0; i < array.length; i++) {
-            // Adicionando o valor atual ao StringBuilder
-            stringBuilder.append(array[i]);
-
-            // Adicionando um ponto, exceto para o último elemento
-            if (i < array.length - 1) {
-                stringBuilder.append(".");
-            }
-        }
-        return stringBuilder.toString();
-    }
     private static long executionTime() {
         long currentTimeMillis = System.currentTimeMillis();
         long elapsedMillis = currentTimeMillis - startTimeStamp;
