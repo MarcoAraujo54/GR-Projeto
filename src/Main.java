@@ -131,6 +131,7 @@ public class Main {
                 String Pairs = pduParts[6];
                 //int numberErrors = Integer.parseInt(pduParts[7]);
                 //String errors = pduParts[8];
+                System.out.println("Received from client: " + receivedMessage);
                 Map<String, String> responsePair = new HashMap<>();
                 Map<String,String> Error = new HashMap<>();
                 if(primitiveType == 1){
@@ -160,7 +161,6 @@ public class Main {
                         }
                     }
                 }                  
-                System.out.println("Received from client: " + receivedMessage);
                 int numPairs = responsePair.size();;
                 int responseErrors = Error.size();
                 Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
