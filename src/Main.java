@@ -112,7 +112,6 @@ public class Main {
                 // Creats the thread for a new message received
                 Thread ComunicationThread = new Thread();
                 ComunicationThread.start();
-
                 long elapsedTime = executionTime();
                 long S = elapsedTime;
                 System.out.println("Passaram:"+S);
@@ -148,18 +147,33 @@ public class Main {
                     String[] listPairs = Pairs.split(",");
                     for(int i =0; i<listPairs.length;i++){
                         String[] aux = listPairs[i].split("=");
-                        String Iid = aux[0].replace("{", "").trim();
-                        String Value = aux[1].replace("}", "").trim();
-                        if(mib.contains(Iid)){
-                            mib.getOids().put(Iid,Value);
-                            System.out.println(mib.getOidsPosition(Iid));
-                            responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
-                        }else{
-                            System.out.println("Oid_Inexistente");
-                            String erro = "Oid_Inexistente";
-                            Error.put(Iid, erro);
+                        System.out.println(aux.length);
+                        if(aux.length != 1){
+                            String Iid = aux[0].replace("{", "").trim();
+                            String Value = aux[1].replace("}", "").trim();
+                            if(mib.contains(Iid)){
+                                mib.getOids().put(Iid,Value);
+                                System.out.println(mib.getOidsPosition(Iid));
+                                responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
+                            }
+                            else{
+                                System.out.println("Oid_Inexistente");
+                                String erro = "Oid_Inexistente";
+                                Error.put(Iid, erro);
+                            }
                         }
+                        else{
+                            System.out.println("Recebido sem Argumentos");
+                            String erro = "Usage set:Oid,Value";
+                            Error.put("0", erro);
+                        }                       
                     }
+                }
+                if(responsePair.size() == 0){
+                    responsePair.put("0","0");
+                }
+                else if(Error.size() == 0){
+                    Error.put("0","0");
                 }                  
                 int numPairs = responsePair.size();;
                 int responseErrors = Error.size();

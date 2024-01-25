@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.sound.midi.Soundbank;
+
 public class udp_client {
     public void runClient(String serverAddress, int serverPort,String args[]) {
         int prim = 0;
@@ -34,12 +36,14 @@ public class udp_client {
                     Par.put(args[i],args[i+1]);
                 }
             }
+            int Pid = updateFile();
+            System.out.println("Pedido numero:"+Pid);
             int numPairs = Par.size();
             Map <String,String> Error = new HashMap<>();
-            Pdu pdu = new Pdu(0,0,updateFile(),prim, numPairs ,Par , 0,Error);
+            Pdu pdu = new Pdu(0,0,Pid,prim, numPairs ,Par , 0,Error);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
-
+            
             socket.send(sendPacket);
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
