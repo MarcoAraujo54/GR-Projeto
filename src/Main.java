@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -131,12 +133,14 @@ public class Main {
                 String Pairs = pduParts[6];
                 //int numberErrors = Integer.parseInt(pduParts[7]);
                 //String errors = pduParts[8];
+                Map<String, String> responsePair = new HashMap<>();
+                Map<String,String> Error = new HashMap<>();
                 if(primitiveType == 1){
                     String[] listPairs = Pairs.split(",");
                     for(int i =0; i<listPairs.length;i++){
-                        String[] aux = listPairs[i].split("//");
-                        String Iid = aux[0].replace("[", "").trim();
-                        String auxValue = aux[1].replace("]", "").trim();
+                        String[] aux = listPairs[i].split("=");
+                        String Iid = aux[0].replace("{", "").trim();
+                        String auxValue = aux[1].replace("}", "").trim();
                         int Value = Integer.parseInt(auxValue); 
                         //processar o get
                     }
@@ -144,19 +148,24 @@ public class Main {
                 else if(primitiveType == 2){
                     String[] listPairs = Pairs.split(",");
                     for(int i =0; i<listPairs.length;i++){
-                        String[] aux = listPairs[i].split("//");
-                        String Iid = aux[0].replace("[", "").trim();
-                        String Value = aux[1].replace("]", "").trim();
-                        mib.getOids().put(Iid,Value);
-                        //processar o set
+                        String[] aux = listPairs[i].split("=");
+                        String Iid = aux[0].replace("{", "").trim();
+                        String Value = aux[1].replace("}", "").trim();
+                        if(mib.contains(Iid)){
+                            mib.getOids().put(Iid,Value);
+                            System.out.println(mib.getOidsPosition(Iid));
+                            responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
+                        }else{
+                            System.out.println("Oid_Inexistente");
+                            String erro = "Oid_Inexistente";
+                            Error.put(Iid, erro);
+                        }
                     }
                 }                  
                 System.out.println("Received from client: " + receivedMessage);
-                List<String> responsePair = new ArrayList<>();
-                int numPairs = responsePair.size();
-                List<String> Error = new ArrayList<>();
+                int numPairs = responsePair.size();;
                 int responseErrors = Error.size();
-                Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
+                pdutest pdu = new pdutest(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
                 byte[] sendData = pdu.toMyString().getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
                 socket.send(sendPacket); 
