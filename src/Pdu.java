@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Pdu {
     private int securityModel; // S
@@ -8,11 +9,11 @@ public class Pdu {
     private int requestId; // P
     private int primitiveType; // Y
     private int numberPairs; //NL ou NW
-    private List<String> pair; //L ou W
+    private Map<String,String> pair; //L ou W
     private int numberErrors; // NR
-    private List<String> errors; //R
+    private  Map<String,String> errors; //R
 
-    public Pdu(int securityModel, int numSecurityParams , int requestId, int primitiveType, int numberPairs, List<String> pair , int numberErrors, List<String> errors) {
+    public Pdu(int securityModel, int numSecurityParams , int requestId, int primitiveType, int numberPairs, Map<String,String> pair , int numberErrors,  Map<String,String> errors) {
         this.securityModel = securityModel;
         this.numSecurityParams = numSecurityParams;
         this.securityMecs = new ArrayList<>();
@@ -64,11 +65,11 @@ public class Pdu {
         this.primitiveType = primitiveType;
     }
 
-    public List<String> getPair() {
+    public Map<String,String> getPair() {
         return pair;
     }
 
-    public void setPair(List<String> par) {
+    public void setPair(Map<String,String> par) {
         this.pair = par;
     }
 
@@ -84,7 +85,7 @@ public class Pdu {
         return numberErrors;
     }
 
-    public List<String> getErrors() {
+    public Map<String,String> getErrors() {
         return errors;
     }
 
@@ -92,7 +93,7 @@ public class Pdu {
         this.numberErrors = numberErrors;
     }
 
-    public void setErrors(List<String> errors) {
+    public void setErrors( Map<String,String> errors) {
         this.errors = errors;
     }
     

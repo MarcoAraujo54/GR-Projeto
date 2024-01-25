@@ -1,5 +1,4 @@
 import java.util.HashMap;
-import java.util.TreeSet;
 
 public class SnmpKeysMib {
 	private SystemSnmpKeysMib systemSnmpKeysMib;

@@ -5,9 +5,7 @@ import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -38,7 +36,7 @@ public class udp_client {
             }
             int numPairs = Par.size();
             Map <String,String> Error = new HashMap<>();
-            pdutest pdu = new pdutest(0,0,updateFile(),prim, numPairs ,Par , 0,Error);
+            Pdu pdu = new Pdu(0,0,updateFile(),prim, numPairs ,Par , 0,Error);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
 

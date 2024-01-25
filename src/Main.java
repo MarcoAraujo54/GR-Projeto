@@ -3,9 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -165,7 +163,7 @@ public class Main {
                 System.out.println("Received from client: " + receivedMessage);
                 int numPairs = responsePair.size();;
                 int responseErrors = Error.size();
-                pdutest pdu = new pdutest(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
+                Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
                 byte[] sendData = pdu.toMyString().getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
                 socket.send(sendPacket); 
