@@ -137,10 +137,29 @@ public class Main {
                     String[] listPairs = Pairs.split(",");
                     for(int i =0; i<listPairs.length;i++){
                         String[] aux = listPairs[i].split("=");
-                        String Iid = aux[0].replace("{", "").trim();
-                        String auxValue = aux[1].replace("}", "").trim();
-                        int Value = Integer.parseInt(auxValue); 
-                        //processar o get
+                        if(aux.length != 1){
+                            String Iid = aux[0].replace("{", "").trim();
+                            String auxValue = aux[1].replace("}", "").trim();
+                            try {
+                                int Value = Integer.parseInt(auxValue);
+                                if(mib.contains(Iid)){
+                                    System.out.println(Value);
+                                }
+                                else{
+                                    System.out.println("Oid_Inexistente");
+                                    String erro = "Oid_Inexistente";
+                                    Error.put(Iid, erro);
+                                }
+                            } catch (Exception e) {
+                                String erro = "Value has to be Integer";
+                                Error.put("0", erro);
+                            }
+                        } 
+                        else{
+                            System.out.println("Recebido sem Argumentos");
+                            String erro = "Usage set:Oid,Value";
+                            Error.put("0", erro);
+                        }
                     }
                 }
                 else if(primitiveType == 2){
@@ -170,7 +189,7 @@ public class Main {
                 if(responsePair.size() == 0){
                     responsePair.put("0","0");
                 }
-                else if(Error.size() == 0){
+                if(Error.size() == 0){
                     Error.put("0","0");
                 }                  
                 int numPairs = responsePair.size();;

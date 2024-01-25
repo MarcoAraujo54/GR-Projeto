@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.sound.midi.Soundbank;
-
 public class udp_client {
     public void runClient(String serverAddress, int serverPort,String args[]) {
         int prim = 0;
