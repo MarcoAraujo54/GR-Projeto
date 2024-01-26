@@ -34,7 +34,7 @@ public class Main {
             try {
                 File file = new File("config.txt");
                 Scanner scanner = new Scanner(file);
-               
+                
                 for (int i = 0; i < 6 && scanner.hasNextLine(); i++) {
                     String line = scanner.nextLine();
                     if (i == 2) {
@@ -59,8 +59,7 @@ public class Main {
             } 
             catch (FileNotFoundException e) {
                 System.out.println("An error occurred: " + e.getMessage());
-            }
-            
+            }            
             //ToDo -> verificar file da mib
             //criar a MIB
             ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
@@ -102,10 +101,11 @@ public class Main {
                     }                 
                 }
             }
+            // Chama o método generateKeyC para obter a nova chave C
             //testes
             mib.getOids().put( "1.4",T);
             mib.getOids().put( "2.1",M);
-
+            //Criaçao da matriz
             new Thread(() -> updateMatrix(mib)).start();
 
             while (true) {                 
@@ -198,8 +198,7 @@ public class Main {
                 byte[] sendData = pdu.toMyString().getBytes();
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
                 socket.send(sendPacket); 
-            }
-                     
+            }        
         } 
         catch (IOException e) {
             e.printStackTrace();

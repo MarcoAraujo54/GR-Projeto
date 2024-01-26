@@ -11,7 +11,6 @@ public class ConfigSnmpKeysMib {
 	    this.configCardinalityOfKeysAlphabet = 94; 
 	}
 
-
 	public ConfigSnmpKeysMib(String configMasterKey, int configFirstCharOfKeysAlphabet, int configCardinalityOfKeysAlphabet) {
 	    this.configMasterKey = configMasterKey;
 	    this.configFirstCharOfKeysAlphabet = configFirstCharOfKeysAlphabet;

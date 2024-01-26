@@ -1,7 +1,7 @@
 import java.util.Random;
 public class MSKeys {
 
-
+	private int N;
 	private int K;
 	private byte Z[][];
 	private byte M1[];
@@ -149,7 +149,7 @@ public class MSKeys {
 		   for (int i = 0; i < K; i++) {      
 	            //	printArray(this.Z[i],this.K);     
 	        }
-		 
+			N++;		 
 	 }
 
 	public void update(byte key[]){
@@ -168,6 +168,22 @@ public class MSKeys {
 		System.out.println("matrizes atualizadas");
 	
 	}
+	/*private byte[] generateKeyC() {
+        Random rand = new Random();
+        int i = rand.nextInt(N + Z[0][0]) % K;
+        byte[] Zi = Z[i];
+        int j = rand.nextInt(Z[i][0]) % K;
+        byte[] Zj = new byte[K];
+        for (int k = 0; k < K; k++) {
+            Zj[k] = Z[k][j];
+        }
+
+        byte[] C = new byte[K];
+        for (int k = 0; k < K; k++) {
+            C[k] = (byte) (Zi[k] ^ Zj[k]); // xor entre Zi* e Zj*
+        }
+        return C;
+    }*/
 	private MSKeys(byte arr[]){
 		update(arr);
 	}
@@ -175,6 +191,7 @@ public class MSKeys {
 		if (single_instance == null){
 			single_instance = new MSKeys(arr);
 			System.out.println("primeiro");
+			
 		}
 		return single_instance;
 	}
