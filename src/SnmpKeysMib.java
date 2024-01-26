@@ -82,5 +82,41 @@ public class SnmpKeysMib {
 		}
 		return false;
 	}
-	
+	public void getmib(){
+		boolean condition=true;
+		int x=0;
+		int k=1;
+		String firstlevel;
+		for(int i=1;i<=3;i++){
+			condition=true;
+			firstlevel=String.valueOf(i);
+		   
+			while (condition) {
+				x++;
+			  
+				String secondlevel= firstlevel + "." + String.valueOf(x);
+				System.out.println(secondlevel);
+				//arrayIntParaString(path); 
+
+				if(this.oids.containsKey(secondlevel)){
+					if(this.oids.containsKey(secondlevel+"."+String.valueOf(k))){ 
+						String thirdlevel=secondlevel+"."+String.valueOf(k);
+						System.out.println("novopath: "+thirdlevel);
+						System.out.println("mib: " + this.getOidsPosition(thirdlevel));
+						k++;       
+					}
+					else{
+						k=1;
+					} 
+						System.out.println("novopath: "+secondlevel);
+						System.out.println("mib: " + this.getOidsPosition(secondlevel));
+				}
+				else{
+					x=0;
+					condition=false;
+				}                 
+			}
+		}
+
+	}
 }
