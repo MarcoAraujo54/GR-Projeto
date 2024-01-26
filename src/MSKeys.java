@@ -184,6 +184,22 @@ public class MSKeys {
         }
         return C;
     }*/
+	public static void updateMatrix(SnmpKeysMib mib) {
+        while (true) {
+            String stringValue = mib.getOidsPosition("1.4").toString();
+            int finalT = Integer.parseInt(stringValue);
+            String arr = (mib.getOidsPosition("2.1")).toString();
+            byte[] Array = arr.getBytes();
+            MSKeys m1 = MSKeys.getInstance(Array);
+            m1.update(Array);
+            try {
+                Thread.sleep(finalT);
+            } 
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 	private MSKeys(byte arr[]){
 		update(arr);
 	}

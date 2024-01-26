@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class udp_client {
+public class UdpClient {
     public void runClient(String serverAddress, int serverPort,String args[]) {
         int prim = 0;
         try (DatagramSocket socket = new DatagramSocket()) {

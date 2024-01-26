@@ -12,7 +12,7 @@ public class Mainclient {
                 int serverPort = Integer.parseInt(scanner.nextLine());
                 if (scanner.hasNextLine()) {
                     String ipServer = scanner.nextLine();
-                    udp_client client = new udp_client();
+                    UdpClient client = new UdpClient();
                     Thread clientThread = new Thread(() -> client.runClient(ipServer, serverPort, args));
                     clientThread.start();
                 } 

@@ -69,7 +69,7 @@ public class Main {
         mib.getOids().put( "1.4",T);
         mib.getOids().put( "2.1",M);
         //Criaçao da matriz
-        new Thread(() -> updateMatrix(mib)).start();
+        new Thread(() -> MSKeys.updateMatrix(mib)).start();
         while (true) {                 
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -83,26 +83,5 @@ public class Main {
                 }
             }).start();     
         }                     
-    }
-    private static void updateMatrix(SnmpKeysMib mib) {
-        while (true) {
-            String stringValue = mib.getOidsPosition("1.4").toString();
-            int finalT = Integer.parseInt(stringValue);
-            String arr = (mib.getOidsPosition("2.1")).toString();
-            byte[] Array = arr.getBytes();
-            MSKeys m1 = MSKeys.getInstance(Array);
-            m1.update(Array);
-            try {
-                Thread.sleep(finalT);
-            } 
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    private static long executionTime() {
-        long currentTimeMillis = System.currentTimeMillis();
-        long elapsedMillis = currentTimeMillis - startTimeStamp;
-        return elapsedMillis;
     }
 }
