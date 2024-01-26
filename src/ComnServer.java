@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.net.DatagramSocket;
 
-public class Comunication {
-    public static void run(DatagramSocket socket, SnmpKeysMib mib,DatagramPacket receivePacket) throws IOException{
+public class ComnServer {
+    public static void runServer(DatagramSocket socket, SnmpKeysMib mib,DatagramPacket receivePacket) throws IOException{
+        /*long elapsedTime = executionTime();
+        long S = elapsedTime;
+        System.out.println("Passaram:"+S);*/
         String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
         String[] pduParts = receivedMessage.split("-");
         //int securityModel = Integer.parseInt(pduParts[0]);
