@@ -68,40 +68,7 @@ public class Main {
             DataSnmpKeysMib data = new DataSnmpKeysMib();
             SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
             
-            boolean condition=true;
-            int x=0;
-            int k=1;
-            String firstlevel;
-            for(int i=1;i<=3;i++){
-                condition=true;
-                firstlevel=String.valueOf(i);
-               
-                while (condition) {
-                    x++;
-                  
-                    String secondlevel= firstlevel + "." + String.valueOf(x);
-                    System.out.println(secondlevel);
-                    //arrayIntParaString(path); 
-    
-                    if(mib.contains(secondlevel)){
-                        if(mib.contains(secondlevel+"."+String.valueOf(k))){ 
-                            String thirdlevel=secondlevel+"."+String.valueOf(k);
-                            System.out.println("novopath: "+thirdlevel);
-                            System.out.println("mib: " +mib.getOidsPosition(thirdlevel));
-                            k++;       
-                        }
-                        else{
-                            k=1;
-                        } 
-                            System.out.println("novopath: "+secondlevel);
-                            System.out.println("mib: " +mib.getOidsPosition(secondlevel));
-                    }
-                    else{
-                        x=0;
-                        condition=false;
-                    }                 
-                }
-            }
+           mib.getmib();
             //testes
             mib.getOids().put( "1.4",T);
             mib.getOids().put( "2.1",M);
@@ -115,7 +82,6 @@ public class Main {
                 long elapsedTime = executionTime();
                 long S = elapsedTime;
                 System.out.println("Passaram:"+S);
-
                 byte[] receiveData = new byte[1024];
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                 socket.receive(receivePacket);
