@@ -83,7 +83,7 @@ public class SnmpKeysMib {
 		return false;
 	}
 	public HashMap<String,String> getmib(String StartPath,int nextpos){
-		HashMap mapa = new HashMap<String,String>();
+		HashMap<String,String> mapa = new HashMap<>();
 		Scanner scanner = new Scanner(StartPath).useDelimiter("\\.");
 		int[] num= new int[5];
 		int i=0;
