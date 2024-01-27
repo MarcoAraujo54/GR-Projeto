@@ -109,25 +109,26 @@ public class Pdu {
         this.errors = errors;
     }
 
-    public void extractPdu(String receivedMessage) {
+    public void ProcessPdu(String receivedMessage) {
         String[] pduParts = receivedMessage.split("-");
         this.securityModel = Integer.parseInt(pduParts[0]);
         this.numSecurityParams = Integer.parseInt(pduParts[1]); 
         this.requestId = Integer.parseInt(pduParts[3]);
         this.primitiveType = Integer.parseInt(pduParts[4]);
         this.numberPairs = Integer.parseInt(pduParts[5]);
-        this.pair = parsePairs(pduParts[6]);
+        this.pair = parsePair(pduParts[6]);
         this.numberErrors = Integer.parseInt(pduParts[7]);
-        this.errors = parsePairs(pduParts[8]);
+        this.errors = new HashMap<>();
     }
-    private Map<String, String> parsePairs(String pairsStr) {
+
+    private Map<String, String> parsePair(String pairsStr) {
         Map<String, String> pairsMap = new HashMap<>();
         String[] pairs = pairsStr.split(",");
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
             String Iid = keyValue[0].replace("{", "").trim();
-            String auxValue = keyValue[1].replace("}", "").trim();
-            pairsMap.put(Iid, auxValue);
+            String Value = keyValue[1].replace("}", "").trim();
+            pairsMap.put(Iid, Value);
         }
     return pairsMap;
     }

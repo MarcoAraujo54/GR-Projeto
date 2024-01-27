@@ -13,7 +13,7 @@ public class ComnServer {
         this.mib = mib;
     }
 
-    public void startServer() throws IOException {
+    public void startServerThread() throws IOException {
         while (true) {
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -39,7 +39,7 @@ public class ComnServer {
             String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
             System.out.println("Received from client: " + receivedMessage);
             Pdu pdu = new Pdu();
-            pdu.extractPdu(receivedMessage);
+            pdu.ProcessPdu(receivedMessage);
             int requestId = pdu.getRequestId();
             int primitiveType = pdu.getPrimitiveType();
             Map<String, String> pairs = pdu.getPair();            

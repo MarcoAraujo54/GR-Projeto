@@ -73,6 +73,6 @@ public class Main {
         MSK.create(mib);
         new Thread(() -> MSK.updateMatrix(mib)).start();
         ComnServer server = new ComnServer(socket, mib);       
-        server.startServer();                    
+        server.startServerThread();                    
     }
 }
