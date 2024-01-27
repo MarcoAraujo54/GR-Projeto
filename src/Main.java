@@ -1,12 +1,10 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.Scanner;
 
 public class Main {
-    static long startTimeStamp = System.currentTimeMillis();
     public static void main(String[] args) throws IOException {
         File file = new File("config.txt");
         Scanner scanner = null;
@@ -32,8 +30,7 @@ public class Main {
         System.out.println("UDP Server is running on port " + port);
         try {
             File file = new File("config.txt");
-            Scanner scanner = new Scanner(file);
-            
+            Scanner scanner = new Scanner(file);            
             for (int i = 0; i < 6 && scanner.hasNextLine(); i++) {
                 String line = scanner.nextLine();
                 if (i == 2) {
@@ -64,24 +61,12 @@ public class Main {
         SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
         DataSnmpKeysMib data = new DataSnmpKeysMib();
         SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
-        // Chama o método generateKeyC para obter a nova chave C
         //testes
         mib.getOids().put( "1.4",T);
         mib.getOids().put( "2.1",M);
         //Criaçao da matriz
         new Thread(() -> MSKeys.updateMatrix(mib)).start();
-        while (true) {                 
-            byte[] receiveData = new byte[1024];
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            socket.receive(receivePacket);
-            new Thread(() -> {
-                try {
-                    ComnServer.runServer(socket, mib, receivePacket);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }).start();     
-        }                     
+        ComnServer server = new ComnServer(socket, mib);       
+        server.startServer();                    
     }
 }
