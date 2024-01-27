@@ -37,70 +37,52 @@ public class ComnServer {
         public void run(){
             MSKeys MSK = MSKeys.getInstance();
             String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
-            String[] pduParts = receivedMessage.split("-");
-            int requestId = Integer.parseInt(pduParts[3]);
-            int primitiveType = Integer.parseInt(pduParts[4]);
-            String Pairs = pduParts[6];
             System.out.println("Received from client: " + receivedMessage);
+            Pdu pdu = new Pdu();
+            pdu.extractPdu(receivedMessage);
+            int requestId = pdu.getRequestId();
+            int primitiveType = pdu.getPrimitiveType();
+            Map<String, String> pairs = pdu.getPair();            
             Map<String, String> responsePair = new HashMap<>();
             Map<String, String> Aux = new HashMap<>();
             Map<String,String> Error = new HashMap<>();
-            if(primitiveType == 1){
-                String[] listPairs = Pairs.split(",");
-                for(int i =0; i<listPairs.length;i++){
-                    String[] aux = listPairs[i].split("=");
-                    if(aux.length != 1){
-                        String Iid = aux[0].replace("{", "").trim();
-                        String auxValue = aux[1].replace("}", "").trim();
-                        try {
-                            int Value = Integer.parseInt(auxValue);
-                            if(mib.contains(Iid)){
-                                System.out.println(Value);
-                                Aux = mib.getmib(Iid, Value);
-                                responsePair.putAll(Aux);                           
-                            }
-                            else{
-                                System.out.println("Oid_Inexistente");
-                                String erro = "404";
-                                Error.put(Iid, erro);
-                            }
-                        } catch (Exception e) {
-                            String erro = "Value has to be Integer";
-                            Error.put("0", erro);
+            if (primitiveType == 1) {
+                for (Map.Entry<String, String> pair : pairs.entrySet()) {
+                    String Iid = pair.getKey();
+                    String valueStr = pair.getValue();
+                    try {
+                        int Value = Integer.parseInt(valueStr);
+                        if (mib.contains(Iid)) {
+                            System.out.println(Value);
+                            Aux = mib.getmib(Iid, Value);
+                            responsePair.putAll(Aux);
+                        } else {
+                            System.out.println("Oid_Inexistente");
+                            Error.put(Iid, "404");
                         }
-                    } 
-                    else{
-                        System.out.println("Recebido sem Argumentos");
-                        String erro = "Usage set:Oid,Value";
-                        Error.put("0", erro);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Value has to be Integer");
+                        Error.put(Iid, "409");
                     }
                 }
             }
-            else if(primitiveType == 2){
-                String[] listPairs = Pairs.split(",");
-                for(int i =0; i<listPairs.length;i++){
-                    String[] aux = listPairs[i].split("=");
-                    if(aux.length != 1){
-                        String Iid = aux[0].replace("{", "").trim();
-                        String Value = aux[1].replace("}", "").trim();
-                        if(mib.contains(Iid)){
-                            mib.getOids().put(Iid,Value);
-                            responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
-                            if(Iid.equals("3.2.6")){
-                                MSK.generateKeyC();
-                            }
+            else if (primitiveType == 2) {
+                for (Map.Entry<String, String> pair : pairs.entrySet()) {
+                    String Iid = pair.getKey();
+                    String valueStr = pair.getValue();
+                    if (mib.contains(Iid)) {
+                        mib.getOids().put(Iid, valueStr);
+                        responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
+                        if (Iid.equals("2.1") || Iid.equals("1.3")) {
+                            MSK.create(mib);
                         }
-                        else{
-                            System.out.println("Oid_Inexistente");
-                            String erro = "404";
-                            Error.put(Iid, erro);
+                        if (Iid.equals("3.2.6")) {
+                            MSK.generateKeyC();
                         }
+                    } else {
+                        System.out.println("Oid_Inexistente");
+                        Error.put(Iid, "404");
                     }
-                    else{
-                        System.out.println("Recebido sem Argumentos");
-                        String erro = "Usage set:Oid,Value";
-                        Error.put("0", erro);
-                    }                       
                 }
             }
             if(responsePair.size() == 0){
@@ -109,9 +91,9 @@ public class ComnServer {
             if(Error.size() == 0){
                 Error.put("0","0");
             }                  
-            int numPairs = responsePair.size();;
+            int numPairs = responsePair.size();
             int responseErrors = Error.size();
-            Pdu pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
+            pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
             try {

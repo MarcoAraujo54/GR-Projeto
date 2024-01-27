@@ -22,6 +22,7 @@ public class Main {
     }
     private static void runServer(int port) throws IOException{
         String M = "";
+        int K = 0;
         int T = 0;  
         int V = 0; // Validade
         int X = 0; // maximo de entradas na tabela
@@ -31,21 +32,25 @@ public class Main {
         try {
             File file = new File("config.txt");
             Scanner scanner = new Scanner(file);            
-            for (int i = 0; i < 6 && scanner.hasNextLine(); i++) {
+            for (int i = 0; i < 7 && scanner.hasNextLine(); i++) {
                 String line = scanner.nextLine();
                 if (i == 2) {
                     M = line;
                     System.out.println(M);
                 }
                 else if(i == 3){
-                    T = Integer.parseInt(line.trim());
+                    K = Integer.parseInt(line.trim());
                     System.out.println(T);
                 }
                 else if(i == 4){
+                    T = Integer.parseInt(line.trim());
+                    System.out.println(T);
+                }
+                else if(i == 5){
                     V = Integer.parseInt(line.trim());
                     System.out.println(V);
                 }
-                else if(i == 5){
+                else if(i == 6){
                     X = Integer.parseInt(line.trim());
                     System.out.println(X);
                 }
@@ -55,12 +60,12 @@ public class Main {
         catch (FileNotFoundException e) {
             System.out.println("An error occurred: " + e.getMessage());
         }            
-        //ToDo -> verificar file da mib
         //criar a MIB
         ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
         SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
         DataSnmpKeysMib data = new DataSnmpKeysMib();
         SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
+        mib.getOids().put( "1.3",K);
         mib.getOids().put( "1.4",T);
         mib.getOids().put( "2.1",M);
         //Criaçao da matriz

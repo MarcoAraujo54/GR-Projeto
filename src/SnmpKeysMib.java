@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Scanner;
+
 public class SnmpKeysMib {
 	private SystemSnmpKeysMib systemSnmpKeysMib;
 	private ConfigSnmpKeysMib configSnmpKeysMib;
@@ -42,7 +43,6 @@ public class SnmpKeysMib {
 		map.put("3", this.dataSnmpKeysMib);
 			map.put("3.1",this.dataSnmpKeysMib.getDataNumberOfValidKeys());
 			map.put("3.2","Not Acessible");
-			//map.put("3.2.1","Not Acessible"); falta o ponto intermedio
 				map.put("3.2.1","Not Acessible");
 				map.put("3.2.2","Not Acessible");
 				map.put("3.2.3","Not Acessible");

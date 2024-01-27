@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class MSKeys {
 
 	private int N;
@@ -61,8 +62,9 @@ public class MSKeys {
         System.out.print("|| \n");
     }
 	
-	private void updateMValues(byte key[]){
-		this.K = key.length/2;
+	private void updateMValues(byte key[] ,SnmpKeysMib mib){
+		int k = Integer.parseInt(mib.getOidsPosition("1.3").toString());
+		this.K = k;
 		this.M1= new byte[K];
 		this.M2= new byte[K];
 		for(int i=0; i<K; i++) {
@@ -156,7 +158,7 @@ public class MSKeys {
 		String MKey = (mib.getOidsPosition("2.1")).toString();
 		byte[] MasterKey = MKey.getBytes();
 		MSKeys MSK = getInstance();
-		MSK.updateMValues(MasterKey);
+		MSK.updateMValues(MasterKey,mib);
 		 //System.out.println("\n ZAZAZAZAZAZAZAZA");
 		MSK.GenZa();
 		 // System.out.println("\n ZBZBZBZBZBZBZB");
@@ -199,7 +201,6 @@ public class MSKeys {
 			int finalT = Integer.parseInt(stringValue);
 			MSKeys MSK = getInstance();
 			int i = new Random().nextInt(MSK.K-1);
-			System.out.println(i);
 			MSK.Z[i] = MSK.rotate(MSK.Z[i], i);
 			/*for ( i = 0; i < MSK.K; i++) {      
 	            	printArray(MSK.Z[i],MSK.K);     

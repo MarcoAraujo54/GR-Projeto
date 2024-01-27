@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public class Pdu {
     private int numberPairs; //NL ou NW
     private Map<String,String> pair; //L ou W
     private int numberErrors; // NR
-    private  Map<String,String> errors; //R
+    private Map<String,String> errors; //R
 
     public Pdu(int securityModel, int numSecurityParams , int requestId, int primitiveType, int numberPairs, Map<String,String> pair , int numberErrors,  Map<String,String> errors) {
         this.securityModel = securityModel;
@@ -23,6 +24,17 @@ public class Pdu {
         this.pair = pair;
         this.numberErrors = numberErrors;
         this.errors = errors;
+    }
+
+    public Pdu() {
+        this.securityModel = 0;
+        this.numSecurityParams = 0; 
+        this.requestId = 0; 
+        this.primitiveType = 0;
+        this.numberPairs = 0;
+        this.pair = new HashMap<>(); 
+        this.numberErrors = 0; 
+        this.errors = new HashMap<>();
     }
 
     public String toMyString() {
@@ -96,5 +108,27 @@ public class Pdu {
     public void setErrors( Map<String,String> errors) {
         this.errors = errors;
     }
-    
+
+    public void extractPdu(String receivedMessage) {
+        String[] pduParts = receivedMessage.split("-");
+        this.securityModel = Integer.parseInt(pduParts[0]);
+        this.numSecurityParams = Integer.parseInt(pduParts[1]); 
+        this.requestId = Integer.parseInt(pduParts[3]);
+        this.primitiveType = Integer.parseInt(pduParts[4]);
+        this.numberPairs = Integer.parseInt(pduParts[5]);
+        this.pair = parsePairs(pduParts[6]);
+        this.numberErrors = Integer.parseInt(pduParts[7]);
+        this.errors = parsePairs(pduParts[8]);
+    }
+    private Map<String, String> parsePairs(String pairsStr) {
+        Map<String, String> pairsMap = new HashMap<>();
+        String[] pairs = pairsStr.split(",");
+        for (String pair : pairs) {
+            String[] keyValue = pair.split("=");
+            String Iid = keyValue[0].replace("{", "").trim();
+            String auxValue = keyValue[1].replace("}", "").trim();
+            pairsMap.put(Iid, auxValue);
+        }
+    return pairsMap;
+    }
 }
