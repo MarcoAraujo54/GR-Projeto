@@ -152,8 +152,7 @@ public class MSKeys {
 			N++;		 
 	 }
 
-	public void update(byte key[]){
-		
+	public void update(byte key[]){		
 		this.updateMValues(key);
 		 //System.out.println("\n ZAZAZAZAZAZAZAZA");
 		this.updateZa();

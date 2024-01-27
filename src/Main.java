@@ -61,8 +61,6 @@ public class Main {
         SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
         DataSnmpKeysMib data = new DataSnmpKeysMib();
         SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
-        mib.getmib("1.2", 15);
-        //testes
         mib.getOids().put( "1.4",T);
         mib.getOids().put( "2.1",M);
         //Criaçao da matriz
