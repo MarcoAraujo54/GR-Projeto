@@ -54,6 +54,7 @@ public class ComnServer {
                             int Value = Integer.parseInt(auxValue);
                             if(mib.contains(Iid)){
                                 System.out.println(Value);
+                                mib.getmib(Iid, Value);
                             }
                             else{
                                 System.out.println("Oid_Inexistente");
@@ -82,6 +83,9 @@ public class ComnServer {
                         if(mib.contains(Iid)){
                             mib.getOids().put(Iid,Value);
                             responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
+                            if(Iid == "3.2.6"){
+                                //MSKeys.creatC(); criar a chave
+                            }
                         }
                         else{
                             System.out.println("Oid_Inexistente");
