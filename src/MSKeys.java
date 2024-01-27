@@ -73,7 +73,7 @@ public class MSKeys {
 		}	
 	}
 
-	private void updateZa(){
+	private void GenZa(){
 		byte temp[]= new byte [this.K];
 		this.Za= new byte [K][K];
 			for(int i=0; i < this.K; i++) {
@@ -89,7 +89,7 @@ public class MSKeys {
 		}
 
 
-	private void updateZb(){
+	private void GenZb(){
 		byte temp2[]= new byte [this.K];
 		this.Zb= new byte [K][K];
 		for(int i=0; i < this.K; i++) {
@@ -107,7 +107,7 @@ public class MSKeys {
 		//printArray(this.Zb[i],this.K);
 		}
 	}
-	private void updateZc() {
+	private void GenZc() {
 		this.Zc= new byte [K][K];
 		for(int i=0; i < this.K; i++) {
 			for (int j = 0; j < this.K; j++)
@@ -120,7 +120,7 @@ public class MSKeys {
 			}*/
 	}
 	
-	private void updateZd() {
+	private void GenZd() {
 		this.Zd= new byte [K][K];
 		for(int i=0; i < this.K; i++) {
 			for (int j = 0; j < this.K; j++)
@@ -137,7 +137,7 @@ public class MSKeys {
 		  return (byte)  new Random().nextInt(256); //Gere valores entre 0 e 255  
 		  
 	    }
-	 private void updateZ() {
+	 private void GenZ() {
 		 this.Z= new byte [K][K];
 		 
 		  for (int i = 0; i < this.K; i++) {
@@ -152,20 +152,25 @@ public class MSKeys {
 			N++;		 
 	 }
 
-	public void update(byte key[]){
-		
-		this.updateMValues(key);
+	public void create(SnmpKeysMib mib){
+		String MKey = (mib.getOidsPosition("2.1")).toString();
+		byte[] MasterKey = MKey.getBytes();
+		MSKeys MSK = getInstance();
+		MSK.updateMValues(MasterKey);
 		 //System.out.println("\n ZAZAZAZAZAZAZAZA");
-		this.updateZa();
+		MSK.GenZa();
 		 // System.out.println("\n ZBZBZBZBZBZBZB");
-		this.updateZb();
+		MSK.GenZb();
 		// System.out.println("\n ZCZCZCZCZCZCZCZC");
-		this.updateZc();
+		MSK.GenZc();
 		// System.out.println("\n ZDZDZDZDZDZDZDZD");
-		this.updateZd();
+		MSK.GenZd();
 		//System.out.println("\n ZZZZZZZZZZZZZZZZ");
-		this.updateZ();
-		System.out.println("matrizes atualizadas");
+		MSK.GenZ();
+		for (int i = 0; i < K; i++) {      
+				printArray(this.Z[i],this.K);     
+		}
+		System.out.println("matrizes criadas");
 	
 	}
 	/*private byte[] generateKeyC() {
@@ -184,14 +189,18 @@ public class MSKeys {
         }
         return C;
     }*/
-	public static void updateMatrix(SnmpKeysMib mib) {
+	public void updateMatrix(SnmpKeysMib mib) {
         while (true) {
-            String stringValue = mib.getOidsPosition("1.4").toString();
-            int finalT = Integer.parseInt(stringValue);
-            String arr = (mib.getOidsPosition("2.1")).toString();
-            byte[] Array = arr.getBytes();
-            MSKeys m1 = MSKeys.getInstance(Array);
-            m1.update(Array);
+			String stringValue = mib.getOidsPosition("1.4").toString();
+			int finalT = Integer.parseInt(stringValue);
+			MSKeys MSK = getInstance();
+			int i = new Random().nextInt(MSK.K-1);
+			System.out.println(i);
+			MSK.Z[i]=MSK.rotate(MSK.Z[i], i);
+			for ( i = 0; i < MSK.K; i++) {      
+	            	printArray(MSK.Z[i],MSK.K);     
+	        }
+			System.out.println();
             try {
                 Thread.sleep(finalT);
             } 
@@ -200,14 +209,13 @@ public class MSKeys {
             }
         }
     }
-	private MSKeys(byte arr[]){
-		update(arr);
+	private MSKeys(){
+		
 	}
-	public static synchronized MSKeys getInstance(byte arr[]){
+	public synchronized static MSKeys getInstance(){
 		if (single_instance == null){
-			single_instance = new MSKeys(arr);
+			single_instance = new MSKeys();
 			System.out.println("primeiro");
-			
 		}
 		return single_instance;
 	}

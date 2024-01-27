@@ -66,7 +66,9 @@ public class Main {
         mib.getOids().put( "1.4",T);
         mib.getOids().put( "2.1",M);
         //Criaçao da matriz
-        new Thread(() -> MSKeys.updateMatrix(mib)).start();
+        MSKeys MSK = MSKeys.getInstance();
+        MSK.create(mib);
+        new Thread(() -> MSK.updateMatrix(mib)).start();
         ComnServer server = new ComnServer(socket, mib);       
         server.startServer();                    
     }

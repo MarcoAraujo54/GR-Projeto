@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DataSnmpKeysMib {
+public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 	private int dataNumberOfValidKeys;
 	private List<KeysSnmpKeysMib> dataTableGeneratedKeysEntryType;
