@@ -82,7 +82,8 @@ public class SnmpKeysMib {
 		}
 		return false;
 	}
-	public void getmib(String StartPath,int nextpos){
+	public HashMap<String,String> getmib(String StartPath,int nextpos){
+		HashMap mapa = new HashMap<String,String>();
 		Scanner scanner = new Scanner(StartPath).useDelimiter("\\.");
 		int[] num= new int[5];
 		int i=0;
@@ -94,7 +95,6 @@ public class SnmpKeysMib {
 		boolean condition=true;
 		int x=num[1];
 		int k=num[2];
-		System.out.println("kkkkkkkkkkkkk   "+k);
 		String firstlevel;
 		int cont=0;
 		for(i=num[0];i<=3;i++){
@@ -112,11 +112,18 @@ public class SnmpKeysMib {
 						System.out.println(cont);
 						System.out.println("novopath: "+secondlevel);
 						System.out.println("mib: " + this.getOidsPosition(secondlevel));
+						if(this.getOidsPosition(secondlevel).equals("Not Acessible")){
+							cont--;
+						}
+						else{
+							mapa.put(secondlevel,this.getOidsPosition(secondlevel).toString());
+						}
 					}
 					if(this.oids.containsKey(secondlevel+"."+String.valueOf(k)) && cont<=nextpos){ 
 						String thirdlevel=secondlevel+"."+String.valueOf(k);
 						System.out.println("novopath: "+thirdlevel);
 						System.out.println("mib: " + this.getOidsPosition(thirdlevel));
+						mapa.put(thirdlevel,this.getOidsPosition(thirdlevel).toString());
 						k++;			     
 					}
 					else{
@@ -133,5 +140,6 @@ public class SnmpKeysMib {
 				}
 					
 		}
+		return mapa;
 	}
 }
