@@ -45,7 +45,7 @@ public class ComnServer {
             Map<String, String> pairs = pdu.getPair();            
             Map<String, String> responsePair = new HashMap<>();
             Map<String, String> Aux = new HashMap<>();
-            Map<String,String> Error = new HashMap<>();
+            Map<String,String> responseError = new HashMap<>();
             if (primitiveType == 1) {
                 for (Map.Entry<String, String> pair : pairs.entrySet()) {
                     String Iid = pair.getKey();
@@ -58,11 +58,11 @@ public class ComnServer {
                             responsePair.putAll(Aux);
                         } else {
                             System.out.println("Oid_Inexistente");
-                            Error.put(Iid, "404");
+                            responseError.put(Iid, "404");
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Value has to be Integer");
-                        Error.put(Iid, "409");
+                        responseError.put(Iid, "409");
                     }
                 }
             }
@@ -81,19 +81,19 @@ public class ComnServer {
                         }
                     } else {
                         System.out.println("Oid_Inexistente");
-                        Error.put(Iid, "404");
+                        responseError.put(Iid, "404");
                     }
                 }
             }
             if(responsePair.size() == 0){
                 responsePair.put("0","0");
             }
-            if(Error.size() == 0){
-                Error.put("0","0");
+            if(responseError.size() == 0){
+                responseError.put("0","0");
             }                  
             int numPairs = responsePair.size();
-            int responseErrors = Error.size();
-            pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , responseErrors, Error);
+            int Errors = responseError.size();
+            pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , Errors, responseError);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
             try {
