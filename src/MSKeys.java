@@ -149,7 +149,7 @@ public class MSKeys {
 		   for (int i = 0; i < K; i++) {      
 	            //	printArray(this.Z[i],this.K);     
 	        }
-			N++;		 
+				 
 	 }
 
 	public void create(SnmpKeysMib mib){
@@ -202,6 +202,7 @@ public class MSKeys {
 	        }
 			System.out.println();
             try {
+				MSK.N++;	
                 Thread.sleep(finalT);
             } 
             catch (InterruptedException e) {
