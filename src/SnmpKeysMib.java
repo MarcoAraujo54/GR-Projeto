@@ -41,14 +41,13 @@ public class SnmpKeysMib {
 			map.put("2.3",this.configSnmpKeysMib.getConfigCardinalityOfKeysAlphabet());
 		map.put("3", this.dataSnmpKeysMib);
 			map.put("3.1",this.dataSnmpKeysMib.getDataNumberOfValidKeys());
-				map.put("3.1.1","Not Acessible");
 			map.put("3.2","Not Acessible");
 				map.put("3.2.1","Not Acessible");
 				map.put("3.2.2","Not Acessible");
 				map.put("3.2.3","Not Acessible");
 				map.put("3.2.4","Not Acessible");
 				map.put("3.2.5","Not Acessible");
-				map.put("3.2.6",this.dataSnmpKeysMib.getKeyVisibility());
+				map.put("3.2.6","Not Acessible");
 		return map;
 	}
 	
