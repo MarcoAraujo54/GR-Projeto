@@ -1,5 +1,5 @@
 import java.util.HashMap;
-
+import java.util.Scanner;
 public class SnmpKeysMib {
 	private SystemSnmpKeysMib systemSnmpKeysMib;
 	private ConfigSnmpKeysMib configSnmpKeysMib;
@@ -82,41 +82,57 @@ public class SnmpKeysMib {
 		}
 		return false;
 	}
-	public void getmib(){
+	public void getmib(String StartPath,int nextpos){
+		Scanner scanner = new Scanner(StartPath).useDelimiter("\\.");
+		int[] num= new int[5];
+		int i=0;
+		while(scanner.hasNextInt()){
+        num[i]= scanner.hasNextInt() ? scanner.nextInt() : 0;
+		i++;
+		}
+        scanner.close();
 		boolean condition=true;
-		int x=0;
-		int k=1;
+		int x=num[1];
+		int k=num[2];
+		System.out.println("kkkkkkkkkkkkk   "+k);
 		String firstlevel;
-		for(int i=1;i<=3;i++){
+		int cont=0;
+		for(i=num[0];i<=3;i++){
+			
 			condition=true;
 			firstlevel=String.valueOf(i);
-		   
-			while (condition) {
-				x++;
-			  
+			
+				while (condition && cont<=nextpos) {
+				
 				String secondlevel= firstlevel + "." + String.valueOf(x);
-				System.out.println(secondlevel);
-				//arrayIntParaString(path); 
-
+				//System.out.println(secondlevel);
 				if(this.oids.containsKey(secondlevel)){
+						cont++;
+						if(k<=1){
+						System.out.println(cont);
+						System.out.println("novopath: "+secondlevel);
+						System.out.println("mib: " + this.getOidsPosition(secondlevel));
+						}
 					if(this.oids.containsKey(secondlevel+"."+String.valueOf(k))){ 
 						String thirdlevel=secondlevel+"."+String.valueOf(k);
 						System.out.println("novopath: "+thirdlevel);
 						System.out.println("mib: " + this.getOidsPosition(thirdlevel));
-						k++;       
+						k++;			     
 					}
 					else{
-						k=1;
+						k=1;	
 					} 
-						System.out.println("novopath: "+secondlevel);
-						System.out.println("mib: " + this.getOidsPosition(secondlevel));
+						
 				}
 				else{
 					x=0;
-					condition=false;
-				}                 
-			}
+					condition=false;	
+				} 
+				System.out.println("aqui");
+				if(k<=1){
+					x++;}
+				}
+					
 		}
-
 	}
 }
