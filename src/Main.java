@@ -22,9 +22,9 @@ public class Main {
     }
     private static void runServer(int port) throws IOException{
         String M = "";
-        int T = 0;
-        int V = 0;
-        int X = 0;
+        int T = 0;  
+        int V = 0; // Validade
+        int X = 0; // maximo de entradas na tabela
         DatagramSocket socket = new DatagramSocket(port);
         System.out.println(socket);
         System.out.println("UDP Server is running on port " + port);
