@@ -152,7 +152,7 @@ public class MSKeys {
 				 
 	 }
 
-	public void create(SnmpKeysMib mib){
+	public void create(SnmpKeysMib mib){	
 		String MKey = (mib.getOidsPosition("2.1")).toString();
 		byte[] MasterKey = MKey.getBytes();
 		MSKeys MSK = getInstance();
@@ -173,22 +173,26 @@ public class MSKeys {
 		System.out.println("matrizes criadas");
 	
 	}
-	/*private byte[] generateKeyC() {
-        Random rand = new Random();
-        int i = rand.nextInt(N + Z[0][0]) % K;
-        byte[] Zi = Z[i];
-        int j = rand.nextInt(Z[i][0]) % K;
-        byte[] Zj = new byte[K];
-        for (int k = 0; k < K; k++) {
-            Zj[k] = Z[k][j];
+	public byte[] generateKeyC() {
+		MSKeys MSK = getInstance();
+		int n = MSK.N;
+		int seed = n + MSK.Z[0][0];
+        Random rand = new Random(seed);
+        int i = rand.nextInt(0,MSK.K-1);
+        byte[] Zi = MSK.Z[i];
+		seed = MSK.Z[i][0];
+		rand = new Random(seed);
+        int j = rand.nextInt(0,MSK.K-1);
+        byte[] Zj = new byte[MSK.K];
+        for (int k = 0; k < MSK.K; k++) {
+            Zj[k] = MSK.Z[k][j];
         }
-
         byte[] C = new byte[K];
-        for (int k = 0; k < K; k++) {
-            C[k] = (byte) (Zi[k] ^ Zj[k]); // xor entre Zi* e Zj*
+        for (int k = 0; k < MSK.K; k++) {
+            C[k] = (byte) (Zi[k] ^ Zj[k]);
         }
         return C;
-    }*/
+    }
 	public void updateMatrix(SnmpKeysMib mib) {
         while (true) {
 			String stringValue = mib.getOidsPosition("1.4").toString();
@@ -196,13 +200,13 @@ public class MSKeys {
 			MSKeys MSK = getInstance();
 			int i = new Random().nextInt(MSK.K-1);
 			System.out.println(i);
-			MSK.Z[i]=MSK.rotate(MSK.Z[i], i);
-			for ( i = 0; i < MSK.K; i++) {      
+			MSK.Z[i] = MSK.rotate(MSK.Z[i], i);
+			/*for ( i = 0; i < MSK.K; i++) {      
 	            	printArray(MSK.Z[i],MSK.K);     
-	        }
+	        }*/
 			System.out.println();
             try {
-				MSK.N++;	
+				MSK.N=MSK.N+1;	
                 Thread.sleep(finalT);
             } 
             catch (InterruptedException e) {
@@ -211,7 +215,7 @@ public class MSKeys {
         }
     }
 	private MSKeys(){
-		
+		this.N=0;
 	}
 	public synchronized static MSKeys getInstance(){
 		if (single_instance == null){

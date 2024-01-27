@@ -26,8 +26,8 @@ public class SnmpKeysMib {
 		this.oids=mapa();
 	}
 	private HashMap<String,Object> mapa(){
-
 		HashMap<String,Object> map = new HashMap<>();
+		map.put("0", "SnmpKeysMib");
 		map.put("1", this.systemSnmpKeysMib);
 			map.put("1.1",this.systemSnmpKeysMib.getSystemRestartDate());
 			map.put("1.2",this.systemSnmpKeysMib.getSystemRestartTime());
@@ -42,6 +42,7 @@ public class SnmpKeysMib {
 		map.put("3", this.dataSnmpKeysMib);
 			map.put("3.1",this.dataSnmpKeysMib.getDataNumberOfValidKeys());
 			map.put("3.2","Not Acessible");
+			//map.put("3.2.1","Not Acessible"); falta o ponto intermedio
 				map.put("3.2.1","Not Acessible");
 				map.put("3.2.2","Not Acessible");
 				map.put("3.2.3","Not Acessible");

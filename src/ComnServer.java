@@ -35,6 +35,7 @@ public class ComnServer {
         }
 
         public void run(){
+            MSKeys MSK = MSKeys.getInstance();
             String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
             String[] pduParts = receivedMessage.split("-");
             int requestId = Integer.parseInt(pduParts[3]);
@@ -42,6 +43,7 @@ public class ComnServer {
             String Pairs = pduParts[6];
             System.out.println("Received from client: " + receivedMessage);
             Map<String, String> responsePair = new HashMap<>();
+            Map<String, String> Aux = new HashMap<>();
             Map<String,String> Error = new HashMap<>();
             if(primitiveType == 1){
                 String[] listPairs = Pairs.split(",");
@@ -54,11 +56,12 @@ public class ComnServer {
                             int Value = Integer.parseInt(auxValue);
                             if(mib.contains(Iid)){
                                 System.out.println(Value);
-                                responsePair = mib.getmib(Iid, Value);
+                                Aux = mib.getmib(Iid, Value);
+                                responsePair.putAll(Aux);                           
                             }
                             else{
                                 System.out.println("Oid_Inexistente");
-                                String erro = "Oid_Inexistente";
+                                String erro = "404";
                                 Error.put(Iid, erro);
                             }
                         } catch (Exception e) {
@@ -83,13 +86,13 @@ public class ComnServer {
                         if(mib.contains(Iid)){
                             mib.getOids().put(Iid,Value);
                             responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
-                            if(Iid == "3.2.6"){
-                                //MSKeys.creatC(); criar a chave
+                            if(Iid.equals("3.2.6")){
+                                MSK.generateKeyC();
                             }
                         }
                         else{
                             System.out.println("Oid_Inexistente");
-                            String erro = "Oid_Inexistente";
+                            String erro = "404";
                             Error.put(Iid, erro);
                         }
                     }
