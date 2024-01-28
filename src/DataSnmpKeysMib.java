@@ -102,7 +102,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 						readable.add(key.getKeyRequester());
 					break;
 					case 4:
-						readble.add(key.getKeyExpirationDate());
+						readable.add(key.getKeyExpirationDate());
 					break;
 					case 5:
 						readable.add(key.getKeyExpirationTime());
@@ -111,7 +111,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 						readable.add(key.getKeyVisibility());
 					break;
 					default:
-						readable.add('Incorrect OID');
+						readable.add("Incorrect OID");
 				}
 			}
 		}
