@@ -85,4 +85,37 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 			this.dataTableGeneratedKeys.put(key.getKeyId(), key);
 		}
 	}
+
+	public Object getDataTableGeneratedKeysEntryType(int id, String keyRequester){
+		List<Object> readable = new ArrayList<Object>();
+		this.updateDataTableGeneratedKeysEntryType();
+		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
+			if(key.getKeyRequester().equals(keyRequester) || key.getKeyVisibility() == 2) {
+				switch(id){
+					case 1:
+						readable.add(key.getKeyId());
+					break;
+					case 2:
+						readable.add(key.getKeyValue());
+					break;
+					case 3:
+						readable.add(key.getKeyRequester());
+					break;
+					case 4:
+						readable.add(key.getKeyExpirationDate());
+					break;
+					case 5:
+						readable.add(key.getKeyExpirationTime());
+					break;
+					case 6:
+						readable.add(key.getKeyVisibility());
+					break;
+					default:
+						readable.add("Incorrect OID");
+				}
+			}
+		}
+		
+		return readable;
+	}
 }
