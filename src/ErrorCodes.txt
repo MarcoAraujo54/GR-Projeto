@@ -1,3 +1,4 @@
 101 - oid not acessible
 404 - oid not found
+405 - Method not Allowed Oid ReadOnly
 409 - type mismatch

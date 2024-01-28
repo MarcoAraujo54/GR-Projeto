@@ -2,7 +2,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ComnServer {
@@ -49,6 +51,7 @@ public class ComnServer {
             Map<String, String> responsePair = new HashMap<>();
             Map<String, String> Aux = new HashMap<>();
             Map<String,String> responseError = new HashMap<>();
+            List<String> readWriteOids = Arrays.asList("1.3","1.4","1.5","1.6","2.1","2.2","2.3","3.2.6");
             if (primitiveType == 1) {
                 for (Map.Entry<String, String> pair : pairs.entrySet()) {
                     String Iid = pair.getKey();
@@ -74,13 +77,18 @@ public class ComnServer {
                     String Iid = pair.getKey();
                     String valueStr = pair.getValue();
                     if (mib.contains(Iid)) {
-                        mib.getOids().put(Iid, valueStr);
-                        responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
-                        if (Iid.equals("2.1") || Iid.equals("1.3")) {
-                            MSK.create(mib);
-                        }
-                        if (Iid.equals("3.2.6")) {
-                            MSK.generateKeyC();
+                        if(readWriteOids.contains(Iid)){
+                            mib.getOids().put(Iid, valueStr);
+                            responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
+                            if (Iid.equals("2.1") || Iid.equals("1.3")) {
+                                MSK.create(mib);
+                            }
+                            if (Iid.equals("3.2.6")) {
+                                MSK.generateKeyC();
+                            }
+                        }else{
+                            System.out.println("Oid_ReadOnly");
+                            responseError.put(Iid, "405");
                         }
                     } else {
                         System.out.println("Oid_Inexistente");
