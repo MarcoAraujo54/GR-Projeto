@@ -1,4 +1,5 @@
 import java.util.Random;
+
 public class MSKeys {
 
 	private int N;
@@ -30,7 +31,7 @@ public class MSKeys {
 
 	private byte[] rotate( byte M[], int d) 
 	{
-		  int n = M.length;
+		int n = M.length;
 	        while (d > n) {
 	            d = d - n;
 	        }
@@ -61,8 +62,9 @@ public class MSKeys {
         System.out.print("|| \n");
     }
 	
-	private void updateMValues(byte key[]){
-		this.K = key.length/2;
+	private void updateMValues(byte key[] ,SnmpKeysMib mib){
+		int k = Integer.parseInt(mib.getOidsPosition("1.3").toString());
+		this.K = k;
 		this.M1= new byte[K];
 		this.M2= new byte[K];
 		for(int i=0; i<K; i++) {
@@ -75,6 +77,7 @@ public class MSKeys {
 
 	private void GenZa(){
 		byte temp[]= new byte [this.K];
+		System.out.println(K);
 		this.Za= new byte [K][K];
 			for(int i=0; i < this.K; i++) {
 				for (int j = 0; j < M1.length; j++) {
@@ -87,7 +90,6 @@ public class MSKeys {
 				// printArray(this.Za[i],this.K);
 			}
 		}
-
 
 	private void GenZb(){
 		byte temp2[]= new byte [this.K];
@@ -107,6 +109,7 @@ public class MSKeys {
 		//printArray(this.Zb[i],this.K);
 		}
 	}
+
 	private void GenZc() {
 		this.Zc= new byte [K][K];
 		for(int i=0; i < this.K; i++) {
@@ -133,30 +136,28 @@ public class MSKeys {
 			}
 	}
 
-	 private byte Random() {
-		  return (byte)  new Random().nextInt(256); //Gere valores entre 0 e 255  
-		  
-	    }
-	 private void GenZ() {
-		 this.Z= new byte [K][K];
-		 
-		  for (int i = 0; i < this.K; i++) {
-	            for (int j = 0; j < this.K; j++) {
-	                this.Z[i][j] = (byte) (this.Za[i][j] ^ this.Zb[i][j] ^ this.Zc[i][j] ^ this.Zd[i][j]);
-	            }
-	        }
-		 
-		   for (int i = 0; i < K; i++) {      
-	            //	printArray(this.Z[i],this.K);     
-	        }
-				 
-	 }
+	private byte Random() {
+		return (byte)  new Random().nextInt(256); //Gere valores entre 0 e 255  
+		
+	}
+	private void GenZ() {
+		this.Z= new byte [K][K];
+		
+		for (int i = 0; i < this.K; i++) {
+			for (int j = 0; j < this.K; j++) {
+				this.Z[i][j] = (byte) (this.Za[i][j] ^ this.Zb[i][j] ^ this.Zc[i][j] ^ this.Zd[i][j]);
+			}
+		}
+		for (int i = 0; i < K; i++) {      
+			//	printArray(this.Z[i],this.K);     
+		}				
+	}
 
 	public void create(SnmpKeysMib mib){	
 		String MKey = (mib.getOidsPosition("2.1")).toString();
 		byte[] MasterKey = MKey.getBytes();
 		MSKeys MSK = getInstance();
-		MSK.updateMValues(MasterKey);
+		MSK.updateMValues(MasterKey,mib);
 		 //System.out.println("\n ZAZAZAZAZAZAZAZA");
 		MSK.GenZa();
 		 // System.out.println("\n ZBZBZBZBZBZBZB");
@@ -199,7 +200,6 @@ public class MSKeys {
 			int finalT = Integer.parseInt(stringValue);
 			MSKeys MSK = getInstance();
 			int i = new Random().nextInt(MSK.K-1);
-			System.out.println(i);
 			MSK.Z[i] = MSK.rotate(MSK.Z[i], i);
 			/*for ( i = 0; i < MSK.K; i++) {      
 	            	printArray(MSK.Z[i],MSK.K);     
@@ -225,4 +225,3 @@ public class MSKeys {
 		return single_instance;
 	}
 }
-

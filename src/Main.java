@@ -21,53 +21,22 @@ public class Main {
         scanner.close();          
     }
     private static void runServer(int port) throws IOException{
-        String M = "";
-        int T = 0;  
-        int V = 0; // Validade
-        int X = 0; // maximo de entradas na tabela
         DatagramSocket socket = new DatagramSocket(port);
-        System.out.println(socket);
-        System.out.println("UDP Server is running on port " + port);
-        try {
-            File file = new File("config.txt");
-            Scanner scanner = new Scanner(file);            
-            for (int i = 0; i < 6 && scanner.hasNextLine(); i++) {
-                String line = scanner.nextLine();
-                if (i == 2) {
-                    M = line;
-                    System.out.println(M);
-                }
-                else if(i == 3){
-                    T = Integer.parseInt(line.trim());
-                    System.out.println(T);
-                }
-                else if(i == 4){
-                    V = Integer.parseInt(line.trim());
-                    System.out.println(V);
-                }
-                else if(i == 5){
-                    X = Integer.parseInt(line.trim());
-                    System.out.println(X);
-                }
-            }
-            scanner.close();
-        } 
-        catch (FileNotFoundException e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }            
-        //ToDo -> verificar file da mib
+        System.out.println("UDP Server is running on port " + port);            
         //criar a MIB
         ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
         SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
         DataSnmpKeysMib data = new DataSnmpKeysMib();
         SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
-        mib.getOids().put( "1.4",T);
-        mib.getOids().put( "2.1",M);
         //Criaçao da matriz
+        ConfigLoad ConfigLoad = new ConfigLoad();
+        ConfigLoad.loadConfig(mib);
+
         MSKeys MSK = MSKeys.getInstance();
         MSK.create(mib);
+    
         new Thread(() -> MSK.updateMatrix(mib)).start();
         ComnServer server = new ComnServer(socket, mib);       
-        server.startServer();                    
+        server.startServerThread();                    
     }
 }
