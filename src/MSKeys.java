@@ -199,19 +199,38 @@ public class MSKeys {
 			String stringValue = mib.getOidsPosition("1.4").toString();
 			int finalT = Integer.parseInt(stringValue);
 			MSKeys MSK = getInstance();
-			int i = new Random().nextInt(MSK.K-1);
-			MSK.Z[i] = MSK.rotate(MSK.Z[i], i);
-			for ( i = 0; i < MSK.K; i++) {      
-	            	printArray(MSK.Z[i],MSK.K);     
-	        }
+			for(int j=0;j<MSK.K;j++){
+				int i = new Random().nextInt(MSK.K);
+				System.out.println(i);
+				MSK.Z[j] = MSK.rotate(MSK.Z[j], i);
+			}
+			for ( int i = 0; i < MSK.K; i++) {      
+					printArray(MSK.Z[i],MSK.K);     
+			}
 			System.out.println();
-            try {
+			MSK.Z=transpose(MSK.Z);
+			for ( int i = 0; i < MSK.K; i++) {      
+				printArray(MSK.Z[i],MSK.K);     
+			}
+			for(int j=0;j<MSK.K;j++){
+				//System.out.println(MSK.K-1);
+				int i = new Random().nextInt(MSK.K);
+				System.out.println(i);
+				MSK.Z[j] = MSK.rotate(MSK.Z[j], i);
+			}
+			for ( int i = 0; i < MSK.K; i++) {      
+					printArray(MSK.Z[i],MSK.K);     
+			}
+			MSK.Z=transpose(MSK.Z);
+			System.out.println();
+			try {
 				MSK.N++;	
-                Thread.sleep(finalT);
-            } 
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+				Thread.sleep(finalT);
+			} 
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		
         }
     }
 	private MSKeys(){
