@@ -201,12 +201,12 @@ public class MSKeys {
 			MSKeys MSK = getInstance();
 			int i = new Random().nextInt(MSK.K-1);
 			MSK.Z[i] = MSK.rotate(MSK.Z[i], i);
-			/*for ( i = 0; i < MSK.K; i++) {      
+			for ( i = 0; i < MSK.K; i++) {      
 	            	printArray(MSK.Z[i],MSK.K);     
-	        }*/
+	        }
 			System.out.println();
             try {
-				MSK.N=MSK.N+1;	
+				MSK.N++;	
                 Thread.sleep(finalT);
             } 
             catch (InterruptedException e) {

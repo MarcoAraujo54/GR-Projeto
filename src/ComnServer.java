@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ public class ComnServer {
         while (true) {
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            InetAddress senderIPAddress = receivePacket.getAddress();
+            System.out.println(senderIPAddress);
             socket.receive(receivePacket);
             DatagramSocket responseSocket = new DatagramSocket();
             new Thread(new RequestHandler(responseSocket, mib, receivePacket)).start();
