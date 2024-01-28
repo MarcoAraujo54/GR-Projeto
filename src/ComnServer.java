@@ -47,6 +47,7 @@ public class ComnServer {
             pdu.ProcessPdu(receivedMessage);
             int requestId = pdu.getRequestId();
             int primitiveType = pdu.getPrimitiveType();
+            String Manager = pdu.getIdManager();
             Map<String, String> pairs = pdu.getPair();            
             Map<String, String> responsePair = new HashMap<>();
             Map<String, String> Aux = new HashMap<>();
@@ -104,7 +105,7 @@ public class ComnServer {
             }                  
             int numPairs = responsePair.size();
             int Errors = responseError.size();
-            pdu = new Pdu(0,0,requestId,0, numPairs , responsePair , Errors, responseError);
+            pdu = new Pdu(0,0,Manager,requestId,0, numPairs , responsePair , Errors, responseError);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
             try {

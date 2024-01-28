@@ -48,8 +48,10 @@ public class ConfigLoad {
         }
         mib.getOids().put( "1.3",K);
         mib.getOids().put( "1.4",T);
+        mib.getOids().put( "1.5",X);
+        mib.getOids().put( "1.6",V);
         mib.getOids().put( "2.1",M);
-        
+
     return port;
     }
     

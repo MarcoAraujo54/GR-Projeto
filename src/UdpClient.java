@@ -12,10 +12,12 @@ import java.util.Scanner;
 public class UdpClient {
     public void runClient(String serverAddress, int serverPort,String args[]) {
         int prim = 0;
+        String idMan = "";
         try (DatagramSocket socket = new DatagramSocket()) {
             InetAddress serverInetAddress = InetAddress.getByName(serverAddress);         
             if (args.length > 0) {
-                String param = args[0];
+                idMan = args[0];
+                String param = args[1];
                 if (param.equals("response")) {
                     prim = 0;
                 }else if (param.equals("get")) {
@@ -24,12 +26,12 @@ public class UdpClient {
                     prim = 2;
                 } else {
                     System.out.println("Unrecognized parameter");
-                }
+                }    
             } else {
                 System.out.println("No parameter provided");
             }
             Map<String,String> Par = new HashMap<>();
-            for (int i = 1; i < args.length; i += 2) {
+            for (int i = 2; i < args.length; i += 2) {
                 if (i + 1 < args.length) {
                     Par.put(args[i],args[i+1]);
                 }
@@ -38,7 +40,7 @@ public class UdpClient {
             System.out.println("Pedido numero:"+Pid);
             int numPairs = Par.size();
             Map <String,String> Error = new HashMap<>();
-            Pdu pdu = new Pdu(0,0,Pid,prim, numPairs ,Par , 0,Error);
+            Pdu pdu = new Pdu(0,0,idMan,Pid,prim, numPairs ,Par , 0,Error);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
             
