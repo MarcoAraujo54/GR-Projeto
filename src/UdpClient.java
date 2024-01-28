@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class UdpClient {
-    public void runClient(String serverAddress, int serverPort,String args[]) {
+    public void runClient(String serverAddress, int serverPort,String args[]){
         int prim = 0;
         String idMan = "";
         try (DatagramSocket socket = new DatagramSocket()) {
