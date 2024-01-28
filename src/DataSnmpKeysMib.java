@@ -36,7 +36,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		return dataNumberOfValidKeys;
 	}
 
-	public void insertDataTableGeneratedKeysEntryType(int keyId, String ketValue, int keyRequester, int validityTime, int keyVisibility){
+	public void insertDataTableGeneratedKeysEntryType(int keyId, String keyValue, String keyRequester, int validityTime, int keyVisibility){
 
 		LocalDateTime dateTime = LocalDateTime.now();
 
@@ -52,8 +52,8 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
 		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
 
-		KeysSnmpKeysMib key = new KeysSnmpKeysMib(keyId, keyValue, keyRequest.toString(), date, time, keyVisibility);
-		this.dataTableGeneratedKeysEntry.add(key);
+		KeysSnmpKeysMib key = new KeysSnmpKeysMib(keyId, keyValue, keyRequester, date, time, keyVisibility);
+		this.dataTableGeneratedKeysEntryType.add(key);
 		this.updateDataTableGeneratedKeysEntryType();
 	}
 
@@ -71,9 +71,9 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
 		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
 
-		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntry){
-			if((date > key.getKeyExpirationDate) && (time > keyExpirationTime)){
-				this.dataTableGeneratedKeysEntry.remove(key);
+		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
+			if((date > key.getKeyExpirationDate ()) && (time > key.getKeyExpirationTime())){
+				this.dataTableGeneratedKeysEntryType.remove(key);
 			}
 		}
 		this.updtadeDataTableGeneratedKeys();
@@ -81,7 +81,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 	public void updtadeDataTableGeneratedKeys(){
 		this.dataTableGeneratedKeys = new HashMap<Integer,KeysSnmpKeysMib>();
-		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntry){
+		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
 			this.dataTableGeneratedKeys.put(key.getKeyId(), key);
 		}
 	}
