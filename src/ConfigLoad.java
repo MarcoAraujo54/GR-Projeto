@@ -3,19 +3,24 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class ConfigLoad {
+    private int port;
     private String M;
     private int K;
     private int T;
     private int V; // Validade
     private int X; // Máximo de entradas na tabela
 
-    public void loadConfig(SnmpKeysMib mib){
+    public int loadConfig(SnmpKeysMib mib){
         try {
             File file = new File("config.txt");
             Scanner scanner = new Scanner(file);            
             for (int i = 0; i < 7 && scanner.hasNextLine(); i++) {
                 String line = scanner.nextLine();
-                if (i == 2) {
+                if (i == 0) {
+                    port = Integer.parseInt(line.trim());
+                    System.out.println(port);
+                }
+                else if (i == 2) {
                     M = line;
                     System.out.println(M);
                 }
@@ -40,10 +45,12 @@ public class ConfigLoad {
         } 
         catch (FileNotFoundException e) {
             System.out.println("An error occurred: " + e.getMessage());
-
         }
         mib.getOids().put( "1.3",K);
         mib.getOids().put( "1.4",T);
         mib.getOids().put( "2.1",M);
+        
+    return port;
     }
+    
 }
