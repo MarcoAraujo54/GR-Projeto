@@ -31,8 +31,7 @@ public class Mainclient {
         UdpClient client = new UdpClient();
         Thread clientThread = new Thread(() -> client.runClient(serverAddress, Port, args));
         clientThread.start();
-        boolean closer = true ;
-        while(closer){
+        while(true){
             if(timestamp.getElapsedSeconds()>(V/1000)){
                 clientThread.interrupt();
                 System.exit(1);
