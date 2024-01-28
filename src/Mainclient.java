@@ -13,9 +13,22 @@ public class Mainclient {
                 if (scanner.hasNextLine()) {
                     String ipServer = scanner.nextLine();
                     UdpClient client = new UdpClient();
-                    Thread clientThread = new Thread(() -> client.runClient(ipServer, serverPort, args));
-                    clientThread.start();
-                } 
+                    Thread clientThread = new Thread(() -> client.runClient(ipServer, serverPort, args));~
+                    try{
+                        long startTime = System.currentTimeMillis();
+                        clientThread.start();
+                    } catch (Exception e){
+
+                    }finally{
+                        long endTime = System.currentTimeMillis();
+                        long elapsedTime = endTime - startTime;
+
+                        if(elapsedTime >){
+                             throw new TimeoutException("Timetout");
+                        }
+                    }
+
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
