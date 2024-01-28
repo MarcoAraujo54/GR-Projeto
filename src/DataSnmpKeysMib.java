@@ -83,7 +83,8 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 	public void updtadeDataTableGeneratedKeys(){
 		this.dataTableGeneratedKeys = new HashMap<Integer,KeysSnmpKeysMib>();
-		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntry)
-		this.dataTableGeneratedKeys.put(key.getKeyId(), key);
+		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntry){
+			this.dataTableGeneratedKeys.put(key.getKeyId(), key);
+		}
 	}
 }
