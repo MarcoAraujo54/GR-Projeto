@@ -25,7 +25,6 @@ public class KeysSnmpKeysMib {
 	    this.keyVisibility = keyVisibility;
 	}
 
-	
 	public KeysSnmpKeysMib(KeysSnmpKeysMib other) {
 	    this.keyId = other.keyId;
 	    this.keyValue = other.keyValue;
