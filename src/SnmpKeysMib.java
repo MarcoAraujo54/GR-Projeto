@@ -124,7 +124,7 @@ public class SnmpKeysMib {
 						System.out.println("novopath: "+thirdlevel);
 						System.out.println("mib: " + this.getOidsPosition(thirdlevel));
 						mapa.put(thirdlevel,this.getOidsPosition(thirdlevel).toString());
-						k++;			     
+						k++;
 					}
 					else{
 						k=1;	
