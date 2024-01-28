@@ -2,38 +2,52 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+
+
 public class Mainclient {
     public static void main(String[] args) {
-        File file = new File("config.txt");
-        Scanner scanner = null;
+        int serverPort = 0;
+        String ipServer = "";
+        int V = 0; 
         try {
-            scanner = new Scanner(file);    
-            if (scanner.hasNextLine()) {
-                int serverPort = Integer.parseInt(scanner.nextLine());
-                if (scanner.hasNextLine()) {
-                    String ipServer = scanner.nextLine();
-                    UdpClient client = new UdpClient();
-                    Thread clientThread = new Thread(() -> client.runClient(ipServer, serverPort, args));~
-                    try{
-                        long startTime = System.currentTimeMillis();
-                        clientThread.start();
-                    } catch (Exception e){
+            File file = new File("config.txt");
+            Scanner scanner = new Scanner(file);            
+            for (int i = 0; i < 7 && scanner.hasNextLine(); i++) {
+                String line = scanner.nextLine();
+                if (i == 0) {
+                    serverPort = Integer.parseInt(line.trim());
+                    System.out.println(serverPort);
+                }
+                else if (i == 1) {
+                    ipServer = line;
+                    System.out.println(ipServer);
+                }
+                else if(i == 5){
+                    V = Integer.parseInt(line.trim());
+                    System.out.println(V);
+                } 
+                UdpClient client = new UdpClient();
+                Thread clientThread = new Thread(() -> client.runClient(ipServer, serverPort, args));
+                long startTime = System.currentTimeMillis();
+                try{
+                    
+                    clientThread.start();
+                } catch (Exception e){
 
-                    }finally{
-                        long endTime = System.currentTimeMillis();
-                        long elapsedTime = endTime - startTime;
+                }finally{
+                    long endTime = System.currentTimeMillis();
+                    long elapsedTime = endTime - startTime;
 
-                        if(elapsedTime >){
-                             throw new TimeoutException("Timetout");
-                        }
+                    if(elapsedTime > V){
+                            throw new Exception("Timeout");
                     }
-
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        scanner.close();          
+            scanner.close();
+        } 
+        catch (FileNotFoundException e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }          
     }
 
 }
