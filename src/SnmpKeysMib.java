@@ -43,12 +43,12 @@ public class SnmpKeysMib {
 		map.put("3", this.dataSnmpKeysMib);
 			map.put("3.1",this.dataSnmpKeysMib.getDataNumberOfValidKeys());
 			map.put("3.2","Not Acessible");
-				map.put("3.2.1","Not Acessible");
-				map.put("3.2.2","Not Acessible");
-				map.put("3.2.3","Not Acessible");
-				map.put("3.2.4","Not Acessible");
-				map.put("3.2.5","Not Acessible");
-				map.put("3.2.6","Not Acessible");
+				map.put("3.2.1", this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
+				map.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
+				map.put("3.2.3",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
+				map.put("3.2.4",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
+				map.put("3.2.5",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
+				map.put("3.2.6",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
 		return map;
 	}
 	
