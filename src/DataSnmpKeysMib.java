@@ -37,41 +37,39 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 	}
 
 	public void insertDataTableGeneratedKeysEntryType(int keyId, String ketValue, int keyRequester, int validityTime, int keyVisibility){
-		
 
-
-		LocalDateTime dateTime 	= now();
+		LocalDateTime dateTime = LocalDateTime.now();
 
 		dateTime = dateTime.plusSeconds(validityTime/1000);
 
 		int day = dateTime.getDayOfMonth();
-		int month = dateTime.getMonth();
+		int month = dateTime.getMonthValue();
 		int year = dateTime.getYear();
 		int hour = dateTime.getHour();
 		int minute = dateTime.getMinute();
 		int second = dateTime.getSecond();
 
-		int date = day + month * Math.pow(10, 2) + year * Math.pow(10, 4);
-		int time = second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4);
+		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
+		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
 
-		key = new KeysSnmpKeysMib(keyId, keyValue, keyRequest.toString(), date, time, keyVisibility);
+		KeysSnmpKeysMib key = new KeysSnmpKeysMib(keyId, keyValue, keyRequest.toString(), date, time, keyVisibility);
 		this.dataTableGeneratedKeysEntry.add(key);
 		this.updateDataTableGeneratedKeysEntryType();
 	}
 
 	public void updateDataTableGeneratedKeysEntryType(){
 
-		LocalDateTime dateTime 	= now();
+		LocalDateTime dateTime = LocalDateTime.now();
 
 		int day = dateTime.getDayOfMonth();
-		int month = dateTime.getMonth();
+		int month = dateTime.getMonthValue();
 		int year = dateTime.getYear();
 		int hour = dateTime.getHour();
 		int minute = dateTime.getMinute();
 		int second = dateTime.getSecond();
 
-		int date = day + month * Math.pow(10, 2) + year * Math.pow(10, 4);
-		int time = second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4);
+		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
+		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
 
 		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntry){
 			if((date > key.getKeyExpirationDate) && (time > keyExpirationTime)){
