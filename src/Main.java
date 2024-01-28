@@ -6,7 +6,12 @@ public class Main {
         runServer();
 
     }
-    private static void runServer() throws IOException{    
+    private static void runServer() throws IOException{ 
+
+        long S = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(S);
+        timestamp.getElapsedSeconds();
+
         //Criar a MIB
         ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
         SystemSnmpKeysMib sys = new SystemSnmpKeysMib();

@@ -20,7 +20,7 @@ public class Timestamp {
         this.startTimeStamp = startTimeStamp;
     }
 
-    public long getElapsedMillis() {
-        return (getCurrentTimeMillis() - startTimeStamp);
+    public long getElapsedSeconds() {
+        return ((getCurrentTimeMillis() - startTimeStamp)/1000);
     }
 }
