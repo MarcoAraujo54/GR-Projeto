@@ -58,7 +58,7 @@ public class ComnServer {
                         int Value = Integer.parseInt(valueStr);
                         if (mib.contains(Iid)) {
                             System.out.println(Value);
-                            Aux = mib.getmib(Iid, Value);
+                            Aux = mib.getmib(Iid, Value, Manager);
                             responsePair.putAll(Aux);
                         } else {
                             System.out.println("Oid_Inexistente");
