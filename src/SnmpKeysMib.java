@@ -44,11 +44,11 @@ public class SnmpKeysMib {
 			map.put("3.1",this.dataSnmpKeysMib.getDataNumberOfValidKeys());
 			map.put("3.2","Not Acessible");
 				map.put("3.2.1", this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
-				map.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
-				map.put("3.2.3",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
-				map.put("3.2.4",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
-				map.put("3.2.5",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
-				map.put("3.2.6",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, null));
+				map.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(2, null));
+				map.put("3.2.3",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(3, null));
+				map.put("3.2.4",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(4, null));
+				map.put("3.2.5",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(5, null));
+				map.put("3.2.6",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(6, null));
 		return map;
 	}
 	
@@ -70,7 +70,19 @@ public class SnmpKeysMib {
 	public void setDataSnmpKeysMib(DataSnmpKeysMib dataSnmpKeysMib) {
 		this.dataSnmpKeysMib = dataSnmpKeysMib;
 	}
-	public Object getOidsPosition(String oid){
+	public Object getOidsPosition(String oid ){
+		return oids.get(oid);
+	}
+
+	public Object getOidsPosition(String oid, String KeyRequester ){
+		Scanner scanner = new Scanner(oid).useDelimiter("\\.");
+		int[] num= new int[5];
+		int i=0;
+		while(scanner.hasNextInt()){
+			num[i]= scanner.hasNextInt() ? scanner.nextInt() : 0;
+			i++;
+			}
+		oids.put(oid,this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(num[i-1], KeyRequester));
 		return oids.get(oid);
 	}
 	public HashMap<String,Object> getOids(){
@@ -82,7 +94,7 @@ public class SnmpKeysMib {
 		}
 		return false;
 	}
-	public HashMap<String,String> getmib(String StartPath,int nextpos){
+	public HashMap<String,String> getmib(String StartPath,int nextpos, String KeyReq){
 		HashMap<String,String> mapa = new HashMap<>();
 		Scanner scanner = new Scanner(StartPath).useDelimiter("\\.");
 		int[] num= new int[5];
@@ -122,8 +134,8 @@ public class SnmpKeysMib {
 					if(this.oids.containsKey(secondlevel+"."+String.valueOf(k)) && cont<=nextpos){ 
 						String thirdlevel=secondlevel+"."+String.valueOf(k);
 						System.out.println("novopath: "+thirdlevel);
-						System.out.println("mib: " + this.getOidsPosition(thirdlevel));
-						mapa.put(thirdlevel,this.getOidsPosition(thirdlevel).toString());
+						System.out.println("mib: " + this.getOidsPosition(thirdlevel,KeyReq));
+						mapa.put(thirdlevel,this.getOidsPosition(thirdlevel,KeyReq).toString());
 						k++;
 					}
 					else{
