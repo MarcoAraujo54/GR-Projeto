@@ -41,7 +41,7 @@ public class Pdu {
     }
 
     public String toMyString() {
-        return securityModel + "-" + numSecurityParams + "-" + securityMecs + "-" + idManager + "-" + requestId + "-" + primitiveType + "-" + numberPairs + "-" + pair + "-" + numberErrors + "-" + errors;
+        return this.securityModel + "-" + this.numSecurityParams + "-" + this.securityMecs + "-" + this.idManager + "-" + this.requestId + "-" + this.primitiveType + "-" + this.numberPairs + "-" + this.pair + "-" + this.numberErrors + "-" + this.errors;
     }
     
     public int getSecurityModel() {

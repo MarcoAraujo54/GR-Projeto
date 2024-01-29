@@ -19,7 +19,7 @@ public class ComnServer {
         while (true) {
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            socket.receive(receivePacket);
+            this.socket.receive(receivePacket);
             DatagramSocket responseSocket = new DatagramSocket();
             new Thread(new RequestHandler(responseSocket, mib, receivePacket)).start();
         }
@@ -38,7 +38,7 @@ public class ComnServer {
 
         public void run(){
             MSKeys MSK = MSKeys.getInstance();
-            String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
+            String receivedMessage = new String(this.receivePacket.getData(), 0, this.receivePacket.getLength());
             System.out.println("Received from client: " + receivedMessage);
             Pdu pdu = new Pdu();
             pdu.ProcessPdu(receivedMessage);
@@ -58,7 +58,7 @@ public class ComnServer {
                         int Value = Integer.parseInt(valueStr);
                         if (mib.contains(Iid)) {
                             System.out.println(Value);
-                            Aux = mib.getmib(Iid, Value,Manager);
+                            Aux = mib.getmib(Iid, Value, Manager);
                             responsePair.putAll(Aux);
                         } else {
                             System.out.println("Oid_Inexistente");
@@ -104,9 +104,9 @@ public class ComnServer {
             int Errors = responseError.size();
             pdu = new Pdu(0,0,Manager,requestId,0, numPairs , responsePair , Errors, responseError);
             byte[] sendData = pdu.toMyString().getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
+            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, this.receivePacket.getAddress(), this.receivePacket.getPort());
             try {
-                responseSocket.send(sendPacket);
+                this.responseSocket.send(sendPacket);
             } catch (IOException e) {
                 e.printStackTrace();
             }            

@@ -214,7 +214,6 @@ public class MSKeys {
 				printArray(MSK.Z[i],MSK.K);     
 			}
 			for(int j=0;j<MSK.K;j++){
-				//System.out.println(MSK.K-1);
 				int i = new Random().nextInt(MSK.K);
 				System.out.println(i);
 				MSK.Z[j] = MSK.rotate(MSK.Z[j], i);

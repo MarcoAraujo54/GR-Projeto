@@ -50,6 +50,7 @@ public class UdpClient {
             socket.receive(receivePacket);
             String receivedMessage = new String(receivePacket.getData(), 0, receivePacket.getLength());
             System.out.println("Received from server: " + receivedMessage);
+            System.exit(1);
         } catch (IOException e) {
             e.printStackTrace();
         }
