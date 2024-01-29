@@ -1,5 +1,5 @@
 import java.util.Random;
-
+import java.util.Arrays;
 public class MSKeys {
 
 	private int N;
@@ -192,6 +192,7 @@ public class MSKeys {
         for (int k = 0; k < MSK.K; k++) {
             C[k] = (byte) (Zi[k] ^ Zj[k]);
         }
+		printArray(C, K);
         return C;
     }
 	public void updateMatrix(SnmpKeysMib mib) {
