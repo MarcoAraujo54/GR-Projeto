@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 
 public class SystemSnmpKeysMib {
 	
@@ -81,5 +82,19 @@ public class SystemSnmpKeysMib {
 	
 	public void setSystemKeysTimeToLive(int systemKeysTimeToLive) {
 		this.systemKeysTimeToLive = systemKeysTimeToLive;
+	}
+	public void updateDate(){
+		LocalDateTime dateTime = LocalDateTime.now();
+
+		int day = dateTime.getDayOfMonth();
+		int month = dateTime.getMonthValue();
+		int year = dateTime.getYear();
+		int hour = dateTime.getHour();
+		int minute = dateTime.getMinute();
+		int second = dateTime.getSecond();
+
+		this.systemRestartDate = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
+		this.systemRestartTime = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
+		
 	}
 }

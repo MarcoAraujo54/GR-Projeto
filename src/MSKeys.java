@@ -171,6 +171,7 @@ public class MSKeys {
 		for (int i = 0; i < K; i++) {      
 				printArray(this.Z[i],this.K);     
 		}
+		
 		System.out.println("matrizes criadas");
 	
 	}
