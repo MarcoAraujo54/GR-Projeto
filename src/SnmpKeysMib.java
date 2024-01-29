@@ -11,22 +11,21 @@ public class SnmpKeysMib {
 		this.systemSnmpKeysMib = systemSnmpKeysMib;
 		this.configSnmpKeysMib = configSnmpKeysMib;
 		this.dataSnmpKeysMib = dataSnmpKeysMib;
-		this.oids=mapa();
+		this.oids=createMib();
 	}
 	public SnmpKeysMib(SnmpKeysMib s) {
 		this.systemSnmpKeysMib = s.systemSnmpKeysMib;
 		this.configSnmpKeysMib = s.configSnmpKeysMib;
 		this.dataSnmpKeysMib = s.dataSnmpKeysMib;
-		this.oids=mapa();
+		this.oids=createMib();
 	}
-	
 	public SnmpKeysMib() {
 		this.systemSnmpKeysMib = new SystemSnmpKeysMib();
 		this.configSnmpKeysMib = new ConfigSnmpKeysMib();
 		this.dataSnmpKeysMib = new DataSnmpKeysMib();
-		this.oids=mapa();
+		this.oids=createMib();
 	}
-	private HashMap<String,Object> mapa(){
+	private HashMap<String,Object> createMib(){
 		HashMap<String,Object> map = new HashMap<>();
 		map.put("0", "SnmpKeysMib");
 		map.put("1", this.systemSnmpKeysMib);
