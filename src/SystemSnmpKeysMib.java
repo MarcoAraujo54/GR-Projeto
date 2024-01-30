@@ -10,8 +10,7 @@ public class SystemSnmpKeysMib {
 	private int systemKeysTimeToLive;
 		
 	public SystemSnmpKeysMib() {
-		this.systemRestartDate = 0;
-		this.systemRestartTime = 0; 
+		this.updateDate();
 		this.systemKeySize = 0; 
 		this.systemIntervalUpdate = 0; 
 		this.systemMaxNumberOfKey = 0; 

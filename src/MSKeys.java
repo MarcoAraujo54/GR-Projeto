@@ -177,13 +177,9 @@ public class MSKeys {
 	}
 	public byte[] generateKeyC() {
 		MSKeys MSK = getInstance();
-		int n = MSK.N;
-		int seed = n + MSK.Z[0][0];
-        Random rand = new Random(seed);
+        Random rand = new Random();
         int i = rand.nextInt(0,MSK.K-1);
         byte[] Zi = MSK.Z[i];
-		seed = MSK.Z[i][0];
-		rand = new Random(seed);
         int j = rand.nextInt(0,MSK.K-1);
         byte[] Zj = new byte[MSK.K];
         for (int k = 0; k < MSK.K; k++) {

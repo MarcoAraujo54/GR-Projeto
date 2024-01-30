@@ -80,12 +80,13 @@ public class ComnServer {
                             responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
                             if (Iid.equals("2.1") || Iid.equals("1.3")) {
                                 MSK.create(mib);
+                                mib.getSystemSnmpKeysMib().updateDate();
+                                mib.getOids().put("1.1",mib.getSystemSnmpKeysMib().getSystemRestartDate());
+                                mib.getOids().put("1.2",mib.getSystemSnmpKeysMib().getSystemRestartTime());
                             }
                             if (Iid.equals("3.2.6")) {
                                 this.mib.getDataSnmpKeysMib().
                                 insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager, requestId, Integer.parseInt(valueStr));
-                               
-                                
                             }
                         }else{
                             System.out.println("Oid_ReadOnly");

@@ -120,9 +120,6 @@ public class SnmpKeysMib {
 				if(this.oids.containsKey(secondlevel)){
 						cont++;
 					if(k<=1){
-						System.out.println(cont);
-						System.out.println("novopath: "+secondlevel);
-						System.out.println("mib: " + this.getOidsPosition(secondlevel));
 						if(this.getOidsPosition(secondlevel).equals("Not Acessible")){
 							cont--;
 						}
@@ -132,8 +129,6 @@ public class SnmpKeysMib {
 					}
 					if(this.oids.containsKey(secondlevel+"."+String.valueOf(k)) && cont<=nextpos){ 
 						String thirdlevel=secondlevel+"."+String.valueOf(k);
-						System.out.println("novopath: "+thirdlevel);
-						System.out.println("mib: " + this.getOidsPosition(thirdlevel,KeyReq));
 						mapa.put(thirdlevel,this.getOidsPosition(thirdlevel,KeyReq).toString());
 						k++;
 					}
