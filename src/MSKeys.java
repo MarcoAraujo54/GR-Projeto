@@ -1,5 +1,13 @@
 import java.util.Random;
 import java.util.Arrays;
+/**
+* Generates and manages the value of the keys
+*
+* @author Gustavo Oliveira
+* @author José Peleja
+* @author Marco Araújo
+*
+*/
 public class MSKeys {
 
 	private int N;

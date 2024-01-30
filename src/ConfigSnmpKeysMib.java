@@ -1,4 +1,11 @@
-
+/**
+* Config group of the snmpKeysMib
+*
+* @author Gustavo Oliveira
+* @author José Peleja
+* @author Marco Araújo
+*
+*/
 public class ConfigSnmpKeysMib {
 	
 	private String configMasterKey;

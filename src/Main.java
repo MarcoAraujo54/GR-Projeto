@@ -1,6 +1,13 @@
 import java.io.IOException;
 import java.net.DatagramSocket;
-
+/**
+* Server side main
+*
+* @author Gustavo Oliveira
+* @author José Peleja
+* @author Marco Araújo
+*
+*/
 public class Main {
     public static void main(String[] args) throws IOException {
         runServer();

@@ -1,5 +1,13 @@
 import java.util.HashMap;
 import java.util.Scanner;
+/**
+* Implementation of the snmpKeysMib
+*
+* @author Gustavo Oliveira
+* @author José Peleja
+* @author Marco Araújo
+*
+*/
 
 public class SnmpKeysMib {
 	private SystemSnmpKeysMib systemSnmpKeysMib;
