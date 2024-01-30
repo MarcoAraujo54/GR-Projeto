@@ -3,6 +3,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +52,6 @@ public class ComnServer {
             Map<String,String> responseError = new HashMap<>();
             List<String> readWriteOids = Arrays.asList("1.3","1.4","1.5","1.6","2.1","2.2","2.3","3.2.6");
             if (primitiveType == 1) {
-             
                 mib.updateData(Manager);
                 for (Map.Entry<String, String> pair : pairs.entrySet()) {
                     String Iid = pair.getKey();

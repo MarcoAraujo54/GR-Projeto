@@ -78,7 +78,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
 		System.out.println(time);
 		System.out.println(key.getKeyExpirationTime());
-			if((date >= key.getKeyExpirationDate ()) && (time > key.getKeyExpirationTime())){
+			if((date > key.getKeyExpirationDate ()) && (time > key.getKeyExpirationTime())){
 				System.out.println("ENTREI");
 				
 					try {
