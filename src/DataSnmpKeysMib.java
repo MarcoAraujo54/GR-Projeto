@@ -51,9 +51,13 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
 		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
-		int keyId= this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()) > 0 ?  this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()-1).getKeyId() : 0;
+		
+		int keyId= (this.dataTableGeneratedKeysEntryType.size()) > 0 ?  this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()-1).getKeyId() : 0;
+
 		KeysSnmpKeysMib key = new KeysSnmpKeysMib(keyId, keyValue, keyRequester, date, time, keyVisibility);
-		this.dataTableGeneratedKeysEntryType.add(key);
+		if(keyVisibility<=2 && keyVisibility >=0){
+			this.dataTableGeneratedKeysEntryType.add(key);
+		}
 		this.updateDataTableGeneratedKeysEntryType();
 	}
 
@@ -70,27 +74,38 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
 		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
-
+		if(this.dataTableGeneratedKeysEntryType.size()>1){
 		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
-			if((date > key.getKeyExpirationDate ()) && (time > key.getKeyExpirationTime())){
-				this.dataTableGeneratedKeysEntryType.remove(key);
-			}
+		System.out.println(time);
+		System.out.println(key.getKeyExpirationTime());
+			if((date >= key.getKeyExpirationDate ()) && (time > key.getKeyExpirationTime())){
+				System.out.println("ENTREI");
+				
+					try {
+						this.dataTableGeneratedKeysEntryType.remove(key);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+			
+				}
+		}		
+			
 		}
-		this.updtadeDataTableGeneratedKeys();
+		//this.updtadeDataTableGeneratedKeys();
 	}
 
-	public void updtadeDataTableGeneratedKeys(){
+	/*public void updtadeDataTableGeneratedKeys(){
 		this.dataTableGeneratedKeys = new HashMap<Integer,KeysSnmpKeysMib>();
 		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
 			this.dataTableGeneratedKeys.put(key.getKeyId(), key);
 		}
 	}
-
+*/
 	public Object getDataTableGeneratedKeysEntryType(int id, String keyRequester){
 		List<Object> readable = new ArrayList<Object>();
 		this.updateDataTableGeneratedKeysEntryType();
 		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
-			if(key.getKeyRequester().equals(keyRequester) || key.getKeyVisibility() == 2) {
+			if((key.getKeyRequester().equals(keyRequester) || key.getKeyVisibility() == 2)&& key.getKeyVisibility()!=0) {
 				switch(id){
 					case 1:
 						readable.add(key.getKeyId());
@@ -115,7 +130,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 				}
 			}
 		}
-		
+		System.out.println(readable);
 		return readable;
 	}
 }

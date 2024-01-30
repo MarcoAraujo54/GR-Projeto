@@ -154,6 +154,7 @@ public class MSKeys {
 	}
 
 	public void create(SnmpKeysMib mib){	
+		
 		String MKey = (mib.getOidsPosition("2.1")).toString();
 		byte[] MasterKey = MKey.getBytes();
 		MSKeys MSK = getInstance();
@@ -172,6 +173,7 @@ public class MSKeys {
 				printArray(this.Z[i],this.K);     
 		}
 		
+
 		System.out.println("matrizes criadas");
 	
 	}
@@ -193,7 +195,7 @@ public class MSKeys {
         for (int k = 0; k < MSK.K; k++) {
             C[k] = (byte) (Zi[k] ^ Zj[k]);
         }
-		printArray(C, K);
+		
         return C;
     }
 	public void updateMatrix(SnmpKeysMib mib) {
@@ -203,27 +205,17 @@ public class MSKeys {
 			MSKeys MSK = getInstance();
 			for(int j=0;j<MSK.K;j++){
 				int i = new Random().nextInt(MSK.K);
-				System.out.println(i);
+				
 				MSK.Z[j] = MSK.rotate(MSK.Z[j], i);
-			}
-			for ( int i = 0; i < MSK.K; i++) {      
-					printArray(MSK.Z[i],MSK.K);     
-			}
-			System.out.println();
+			}	
 			MSK.Z=transpose(MSK.Z);
-			for ( int i = 0; i < MSK.K; i++) {      
-				printArray(MSK.Z[i],MSK.K);     
-			}
 			for(int j=0;j<MSK.K;j++){
 				int i = new Random().nextInt(MSK.K);
-				System.out.println(i);
+			
 				MSK.Z[j] = MSK.rotate(MSK.Z[j], i);
 			}
-			for ( int i = 0; i < MSK.K; i++) {      
-					printArray(MSK.Z[i],MSK.K);     
-			}
+		
 			MSK.Z=transpose(MSK.Z);
-			System.out.println();
 			try {
 				MSK.N++;	
 				Thread.sleep(finalT);

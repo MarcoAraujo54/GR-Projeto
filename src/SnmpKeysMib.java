@@ -116,13 +116,10 @@ public class SnmpKeysMib {
 				while (condition && cont<=nextpos) {
 				
 				String secondlevel= firstlevel + "." + String.valueOf(x);
-				//System.out.println(secondlevel);
 				if(this.oids.containsKey(secondlevel)){
-						cont++;
+					
 					if(k<=1){
-						System.out.println(cont);
-						System.out.println("novopath: "+secondlevel);
-						System.out.println("mib: " + this.getOidsPosition(secondlevel));
+						
 						if(this.getOidsPosition(secondlevel).equals("Not Acessible")){
 							cont--;
 						}
@@ -132,15 +129,13 @@ public class SnmpKeysMib {
 					}
 					if(this.oids.containsKey(secondlevel+"."+String.valueOf(k)) && cont<=nextpos){ 
 						String thirdlevel=secondlevel+"."+String.valueOf(k);
-						System.out.println("novopath: "+thirdlevel);
-						System.out.println("mib: " + this.getOidsPosition(thirdlevel,KeyReq));
 						mapa.put(thirdlevel,this.getOidsPosition(thirdlevel,KeyReq).toString());
 						k++;
 					}
 					else{
 						k=1;	
 					} 
-						
+					cont++;	
 				}
 				else{
 					x=0;
@@ -152,5 +147,13 @@ public class SnmpKeysMib {
 					
 		}
 		return mapa;
+	}
+	public void updateData(String m){
+		this.oids.put("3.2.1", this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, m));
+		this.oids.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(2, m));
+		this.oids.put("3.2.3",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(3, m));
+		this.oids.put("3.2.4",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(4, m));
+		this.oids.put("3.2.5",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(5, m));
+		this.oids.put("3.2.6",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(6, m));
 	}
 }

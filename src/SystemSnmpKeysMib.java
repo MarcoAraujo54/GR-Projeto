@@ -10,8 +10,7 @@ public class SystemSnmpKeysMib {
 	private int systemKeysTimeToLive;
 		
 	public SystemSnmpKeysMib() {
-		this.systemRestartDate = 0;
-		this.systemRestartTime = 0; 
+		this.updateDate();
 		this.systemKeySize = 0; 
 		this.systemIntervalUpdate = 0; 
 		this.systemMaxNumberOfKey = 0; 
@@ -37,7 +36,7 @@ public class SystemSnmpKeysMib {
 	}
 	
 	public int getSystemRestartDate() {
-		return systemRestartDate;
+		return this.systemRestartDate;
 	}
 	
 	public void setSystemRestartDate(int systemRestartDate) {
@@ -45,7 +44,7 @@ public class SystemSnmpKeysMib {
 	}
 	
 	public int getSystemRestartTime() {
-		return systemRestartTime;
+		return this.systemRestartTime;
 	}
 	
 	public void setSystemRestartTime(int systemRestartTime) {
@@ -95,6 +94,5 @@ public class SystemSnmpKeysMib {
 
 		this.systemRestartDate = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
 		this.systemRestartTime = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
-		
 	}
 }

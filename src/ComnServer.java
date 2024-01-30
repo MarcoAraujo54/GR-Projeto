@@ -51,6 +51,8 @@ public class ComnServer {
             Map<String,String> responseError = new HashMap<>();
             List<String> readWriteOids = Arrays.asList("1.3","1.4","1.5","1.6","2.1","2.2","2.3","3.2.6");
             if (primitiveType == 1) {
+             
+                mib.updateData(Manager);
                 for (Map.Entry<String, String> pair : pairs.entrySet()) {
                     String Iid = pair.getKey();
                     String valueStr = pair.getValue();
@@ -69,6 +71,7 @@ public class ComnServer {
                         responseError.put(Iid, "409");
                     }
                 }
+                
             }
             else if (primitiveType == 2) {
                 for (Map.Entry<String, String> pair : pairs.entrySet()) {
@@ -80,12 +83,14 @@ public class ComnServer {
                             responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
                             if (Iid.equals("2.1") || Iid.equals("1.3")) {
                                 MSK.create(mib);
+                                mib.getSystemSnmpKeysMib().updateDate();
+                                mib.getOids().put("1.1",mib.getSystemSnmpKeysMib().getSystemRestartDate());
+                                mib.getOids().put("1.2",mib.getSystemSnmpKeysMib().getSystemRestartTime());
                             }
                             if (Iid.equals("3.2.6")) {
                                 this.mib.getDataSnmpKeysMib().
                                 insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager, requestId, Integer.parseInt(valueStr));
-                               
-                                
+                                mib.updateData(Manager);
                             }
                         }else{
                             System.out.println("Oid_ReadOnly");
