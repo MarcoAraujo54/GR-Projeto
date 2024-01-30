@@ -9,7 +9,7 @@ import java.lang.Math;
 * Data group of the snmpKeysMib
 *
 * @author Gustavo Oliveira
-* @author José Pedro Fernandes Peleja
+* @author José Peleja
 * @author Marco Araújo
 *
 */
@@ -91,8 +91,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 			if ((date >= key.getKeyExpirationDate()) && (time > key.getKeyExpirationTime())) {
 				iterator.remove(); 
 			}
-		}	
-			
+		}			
 		this.updtadeDataTableGeneratedKeys();
 	}
 

@@ -2,11 +2,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+* Class to process the Protocol Data Unit
+*
+* @author Gustavo Oliveira
+* @author José Peleja
+* @author Marco Araújo
+*
+*/
 public class Pdu {
     private int securityModel; // S
     private int numSecurityParams; // NS
-    private String idManager; // ID do Gestor
+    private String idManager; // ID from manager
     private List<String> securityMecs; // Q
     private int requestId; // P
     private int primitiveType; // Y
@@ -40,10 +47,6 @@ public class Pdu {
         this.errors = new HashMap<>();
     }
 
-    public String toMyString() {
-        return this.securityModel + "-" + this.numSecurityParams + "-" + this.securityMecs + "-" + this.idManager + "-" + this.requestId + "-" + this.primitiveType + "-" + this.numberPairs + "-" + this.pair + "-" + this.numberErrors + "-" + this.errors;
-    }
-    
     public int getSecurityModel() {
         return securityModel;
     }
@@ -123,7 +126,23 @@ public class Pdu {
     public void setSecurityMecs(List<String> securityMecs) {
         this.securityMecs = securityMecs;
     }
-
+    
+    /**
+     * Method to create a string representation of the object's current state.
+     *
+     * @return String A string representing the current state of the object, with different fields separated by "-".
+     * 
+     */
+    public String toMyString() {
+        return this.securityModel + "-" + this.numSecurityParams + "-" + this.securityMecs + "-" + this.idManager + "-" + this.requestId + "-" + this.primitiveType + "-" + this.numberPairs + "-" + this.pair + "-" + this.numberErrors + "-" + this.errors;
+    }
+    
+    /**
+     * Method to process a Protocol Data Unit (PDU) received as a message.
+     *
+     * @param receivedMessage A string representing the received PDU, expected to be formatted with various parts separated by hyphens ("-").
+     * 
+     */
     public void ProcessPdu(String receivedMessage) {
         String[] pduParts = receivedMessage.split("-");
         this.securityModel = Integer.parseInt(pduParts[0]);
@@ -137,14 +156,20 @@ public class Pdu {
         this.errors = new HashMap<>();
     }
 
+    /**
+     * Method for parsing a string containing pairs in the format "{id}={value}" and converting them into a map.
+     *
+     * @param pairsStr String containing pairs in the format "{id}={value}", separated by commas.
+     * @return Map<String, String> A map where each key (id) is associated with its corresponding value.
+     */
     private Map<String, String> parsePair(String pairsStr) {
         Map<String, String> pairsMap = new HashMap<>();
         String[] pairs = pairsStr.split(",");
         for (String pair : pairs) {
             String[] keyValue = pair.split("=");
-            String Iid = keyValue[0].replace("{", "").trim();
+            String iId = keyValue[0].replace("{", "").trim();
             String Value = keyValue[1].replace("}", "").trim();
-            pairsMap.put(Iid, Value);
+            pairsMap.put(iId, Value);
         }
     return pairsMap;
     }

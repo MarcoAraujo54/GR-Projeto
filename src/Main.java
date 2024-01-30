@@ -19,23 +19,23 @@ public class Main {
         Timestamp timestamp = new Timestamp(S);
         timestamp.getElapsedSeconds();
 
-        //Criar a MIB
+        //Create MIB
         ConfigSnmpKeysMib config = new ConfigSnmpKeysMib();
         SystemSnmpKeysMib sys = new SystemSnmpKeysMib();
         DataSnmpKeysMib data = new DataSnmpKeysMib();
         SnmpKeysMib mib = new SnmpKeysMib(sys, config, data);
 
-        //Leitura do config 
+        //Configuration read 
         int port;
         ConfigLoad ConfigLoad = new ConfigLoad();
         port = ConfigLoad.loadConfig(mib);
 
-        //Criaçao e update da matriz
+        //Creation and update matrix
         MSKeys MSK = MSKeys.getInstance();
         MSK.create(mib);    
         new Thread(() -> MSK.updateMatrix(mib)).start();
 
-        //Inicio do servidor
+        //Server start
         DatagramSocket socket = new DatagramSocket(port);
         System.out.println("UDP Server is running on port " + port);
         ComnServer server = new ComnServer(socket, mib);
