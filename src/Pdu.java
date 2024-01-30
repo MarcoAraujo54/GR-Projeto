@@ -13,7 +13,7 @@ import java.util.Map;
 public class Pdu {
     private int securityModel; // S
     private int numSecurityParams; // NS
-    private String idManager; // ID do Gestor
+    private String idManager; // ID from manager
     private List<String> securityMecs; // Q
     private int requestId; // P
     private int primitiveType; // Y
