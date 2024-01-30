@@ -2,7 +2,7 @@
 * Config group of the snmpKeysMib
 *
 * @author Gustavo Oliveira
-* @author José Pedro Fernandes Peleja
+* @author José Peleja
 * @author Marco Araújo
 *
 */
