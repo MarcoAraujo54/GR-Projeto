@@ -1,3 +1,11 @@
+/**
+* Type of entries in the table used on DataSnmpKeysMib class
+*
+* @author Gustavo Oliveira
+* @author José Pedro Fernandes Peleja
+* @author Marco Araújo
+*
+*/
 public class KeysSnmpKeysMib {
 	
 	private int keyId;
