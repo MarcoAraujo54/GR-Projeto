@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.time.LocalDateTime;
@@ -36,7 +37,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		return dataNumberOfValidKeys;
 	}
 
-	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility){
+	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility, SnmpKeysMib mib){
 
 		LocalDateTime dateTime = LocalDateTime.now();
 
@@ -50,9 +51,9 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		int second = dateTime.getSecond();
 
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
-		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
+		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4) + (Integer.parseInt(mib.getOidsPosition("1.6").toString()))/1000);
 		
-		int keyId= (this.dataTableGeneratedKeysEntryType.size()) > 0 ?  this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()-1).getKeyId() : 0;
+		int keyId= (this.dataTableGeneratedKeysEntryType.size()) > 0 ?  (this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()-1).getKeyId())+1 : 0;
 
 		KeysSnmpKeysMib key = new KeysSnmpKeysMib(keyId, keyValue, keyRequester, date, time, keyVisibility);
 		if(keyVisibility<=2 && keyVisibility >=0){
@@ -74,23 +75,20 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
 		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
-		if(this.dataTableGeneratedKeysEntryType.size()>1){
-		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
-		System.out.println(time);
-		System.out.println(key.getKeyExpirationTime());
-			if((date > key.getKeyExpirationDate ()) && (time > key.getKeyExpirationTime())){
-				System.out.println("ENTREI");
-				
-					try {
-						this.dataTableGeneratedKeysEntryType.remove(key);
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
+		Iterator<KeysSnmpKeysMib> iterator = this.dataTableGeneratedKeysEntryType.iterator();
+		while (iterator.hasNext()) {
+			KeysSnmpKeysMib key = iterator.next();
 			
-				}
-		}		
+			// Debugging: Print the values to check them
+			System.out.println("Current Date: " + date + ", Expiration Date: " + key.getKeyExpirationDate());
+			System.out.println("Current Time: " + time + ", Expiration Time: " + key.getKeyExpirationTime());
+
+			if ((date >= key.getKeyExpirationDate()) && (time > key.getKeyExpirationTime())) {
+				iterator.remove(); // Use iterator's remove method
+			}
+		}	
 			
-		}
+		
 		//this.updtadeDataTableGeneratedKeys();
 	}
 
