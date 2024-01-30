@@ -8,7 +8,14 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
+/**
+* Class to handle the client side of the udp connection
+*
+* @author Gustavo Oliveira
+* @author José Pedro Fernandes Peleja
+* @author Marco Araújo
+*
+*/
 public class UdpClient {
     public void runClient(String serverAddress, int serverPort,String args[]){
         int prim = 0;
