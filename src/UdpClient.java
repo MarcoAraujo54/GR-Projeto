@@ -73,7 +73,7 @@ public class UdpClient {
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return newValue; // Retorna o valor padrão se ocorrer um erro
+            return newValue;
         }
         try (PrintWriter writer = new PrintWriter(file)) {
             writer.println(newValue);

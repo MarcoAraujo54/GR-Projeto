@@ -5,7 +5,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+* Class to handle the server side of the udp connection
+*
+* @author Gustavo Oliveira
+* @author José Peleja
+* @author Marco Araújo
+*
+*/
 public class ComnServer {
     private DatagramSocket socket;
     private SnmpKeysMib mib;
