@@ -120,6 +120,8 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 	* @param id last number of the oid representing which value to get from KeysSnmpKeysMib.
 	* @param keyRequeter the identification of the manager/client that requested the key
  	* 
+	* @return readble object with the list of readble values for the manager/client 
+	*
 	*/
 	public Object getDataTableGeneratedKeysEntryType(int id, String keyRequester){
 		List<Object> readable = new ArrayList<Object>();
