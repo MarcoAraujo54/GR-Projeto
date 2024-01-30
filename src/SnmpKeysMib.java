@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Scanner;
+
 /**
 * Implementation of the snmpKeysMib
 *
@@ -101,7 +102,14 @@ public class SnmpKeysMib {
 		}
 		return false;
 	}
-
+	/**
+     * Retrieves  MIB information based on the specified starting path, next number of positions, and KeyReq.
+     *
+     * @param startPath The starting path for retrieval.
+     * @param nextPos   The number of next positions for retrieval.
+     * @param keyReq    KeyReq information.
+     * @return HashMap representing the retrieved SNMP MIB information.
+     */
 	public HashMap<String,String> getmib(String StartPath,int nextpos, String KeyReq){
 		
 		HashMap<String,String> mapa = new HashMap<>();
@@ -119,13 +127,10 @@ public class SnmpKeysMib {
 		String firstlevel;
 		int cont=0;
 		for(i=num[0];i<=3;i++){
-			
 			condition=true;
 			firstlevel=String.valueOf(i);
-			
 				while (condition && cont<=nextpos) {
-				
-				String secondlevel= firstlevel + "." + String.valueOf(x);
+					String secondlevel= firstlevel + "." + String.valueOf(x);
 				if(this.oids.containsKey(secondlevel)){
 					
 					if(k<=1){
@@ -158,13 +163,14 @@ public class SnmpKeysMib {
 		}
 		return mapa;
 	}
-
 	public void updateData(String m){
+		
 		this.oids.put("3.2.1", this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, m));
 		this.oids.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(2, m));
 		this.oids.put("3.2.3",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(3, m));
 		this.oids.put("3.2.4",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(4, m));
 		this.oids.put("3.2.5",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(5, m));
 		this.oids.put("3.2.6",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(6, m));
+		this.oids.put("3.1", this.getDataSnmpKeysMib().getDataNumberOfValidKeys());
 	}
 }

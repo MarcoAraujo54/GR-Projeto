@@ -85,18 +85,34 @@ public class ComnServer {
                     String valueStr = pair.getValue();
                     if (mib.contains(Iid)) {
                         if(readWriteOids.contains(Iid)){
+                            int aux=  Integer.parseInt(mib.getOidsPosition("1.3").toString());
                             mib.getOids().put(Iid, valueStr);
-                            responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
+                           
                             if (Iid.equals("2.1") || Iid.equals("1.3")) {
-                                MSK.create(mib);
+                                try {
+                                    MSK.create(mib);
+                                } catch (Exception e) {
+                                    mib.getOids().put(Iid,aux );
+                                    responseError.put(Iid, "411");
+                                }
                                 mib.getSystemSnmpKeysMib().updateDate();
                                 mib.getOids().put("1.1",mib.getSystemSnmpKeysMib().getSystemRestartDate());
                                 mib.getOids().put("1.2",mib.getSystemSnmpKeysMib().getSystemRestartTime());
                             }
                             if (Iid.equals("3.2.6")) {
+                                try{ 
                                 this.mib.getDataSnmpKeysMib().
-                                insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager, Integer.parseInt(mib.getOidsPosition("1.6").toString()), Integer.parseInt(valueStr));
+                                insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager,
+                                Integer.parseInt(mib.getOidsPosition("1.6").toString()), Integer.parseInt(valueStr), Integer.parseInt(mib.getOidsPosition("1.5").toString()));
+                               
+                                    mib.getOids().put("3.1", mib.getDataSnmpKeysMib().getDataNumberOfValidKeys());
+                                }
+                                catch(Exception e){
+                                    responseError.put(Iid, "410");
+                                }
+
                             }
+                            responsePair.put(Iid, mib.getOidsPosition(Iid).toString());
                         }else{
                             System.out.println("Oid_ReadOnly");
                             responseError.put(Iid, "405");

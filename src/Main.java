@@ -32,7 +32,12 @@ public class Main {
 
         //Creation and update matrix
         MSKeys MSK = MSKeys.getInstance();
-        MSK.create(mib);    
+        try {
+            MSK.create(mib);
+        } catch (Exception e) {
+            System.out.println("erro");
+            e.printStackTrace();
+        }   
         new Thread(() -> MSK.updateMatrix(mib)).start();
 
         //Server start
