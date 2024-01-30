@@ -3,7 +3,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -89,7 +88,7 @@ public class ComnServer {
                             }
                             if (Iid.equals("3.2.6")) {
                                 this.mib.getDataSnmpKeysMib().
-                                insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager, requestId, Integer.parseInt(valueStr),mib);
+                                insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager, Integer.parseInt(mib.getOidsPosition("1.6").toString()), Integer.parseInt(valueStr));
                             }
                         }else{
                             System.out.println("Oid_ReadOnly");

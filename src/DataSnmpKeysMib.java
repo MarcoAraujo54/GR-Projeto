@@ -37,12 +37,10 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		return dataNumberOfValidKeys;
 	}
 
-	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility, SnmpKeysMib mib){
+	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility){
 
 		LocalDateTime dateTime = LocalDateTime.now();
-
 		dateTime = dateTime.plusSeconds(validityTime/1000);
-
 		int day = dateTime.getDayOfMonth();
 		int month = dateTime.getMonthValue();
 		int year = dateTime.getYear();
@@ -51,7 +49,7 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		int second = dateTime.getSecond();
 
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
-		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4) + (Integer.parseInt(mib.getOidsPosition("1.6").toString()))/1000);
+		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
 		
 		int keyId= (this.dataTableGeneratedKeysEntryType.size()) > 0 ?  (this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()-1).getKeyId())+1 : 0;
 
