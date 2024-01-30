@@ -1,6 +1,13 @@
 import java.io.File;
 import java.util.Scanner;
-
+/**
+* Client side main
+*
+* @author Gustavo Oliveira
+* @author José Peleja
+* @author Marco Araújo
+*
+*/
 public class Mainclient {
     public static void main(String[] args) throws Exception {
         int serverPort = 0;
