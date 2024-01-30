@@ -76,8 +76,7 @@ public class ComnServer {
                         System.out.println("Value has to be Integer");
                         responseError.put(Iid, "409");
                     }
-                }
-                
+                }                
             }
             else if (primitiveType == 2) {
                 for (Map.Entry<String, String> pair : pairs.entrySet()) {
@@ -85,14 +84,13 @@ public class ComnServer {
                     String valueStr = pair.getValue();
                     if (mib.contains(Iid)) {
                         if(readWriteOids.contains(Iid)){
-                            int aux=  Integer.parseInt(mib.getOidsPosition("1.3").toString());
+                            Object aux = mib.getOidsPosition(Iid);
                             mib.getOids().put(Iid, valueStr);
-                           
                             if (Iid.equals("2.1") || Iid.equals("1.3")) {
                                 try {
                                     MSK.create(mib);
                                 } catch (Exception e) {
-                                    mib.getOids().put(Iid,aux );
+                                    mib.getOids().put(Iid,aux);
                                     responseError.put(Iid, "411");
                                 }
                                 mib.getSystemSnmpKeysMib().updateDate();
@@ -101,10 +99,9 @@ public class ComnServer {
                             }
                             if (Iid.equals("3.2.6")) {
                                 try{ 
-                                this.mib.getDataSnmpKeysMib().
-                                insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager,
-                                Integer.parseInt(mib.getOidsPosition("1.6").toString()), Integer.parseInt(valueStr), Integer.parseInt(mib.getOidsPosition("1.5").toString()));
-                               
+                                    this.mib.getDataSnmpKeysMib().
+                                    insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager,
+                                    Integer.parseInt(mib.getOidsPosition("1.6").toString()), Integer.parseInt(valueStr), Integer.parseInt(mib.getOidsPosition("1.5").toString()));
                                     mib.getOids().put("3.1", mib.getDataSnmpKeysMib().getDataNumberOfValidKeys());
                                 }
                                 catch(Exception e){
