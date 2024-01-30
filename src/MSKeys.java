@@ -20,8 +20,28 @@ public class MSKeys {
 	private byte Zc[][];
 	private byte Zd[][];
 	private static MSKeys single_instance;
-	
-	private static byte[][] transpose(byte[][] matrix) {
+
+	private MSKeys(){
+		this.N=0;
+	}
+	  /**
+     * Returns the instance of the MSKeys class (Singleton pattern).
+     *
+     * @return The single instance of MSKeys.
+     */
+	public synchronized static MSKeys getInstance(){
+		if (single_instance == null){
+			single_instance = new MSKeys();
+		}
+		return single_instance;
+	}
+	/**
+     * Transposes the given matrix.
+     *
+     * @param matrix The matrix to be transposed.
+     * @return The transposed matrix.
+     */
+	private static byte[][] transpose(byte[][] matrix) { 
 		int numRows = matrix.length;
 		int numCols = matrix[0].length;
 		
@@ -36,7 +56,13 @@ public class MSKeys {
 		
 		return transposed;
 	}
-
+	/**
+     * Rotates the given array to the left by d positions.
+     *
+     * @param M The array to be rotated.
+     * @param d The number of positions to rotate.
+     * @return The rotated array.
+     */
 	private byte[] rotate( byte M[], int d) 
 	{
 		int n = M.length;
@@ -58,19 +84,14 @@ public class MSKeys {
 	       
         return M ;
     }
- 
-	public void printArray(byte arr[], int n)
-    {
-		System.out.print("|| ");
-        for (int i = 0; i < n; i++) {
-        	int v = arr[i]& 0xFF;
-        	System.out.print(v + " ");
-        }
-      
-        System.out.print("|| \n");
-    }
-	
-	private void updateMValues(byte key[] ,SnmpKeysMib mib){
+	 /**
+     * Updates the values of M1 and M2 based on the provided master key and SNMP MIB information.
+     *
+     * @param key The master key.
+     * @param mib SNMP MIB information.
+     */
+	private void updateMValues(byte key[] ,SnmpKeysMib mib){ 
+
 		int k = Integer.parseInt(mib.getOidsPosition("1.3").toString());
 		this.K = k;
 		this.M1= new byte[K];
@@ -82,7 +103,9 @@ public class MSKeys {
 			this.M2[i]= key[i+K];
 		}	
 	}
-
+	/**
+     * Generates matrix Za based on the values of M1.
+     */
 	private void GenZa(){
 		byte temp[]= new byte [this.K];
 		System.out.println(K);
@@ -98,7 +121,9 @@ public class MSKeys {
 				// printArray(this.Za[i],this.K);
 			}
 		}
-
+	 /**
+     * Generates matrix Zb based on the values of M2.
+     */
 	private void GenZb(){
 		byte temp2[]= new byte [this.K];
 		this.Zb= new byte [K][K];
@@ -117,7 +142,9 @@ public class MSKeys {
 		//printArray(this.Zb[i],this.K);
 		}
 	}
-
+	/**
+     * Generates matrix Zc with random values.
+     */
 	private void GenZc() {
 		this.Zc= new byte [K][K];
 		for(int i=0; i < this.K; i++) {
@@ -126,11 +153,10 @@ public class MSKeys {
 				this.Zc[i][j]= this.Random();
 			}
 		}
-		/*for(int i=0; i < this.K; i++) {
-			printArray(this.Zc[i],this.K);
-			}*/
 	}
-	
+	 /**
+     * Generates matrix Zd with random values.
+     */
 	private void GenZd() {
 		this.Zd= new byte [K][K];
 		for(int i=0; i < this.K; i++) {
@@ -148,20 +174,23 @@ public class MSKeys {
 		return (byte)  new Random().nextInt(256); //Gere valores entre 0 e 255  
 		
 	}
+	 /**
+     * Generates matrix Z by combining Za, Zb, Zc, and Zd.
+     */
 	private void GenZ() {
-		this.Z= new byte [K][K];
-		
+		this.Z= new byte [K][K];	
 		for (int i = 0; i < this.K; i++) {
 			for (int j = 0; j < this.K; j++) {
 				this.Z[i][j] = (byte) (this.Za[i][j] ^ this.Zb[i][j] ^ this.Zc[i][j] ^ this.Zd[i][j]);
 			}
-		}
-		for (int i = 0; i < K; i++) {      
-			//	printArray(this.Z[i],this.K);     
-		}				
+		}			
 	}
-
-	public void create(SnmpKeysMib mib){	
+	 /**
+     * Creates matrices Za, Zb, Zc, Zd, and Z based on the provided MIB information.
+     *
+     * @param mib MIB information.
+     */
+	public synchronized void create(SnmpKeysMib mib){	
 		
 		String MKey = (mib.getOidsPosition("2.1")).toString();
 		byte[] MasterKey = MKey.getBytes();
@@ -177,14 +206,24 @@ public class MSKeys {
 		MSK.GenZd();
 		//System.out.println("\n ZZZZZZZZZZZZZZZZ");
 		MSK.GenZ();
-		for (int i = 0; i < K; i++) {      
-				printArray(this.Z[i],this.K);     
-		}
 		
-
-		System.out.println("matrizes criadas");
-	
 	}
+
+	public void printArray(byte arr[], int n)
+    {
+		System.out.print("|| ");
+        for (int i = 0; i < n; i++) {
+        	int v = arr[i]& 0xFF;
+        	System.out.print(v + " ");
+        }
+      
+        System.out.print("|| \n");
+    }
+	/**
+     * Generates a key C based on the current state of matrices Z.
+     *
+     * @return The generated key C.
+     */
 	public byte[] generateKeyC() {
 		MSKeys MSK = getInstance();
 		int n = MSK.N;
@@ -206,7 +245,12 @@ public class MSKeys {
 		
         return C;
     }
-	public void updateMatrix(SnmpKeysMib mib) {
+	/**
+     * Updates the matrix Z in a continuous loop based on MIB information.
+     *
+     * @param mib MIB information.
+     */
+	public synchronized void updateMatrix(SnmpKeysMib mib) {
         while (true) {
 			String stringValue = mib.getOidsPosition("1.4").toString();
 			int finalT = Integer.parseInt(stringValue);
@@ -234,14 +278,6 @@ public class MSKeys {
 		
         }
     }
-	private MSKeys(){
-		this.N=0;
-	}
-	public synchronized static MSKeys getInstance(){
-		if (single_instance == null){
-			single_instance = new MSKeys();
-			System.out.println("primeiro");
-		}
-		return single_instance;
-	}
+
+	
 }
