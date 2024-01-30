@@ -1,3 +1,11 @@
+/**
+* Class to handle timestamps
+*
+* @author Gustavo Oliveira
+* @author José Pedro Fernandes Peleja
+* @author Marco Araújo
+*
+*/
 public class Timestamp {
 
     private long startTimeStamp;
