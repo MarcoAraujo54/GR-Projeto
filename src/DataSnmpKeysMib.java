@@ -78,27 +78,21 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		Iterator<KeysSnmpKeysMib> iterator = this.dataTableGeneratedKeysEntryType.iterator();
 		while (iterator.hasNext()) {
 			KeysSnmpKeysMib key = iterator.next();
-			
-			// Debugging: Print the values to check them
-			System.out.println("Current Date: " + date + ", Expiration Date: " + key.getKeyExpirationDate());
-			System.out.println("Current Time: " + time + ", Expiration Time: " + key.getKeyExpirationTime());
-
 			if ((date >= key.getKeyExpirationDate()) && (time > key.getKeyExpirationTime())) {
-				iterator.remove(); // Use iterator's remove method
+				iterator.remove(); 
 			}
 		}	
 			
-		
-		//this.updtadeDataTableGeneratedKeys();
+		this.updtadeDataTableGeneratedKeys();
 	}
 
-	/*public void updtadeDataTableGeneratedKeys(){
+	public void updtadeDataTableGeneratedKeys(){
 		this.dataTableGeneratedKeys = new HashMap<Integer,KeysSnmpKeysMib>();
 		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
 			this.dataTableGeneratedKeys.put(key.getKeyId(), key);
 		}
 	}
-*/
+
 	public Object getDataTableGeneratedKeysEntryType(int id, String keyRequester){
 		List<Object> readable = new ArrayList<Object>();
 		this.updateDataTableGeneratedKeysEntryType();
