@@ -5,7 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.time.LocalDateTime;
 import java.lang.Math;
-
+/**
+* Data group of the snmpKeysMib
+*
+* @author Gustavo Oliveira
+* @author José Pedro Fernandes Peleja
+* @author Marco Araújo
+*
+*/
 public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 	private int dataNumberOfValidKeys;
@@ -37,6 +44,15 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		return dataNumberOfValidKeys;
 	}
 
+	/**
+	* Function to insert a new key in the table
+	* 
+	* @param keyValue the value of the key to be inserted in the list
+	* @param keyRequester the identification of the manager/client that requested the key
+	* @param validityTime time until the key expires in millisecdons
+	* @param keyVisibility integer value to represent which entities can visualize the key, 0 – Key value is not visible; 1 – key value is only visible to the requester; 2 – key value is visible to anyone
+	*
+	*/
 	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility, SnmpKeysMib mib){
 
 		LocalDateTime dateTime = LocalDateTime.now();
@@ -62,6 +78,11 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		this.updateDataTableGeneratedKeysEntryType();
 	}
 
+	/**
+	*
+	* Function to update the list of valid keys removing the entries that are no longer valid
+	* 
+	*/
 	public void updateDataTableGeneratedKeysEntryType(){
 
 		LocalDateTime dateTime = LocalDateTime.now();
@@ -92,7 +113,14 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 			this.dataTableGeneratedKeys.put(key.getKeyId(), key);
 		}
 	}
-
+	/**
+	*
+	* Function to hand gets of the list values depending on the id of the manager/client that requests the key
+	*
+	* @param id last number of the oid representing which value to get from KeysSnmpKeysMib.
+	* @param keyRequeter the identification of the manager/client that requested the key
+ 	* 
+	*/
 	public Object getDataTableGeneratedKeysEntryType(int id, String keyRequester){
 		List<Object> readable = new ArrayList<Object>();
 		this.updateDataTableGeneratedKeysEntryType();
