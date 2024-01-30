@@ -101,6 +101,14 @@ public class SnmpKeysMib {
 		}
 		return false;
 	}
+	/**
+     * Retrieves  MIB information based on the specified starting path, next number of positions, and KeyReq.
+     *
+     * @param startPath The starting path for retrieval.
+     * @param nextPos   The number of next positions for retrieval.
+     * @param keyReq    KeyReq information.
+     * @return HashMap representing the retrieved SNMP MIB information.
+     */
 	public HashMap<String,String> getmib(String StartPath,int nextpos, String KeyReq){
 		HashMap<String,String> mapa = new HashMap<>();
 		Scanner scanner = new Scanner(StartPath).useDelimiter("\\.");
@@ -156,6 +164,11 @@ public class SnmpKeysMib {
 		}
 		return mapa;
 	}
+	/**
+     * Updates the DataSnmpKeysMib with the provided information.
+     *
+     * @param m The Manager information to update.
+     */
 	public void updateData(String m){
 		this.oids.put("3.2.1", this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, m));
 		this.oids.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(2, m));
