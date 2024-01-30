@@ -1,4 +1,12 @@
 import java.time.LocalDateTime;
+/**
+* Class to implement the system group of the snmpKeysMib
+*
+* @author Gustavo Oliveira
+* @author José Pedro Fernandes Peleja
+* @author Marco Araújo
+*
+*/
 
 public class SystemSnmpKeysMib {
 	
