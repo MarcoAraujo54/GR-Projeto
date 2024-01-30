@@ -12,7 +12,7 @@ import java.util.Scanner;
 * Class to handle the client side of the udp connection
 *
 * @author Gustavo Oliveira
-* @author José Pedro Fernandes Peleja
+* @author José Peleja
 * @author Marco Araújo
 *
 */
