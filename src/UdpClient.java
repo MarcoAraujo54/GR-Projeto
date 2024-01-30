@@ -62,6 +62,7 @@ public class UdpClient {
             e.printStackTrace();
         }
     }
+
     public static int updateFile() {
         String filePath = "Pid.txt";
         int newValue = 0;
@@ -77,7 +78,6 @@ public class UdpClient {
         }
         try (PrintWriter writer = new PrintWriter(file)) {
             writer.println(newValue);
-            System.out.println("Updated value successfully written to the file.");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

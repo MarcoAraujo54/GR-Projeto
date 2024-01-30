@@ -101,7 +101,9 @@ public class SnmpKeysMib {
 		}
 		return false;
 	}
+
 	public HashMap<String,String> getmib(String StartPath,int nextpos, String KeyReq){
+		
 		HashMap<String,String> mapa = new HashMap<>();
 		Scanner scanner = new Scanner(StartPath).useDelimiter("\\.");
 		int[] num= new int[5];
@@ -156,6 +158,7 @@ public class SnmpKeysMib {
 		}
 		return mapa;
 	}
+
 	public void updateData(String m){
 		this.oids.put("3.2.1", this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, m));
 		this.oids.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(2, m));
