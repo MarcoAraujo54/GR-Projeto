@@ -90,7 +90,6 @@ public class ComnServer {
                             if (Iid.equals("3.2.6")) {
                                 this.mib.getDataSnmpKeysMib().
                                 insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager, requestId, Integer.parseInt(valueStr),mib);
-                                mib.updateData(Manager);
                             }
                         }else{
                             System.out.println("Oid_ReadOnly");
