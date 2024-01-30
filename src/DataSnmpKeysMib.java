@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,33 +17,31 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 	private int dataNumberOfValidKeys;
 	private List<KeysSnmpKeysMib> dataTableGeneratedKeysEntryType;
 	private KeysSnmpKeysMib dataTableGeneratedKeysEntry;
-	private Map<Integer, KeysSnmpKeysMib> dataTableGeneratedKeys;
+	
 	
 	public DataSnmpKeysMib(int dataNumberOfValidKeys, List<KeysSnmpKeysMib> dataTableGeneratedKeysEntryType,
 		KeysSnmpKeysMib dataTableGeneratedKeysEntry, Map<Integer, KeysSnmpKeysMib> dataTableGeneratedKeys) {
 		this.dataNumberOfValidKeys = dataNumberOfValidKeys;
 		this.dataTableGeneratedKeysEntryType = dataTableGeneratedKeysEntryType;
 		this.dataTableGeneratedKeysEntry = dataTableGeneratedKeysEntry;
-		this.dataTableGeneratedKeys = dataTableGeneratedKeys;
 	}
 	public DataSnmpKeysMib(DataSnmpKeysMib data){
 		this.dataNumberOfValidKeys = data.dataNumberOfValidKeys;
 		this.dataTableGeneratedKeysEntryType = data.dataTableGeneratedKeysEntryType;
 		this.dataTableGeneratedKeysEntry = data.dataTableGeneratedKeysEntry;
-		this.dataTableGeneratedKeys = data.dataTableGeneratedKeys;
+		
 	}
 	public DataSnmpKeysMib(){
 		this.dataNumberOfValidKeys = 0;
 		this.dataTableGeneratedKeysEntryType = new ArrayList<KeysSnmpKeysMib>();
 		this.dataTableGeneratedKeysEntry = new KeysSnmpKeysMib();
-		this.dataTableGeneratedKeys = new HashMap<Integer,KeysSnmpKeysMib>();
 	}
 
 	public int getDataNumberOfValidKeys() {
 		return dataNumberOfValidKeys;
 	}
 
-	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility){
+	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility, int maxSize) throws Exception{
 
 		LocalDateTime dateTime = LocalDateTime.now();
 		dateTime = dateTime.plusSeconds(validityTime/1000);
@@ -61,8 +58,14 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		int keyId= (this.dataTableGeneratedKeysEntryType.size()) > 0 ?  (this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()-1).getKeyId())+1 : 0;
 
 		KeysSnmpKeysMib key = new KeysSnmpKeysMib(keyId, keyValue, keyRequester, date, time, keyVisibility);
+		this.updateDataTableGeneratedKeysEntryType();
 		if(keyVisibility<=2 && keyVisibility >=0){
-			this.dataTableGeneratedKeysEntryType.add(key);
+			if(this.dataTableGeneratedKeysEntryType.size()<maxSize){
+				this.dataTableGeneratedKeysEntryType.add(key);
+			}
+			else{
+				throw new Exception("size");
+			}
 		}
 		this.updateDataTableGeneratedKeysEntryType();
 	}
@@ -92,15 +95,9 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 				iterator.remove(); 
 			}
 		}			
-		this.updtadeDataTableGeneratedKeys();
+		this.dataNumberOfValidKeys= this.dataTableGeneratedKeysEntryType.size();
 	}
 
-	public void updtadeDataTableGeneratedKeys(){
-		this.dataTableGeneratedKeys = new HashMap<Integer,KeysSnmpKeysMib>();
-		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
-			this.dataTableGeneratedKeys.put(key.getKeyId(), key);
-		}
-	}
 	/**
 	*
 	* Function to hand gets of the list values depending on the id of the manager/client that requests the key
@@ -140,7 +137,6 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 				}
 			}
 		}
-		System.out.println(readable);
 		return readable;
 	}
 }

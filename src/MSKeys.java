@@ -189,10 +189,14 @@ public class MSKeys {
      * Creates matrices Za, Zb, Zc, Zd, and Z based on the provided MIB information.
      *
      * @param mib MIB information.
+	 * @throws Exception 
      */
-	public synchronized void create(SnmpKeysMib mib){	
+	public void create(SnmpKeysMib mib) throws Exception{	
 		
 		String MKey = (mib.getOidsPosition("2.1")).toString();
+		if(Integer.parseInt(mib.getOidsPosition("1.3").toString())> MKey.length()/2){
+			throw new Exception("k");
+		}
 		byte[] MasterKey = MKey.getBytes();
 		MSKeys MSK = getInstance();
 		MSK.updateMValues(MasterKey,mib);
@@ -250,7 +254,7 @@ public class MSKeys {
      *
      * @param mib MIB information.
      */
-	public synchronized void updateMatrix(SnmpKeysMib mib) {
+	public void updateMatrix(SnmpKeysMib mib) {
         while (true) {
 			String stringValue = mib.getOidsPosition("1.4").toString();
 			int finalT = Integer.parseInt(stringValue);

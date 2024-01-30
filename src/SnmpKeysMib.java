@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Scanner;
+
 /**
 * Implementation of the snmpKeysMib
 *
@@ -125,13 +126,10 @@ public class SnmpKeysMib {
 		String firstlevel;
 		int cont=0;
 		for(i=num[0];i<=3;i++){
-			
 			condition=true;
 			firstlevel=String.valueOf(i);
-			
 				while (condition && cont<=nextpos) {
-				
-				String secondlevel= firstlevel + "." + String.valueOf(x);
+					String secondlevel= firstlevel + "." + String.valueOf(x);
 				if(this.oids.containsKey(secondlevel)){
 					
 					if(k<=1){
@@ -170,11 +168,13 @@ public class SnmpKeysMib {
      * @param m The Manager information to update.
      */
 	public void updateData(String m){
+		
 		this.oids.put("3.2.1", this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(1, m));
 		this.oids.put("3.2.2",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(2, m));
 		this.oids.put("3.2.3",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(3, m));
 		this.oids.put("3.2.4",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(4, m));
 		this.oids.put("3.2.5",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(5, m));
 		this.oids.put("3.2.6",this.dataSnmpKeysMib.getDataTableGeneratedKeysEntryType(6, m));
+		this.oids.put("3.1", this.getDataSnmpKeysMib().getDataNumberOfValidKeys());
 	}
 }
