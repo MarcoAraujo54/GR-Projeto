@@ -117,8 +117,8 @@ public class SnmpKeysMib {
 		int[] num= new int[5];
 		int i=0;
 		while(scanner.hasNextInt()){
-        num[i]= scanner.hasNextInt() ? scanner.nextInt() : 0;
-		i++;
+			num[i]= scanner.hasNextInt() ? scanner.nextInt() : 0;
+			i++;
 		}
         scanner.close();
 		boolean condition=true;
@@ -129,12 +129,10 @@ public class SnmpKeysMib {
 		for(i=num[0];i<=3;i++){
 			condition=true;
 			firstlevel=String.valueOf(i);
-				while (condition && cont<=nextpos) {
-					String secondlevel= firstlevel + "." + String.valueOf(x);
+			while (condition && cont<=nextpos) {
+				String secondlevel= firstlevel + "." + String.valueOf(x);
 				if(this.oids.containsKey(secondlevel)){
-					
 					if(k<=1){
-						
 						if(this.getOidsPosition(secondlevel).equals("Not Acessible")){
 							cont--;
 						}
@@ -157,9 +155,9 @@ public class SnmpKeysMib {
 					condition=false;	
 				} 
 				if(k<=1){
-					x++;}
+					x++;
 				}
-					
+			}	
 		}
 		return mapa;
 	}
