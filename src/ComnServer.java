@@ -127,8 +127,8 @@ public class ComnServer {
                 responseError.put("0","0");
             }                  
             int numPairs = responsePair.size();
-            int Errors = responseError.size();
-            pdu = new Pdu(0,0,Manager,requestId,0, numPairs , responsePair , Errors, responseError);
+            int errors = responseError.size();
+            pdu = new Pdu(0,0,Manager,requestId,0, numPairs , responsePair , errors, responseError);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, this.receivePacket.getAddress(), this.receivePacket.getPort());
             try {

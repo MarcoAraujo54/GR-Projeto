@@ -13,8 +13,8 @@ public class Mainclient {
         int serverPort = 0;
         String ipServer = "";
         int v = 0;
-        long S = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(S);
+        long s = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(s);
         File file = new File("config.txt");
         Scanner scanner = new Scanner(file);            
         for (int i = 0; i < 7 && scanner.hasNextLine(); i++) {
@@ -34,9 +34,9 @@ public class Mainclient {
         }
         scanner.close();
         final String serverAddress = ipServer;
-        final int Port = serverPort;
+        final int port = serverPort;
         UdpClient client = new UdpClient();
-        Thread clientThread = new Thread(() -> client.runClient(serverAddress, Port, args));
+        Thread clientThread = new Thread(() -> client.runClient(serverAddress, port, args));
         clientThread.start();
         while(true){
             if(timestamp.getElapsedSeconds()>(v/1000)){
