@@ -51,14 +51,14 @@ public class ComnServer {
             pdu.ProcessPdu(receivedMessage);
             int requestId = pdu.getRequestId();
             int primitiveType = pdu.getPrimitiveType();
-            String Manager = pdu.getIdManager();
+            String idManager = pdu.getIdManager();
             Map<String, String> pairs = pdu.getPair();            
             Map<String, String> responsePair = new HashMap<>();
             Map<String, String> Aux = new HashMap<>();
             Map<String,String> responseError = new HashMap<>();
             List<String> readWriteOids = Arrays.asList("1.3","1.4","1.5","1.6","2.1","2.2","2.3","3.2.6");
             if (primitiveType == 1) {
-                mib.updateData(Manager);
+                mib.updateData(idManager);
                 for (Map.Entry<String, String> pair : pairs.entrySet()) {
                     String Iid = pair.getKey();
                     String valueStr = pair.getValue();
@@ -66,7 +66,7 @@ public class ComnServer {
                         int Value = Integer.parseInt(valueStr);
                         if (mib.contains(Iid)) {
                             System.out.println(Value);
-                            Aux = mib.getmib(Iid, Value, Manager);
+                            Aux = mib.getmib(Iid, Value, idManager);
                             responsePair.putAll(Aux);
                         } else {
                             System.out.println("Oid_Inexistente");
@@ -100,7 +100,7 @@ public class ComnServer {
                             if (Iid.equals("3.2.6")) {
                                 try{ 
                                     this.mib.getDataSnmpKeysMib().
-                                    insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), Manager,
+                                    insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), idManager,
                                     Integer.parseInt(mib.getOidsPosition("1.6").toString()), Integer.parseInt(valueStr), Integer.parseInt(mib.getOidsPosition("1.5").toString()));
                                     mib.getOids().put("3.1", mib.getDataSnmpKeysMib().getDataNumberOfValidKeys());
                                 }
@@ -128,7 +128,7 @@ public class ComnServer {
             }                  
             int numPairs = responsePair.size();
             int errors = responseError.size();
-            pdu = new Pdu(0,0,Manager,requestId,0, numPairs , responsePair , errors, responseError);
+            pdu = new Pdu(0,0,idManager,requestId,0, numPairs , responsePair , errors, responseError);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, this.receivePacket.getAddress(), this.receivePacket.getPort());
             try {
