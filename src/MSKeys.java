@@ -183,7 +183,12 @@ public class MSKeys{
 			for (int j = 0; j < this.K; j++){
 				this.Z[i][j] = (byte) (this.Za[i][j] ^ this.Zb[i][j] ^ this.Zc[i][j] ^ this.Zd[i][j]);
 			}
-		}			
+		}
+		System.out.println("CRIAÇÃO DA MATRIZ");
+		for (int i = 0; i < K; i++) {
+			printArray(this.Z[i],this.K);
+		}
+		System.out.println();
 	}
 	 /**
      * Creates matrices Za, Zb, Zc, Zd, and Z based on the provided MIB information.
@@ -288,7 +293,13 @@ public class MSKeys{
 			catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		
+			//Debug
+			/*System.out.println("ATUALIZAÇÃO DA MATRIZ");
+			for (int i = 0; i < K; i++) {
+				printArray(MSK.Z[i],this.K);
+			}
+			System.out.println();
+			*/
         }
     }
 	
