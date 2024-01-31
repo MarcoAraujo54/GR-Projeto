@@ -12,7 +12,7 @@ public class Mainclient {
     public static void main(String[] args) throws Exception {
         int serverPort = 0;
         String ipServer = "";
-        int V = 0;
+        int v = 0;
         long S = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(S);
         File file = new File("config.txt");
@@ -28,8 +28,8 @@ public class Mainclient {
                 System.out.println(ipServer);
             }
             else if(i == 5){
-                V = Integer.parseInt(line.trim());
-                System.out.println(V);
+                v = Integer.parseInt(line.trim());
+                System.out.println(v);
             }               
         }
         scanner.close();
@@ -39,7 +39,7 @@ public class Mainclient {
         Thread clientThread = new Thread(() -> client.runClient(serverAddress, Port, args));
         clientThread.start();
         while(true){
-            if(timestamp.getElapsedSeconds()>(V/1000)){
+            if(timestamp.getElapsedSeconds()>(v/1000)){
                 clientThread.interrupt();
                 System.exit(1);
             }    
