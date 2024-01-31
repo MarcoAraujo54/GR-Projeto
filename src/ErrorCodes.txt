@@ -1,5 +1,5 @@
 404 - oid not found
 405 - Method not Allowed Oid ReadOnly
-409 - type mismatch
+409 - get with wrong parameters
 410 - List of ValidKeys is full
 411 - K too high or masterkey too small
