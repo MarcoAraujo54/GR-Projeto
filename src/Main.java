@@ -35,7 +35,6 @@ public class Main {
         try {
             MSK.create(mib);
         } catch (Exception e) {
-            System.out.println("erro");
             e.printStackTrace();
         }   
         new Thread(() -> MSK.updateMatrix(mib)).start();
