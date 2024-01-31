@@ -34,6 +34,11 @@ public class SnmpKeysMib {
 		this.dataSnmpKeysMib = new DataSnmpKeysMib();
 		this.oids=createMib();
 	}
+	/**
+	 * Creates and returns a HashMap representing the MIB structure.
+	 *
+	 * @return HashMap representing the MIB structure.
+	 */
 	private HashMap<String,Object> createMib(){
 		HashMap<String,Object> map = new HashMap<>();
 		map.put("0", "SnmpKeysMib");
