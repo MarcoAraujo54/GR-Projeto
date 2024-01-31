@@ -20,6 +20,7 @@ public class ConfigLoad {
     private int x; // Maximum of table entry
 
     public int loadConfig(SnmpKeysMib mib){
+        //Gets all of configuration from the file
         try {
             File file = new File("config.txt");
             Scanner scanner = new Scanner(file);            
@@ -27,27 +28,21 @@ public class ConfigLoad {
                 String line = scanner.nextLine();
                 if (i == 0) {
                     port = Integer.parseInt(line.trim());
-                    System.out.println(port);
                 }
                 else if (i == 2) {
                     m = line;
-                    System.out.println(m);
                 }
                 else if(i == 3){
                     k = Integer.parseInt(line.trim());
-                    System.out.println(k);
                 }
                 else if(i == 4){
                     t = Integer.parseInt(line.trim());
-                    System.out.println(t);
                 }
                 else if(i == 5){
                     v = Integer.parseInt(line.trim());
-                    System.out.println(v);
                 }
                 else if(i == 6){
                     x = Integer.parseInt(line.trim());
-                    System.out.println(x);
                 }
             }
             scanner.close();

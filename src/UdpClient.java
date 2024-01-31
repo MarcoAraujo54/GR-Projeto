@@ -21,13 +21,14 @@ public class UdpClient {
         int prim = 0;
         String idMan = "";
         try (DatagramSocket socket = new DatagramSocket()) {
-            InetAddress serverInetAddress = InetAddress.getByName(serverAddress);         
+            InetAddress serverInetAddress = InetAddress.getByName(serverAddress); 
+
+            //checks what type of primitive the client wants         
             if (args.length > 0) {
+                //Get the ID from the manager
                 idMan = args[0];
                 String param = args[1];
-                if (param.equals("response")) {
-                    prim = 0;
-                }else if (param.equals("get")) {
+                if (param.equals("get")) {
                     prim = 1;
                 } else if (param.equals("set")) {
                     prim = 2;
@@ -37,21 +38,23 @@ public class UdpClient {
             } else {
                 System.out.println("No parameter provided");
             }
+            // Gets the pair of the request from the following arguments after the primitive
             Map<String,String> Par = new HashMap<>();
             for (int i = 2; i < args.length; i += 2) {
                 if (i + 1 < args.length) {
                     Par.put(args[i],args[i+1]);
                 }
             }
+            // Creates a new Pdu to send to the server
             int Pid = updateFile();
-            System.out.println("Pedido numero:"+Pid);
             int numPairs = Par.size();
             Map <String,String> Error = new HashMap<>();
             Pdu pdu = new Pdu(0,0,idMan,Pid,prim, numPairs ,Par , 0,Error);
             byte[] sendData = pdu.toMyString().getBytes();
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverInetAddress, serverPort);
-            
             socket.send(sendPacket);
+
+            //Receives the response from the server
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             socket.receive(receivePacket);
@@ -62,7 +65,13 @@ public class UdpClient {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Method for updating the id from the request. 
+     *  
+     *
+     * @return int Returns the updated value for the client request id. 
+     * 
+     */
     public static int updateFile() {
         String filePath = "Pid.txt";
         int newValue = 0;

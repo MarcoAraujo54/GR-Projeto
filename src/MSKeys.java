@@ -108,8 +108,6 @@ public class MSKeys{
 	private void generateZa(){
 		byte temp[]= new byte [this.K];
 		
-		System.out.println(K);
-		
 		this.Za= new byte [K][K];
 		
 			for(int i=0; i < this.K; i++) {
@@ -197,7 +195,7 @@ public class MSKeys{
 		String mKey = (mib.getOidsPosition("2.1")).toString();
 		
 		if(Integer.parseInt(mib.getOidsPosition("1.3").toString())> mKey.length()/2){
-			throw new Exception("k");
+			throw new Exception("K too high or masterkey too small");
 		}
 		
 		byte[] masterKey = mKey.getBytes();
@@ -293,6 +291,5 @@ public class MSKeys{
 		
         }
     }
-
 	
 }

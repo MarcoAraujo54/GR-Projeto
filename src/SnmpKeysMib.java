@@ -136,6 +136,9 @@ public class SnmpKeysMib {
 			firstlevel=String.valueOf(i);
 			while (condition && cont<=nextpos) {
 				String secondlevel= firstlevel + "." + String.valueOf(x);
+				if( i == 0 ){
+					cont++;	
+				}
 				if(this.oids.containsKey(secondlevel)){
 					if(k<=1){
 						if(this.getOidsPosition(secondlevel).equals("Not Acessible")){
