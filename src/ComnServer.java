@@ -17,27 +17,30 @@ public class ComnServer {
     private DatagramSocket socket;
     private SnmpKeysMib mib;
 
-    public ComnServer(DatagramSocket socket, SnmpKeysMib mib) {
+    public ComnServer(DatagramSocket socket, SnmpKeysMib mib){
         this.socket = socket;
         this.mib = mib;
     }
 
-    public void startServerThread() throws IOException {
+    public void startServerThread() throws IOException{
         while (true) {
             byte[] receiveData = new byte[1024];
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+            
             this.socket.receive(receivePacket);
+            
             DatagramSocket responseSocket = new DatagramSocket();
+            
             new Thread(new RequestHandler(responseSocket, mib, receivePacket)).start();
         }
     }
 
-    private static class RequestHandler implements Runnable {
+    private static class RequestHandler implements Runnable{
         private DatagramSocket responseSocket;
         private SnmpKeysMib mib;
         private DatagramPacket receivePacket;
 
-        public RequestHandler(DatagramSocket responseSocket ,SnmpKeysMib mib, DatagramPacket receivePacket) {
+        public RequestHandler(DatagramSocket responseSocket ,SnmpKeysMib mib, DatagramPacket receivePacket){
             this.responseSocket = responseSocket;
             this.mib = mib;
             this.receivePacket = receivePacket;
@@ -46,20 +49,25 @@ public class ComnServer {
         public void run(){
             MSKeys MSK = MSKeys.getInstance();
             String receivedMessage = new String(this.receivePacket.getData(), 0, this.receivePacket.getLength());
+            
             System.out.println("Received from client: " + receivedMessage);
             Pdu pdu = new Pdu();
+            
             pdu.ProcessPdu(receivedMessage);
+            
             int requestId = pdu.getRequestId();
             int primitiveType = pdu.getPrimitiveType();
             String idManager = pdu.getIdManager();
+
             Map<String, String> pairs = pdu.getPair();            
             Map<String, String> responsePair = new HashMap<>();
             Map<String, String> Aux = new HashMap<>();
             Map<String,String> responseError = new HashMap<>();
             List<String> readWriteOids = Arrays.asList("1.3","1.4","1.5","1.6","2.1","2.2","2.3","3.2.6");
-            if (primitiveType == 1) {
+            
+            if (primitiveType == 1){
                 mib.updateData(idManager);
-                for (Map.Entry<String, String> pair : pairs.entrySet()) {
+                for (Map.Entry<String, String> pair : pairs.entrySet()){
                     String Iid = pair.getKey();
                     String valueStr = pair.getValue();
                     try {
@@ -79,25 +87,28 @@ public class ComnServer {
                 }                
             }
             else if (primitiveType == 2) {
-                for (Map.Entry<String, String> pair : pairs.entrySet()) {
+                for (Map.Entry<String, String> pair : pairs.entrySet()){
                     String Iid = pair.getKey();
                     String valueStr = pair.getValue();
-                    if (mib.contains(Iid)) {
+                    
+                    if (mib.contains(Iid)){
                         if(readWriteOids.contains(Iid)){
                             Object aux = mib.getOidsPosition(Iid);
                             mib.getOids().put(Iid, valueStr);
-                            if (Iid.equals("2.1") || Iid.equals("1.3")) {
+
+                            if (Iid.equals("2.1") || Iid.equals("1.3")){
                                 try {
                                     MSK.create(mib);
-                                } catch (Exception e) {
+                                } catch (Exception e){
                                     mib.getOids().put(Iid,aux);
                                     responseError.put(Iid, "411");
                                 }
+                                
                                 mib.getSystemSnmpKeysMib().updateDate();
                                 mib.getOids().put("1.1",mib.getSystemSnmpKeysMib().getSystemRestartDate());
                                 mib.getOids().put("1.2",mib.getSystemSnmpKeysMib().getSystemRestartTime());
                             }
-                            if (Iid.equals("3.2.6")) {
+                            if (Iid.equals("3.2.6")){
                                 try{ 
                                     this.mib.getDataSnmpKeysMib().
                                     insertDataTableGeneratedKeysEntryType(MSK.generateKeyC().toString(), idManager,
@@ -128,8 +139,10 @@ public class ComnServer {
             }                  
             int numPairs = responsePair.size();
             int errors = responseError.size();
+            
             pdu = new Pdu(0,0,idManager,requestId,0, numPairs , responsePair , errors, responseError);
             byte[] sendData = pdu.toMyString().getBytes();
+            
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, this.receivePacket.getAddress(), this.receivePacket.getPort());
             try {
                 this.responseSocket.send(sendPacket);

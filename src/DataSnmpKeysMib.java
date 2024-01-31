@@ -41,10 +41,22 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		return dataNumberOfValidKeys;
 	}
 
+	/**
+	* Function to insert a new key in the table
+	* 
+	* @param keyValue the value of the key to be inserted in the list
+	* @param keyRequester the identification of the manager/client that requested the key
+	* @param validityTime time until the key expires in milliseconds
+	* @param keyVisibility integer value to represent which entities can visualize the key, 0 – Key value is not visible; 1 – key value is only visible to the requester; 2 – key value is visible to anyone
+	* @param maxSize maximum number of entries in 
+	*
+	*/
 	public void insertDataTableGeneratedKeysEntryType(String keyValue, String keyRequester, int validityTime, int keyVisibility, int maxSize) throws Exception{
 
 		LocalDateTime dateTime = LocalDateTime.now();
+		
 		dateTime = dateTime.plusSeconds(validityTime/1000);
+		
 		int day = dateTime.getDayOfMonth();
 		int month = dateTime.getMonthValue();
 		int year = dateTime.getYear();
@@ -58,7 +70,9 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 		int keyId= (this.dataTableGeneratedKeysEntryType.size()) > 0 ?  (this.dataTableGeneratedKeysEntryType.get(this.dataTableGeneratedKeysEntryType.size()-1).getKeyId())+1 : 0;
 
 		KeysSnmpKeysMib key = new KeysSnmpKeysMib(keyId, keyValue, keyRequester, date, time, keyVisibility);
+		
 		this.updateDataTableGeneratedKeysEntryType();
+		
 		if(keyVisibility<=2 && keyVisibility >=0){
 			if(this.dataTableGeneratedKeysEntryType.size()<maxSize){
 				this.dataTableGeneratedKeysEntryType.add(key);
@@ -88,10 +102,12 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 
 		int date = (int) (day + month * Math.pow(10, 2) + year * Math.pow(10, 4));
 		int time = (int) (second + minute * Math.pow(10, 2) + hour * Math.pow(10, 4));
+		
 		Iterator<KeysSnmpKeysMib> iterator = this.dataTableGeneratedKeysEntryType.iterator();
-		while (iterator.hasNext()) {
+		
+		while (iterator.hasNext()){
 			KeysSnmpKeysMib key = iterator.next();
-			if ((date >= key.getKeyExpirationDate()) && (time > key.getKeyExpirationTime())) {
+			if ((date >= key.getKeyExpirationDate()) && (time > key.getKeyExpirationTime())){
 				iterator.remove(); 
 			}
 		}			
@@ -105,14 +121,17 @@ public class DataSnmpKeysMib extends KeysSnmpKeysMib {
 	* @param id last number of the oid representing which value to get from KeysSnmpKeysMib.
 	* @param keyRequeter the identification of the manager/client that requested the key
  	* 
-	* @return readble object with the list of readble values for the manager/client 
+	* @return readable object with the list of readable values for the manager/client 
 	*
 	*/
 	public Object getDataTableGeneratedKeysEntryType(int id, String keyRequester){
+		
 		List<Object> readable = new ArrayList<Object>();
+		
 		this.updateDataTableGeneratedKeysEntryType();
+		
 		for(KeysSnmpKeysMib key : this.dataTableGeneratedKeysEntryType){
-			if((key.getKeyRequester().equals(keyRequester) || key.getKeyVisibility() == 2)&& key.getKeyVisibility()!=0) {
+			if((key.getKeyRequester().equals(keyRequester) || key.getKeyVisibility() == 2)&& key.getKeyVisibility()!=0){
 				switch(id){
 					case 1:
 						readable.add(key.getKeyId());
